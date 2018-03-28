@@ -1,0 +1,17 @@
+{
+  "name": "@baidu/speedup-analysis",
+  "version": "0.0.3",
+  "discription": "Speedup Analysis",
+  "main": "src/instantSearch.js",
+  "scripts": {
+    "dist": "make dist",
+    "doc": "make doc",
+    "clean": "make clean"
+  },
+  "devDependencies": {},
+  "amdDependencies": {},
+  "dependencies": {
+    "commander": "^2.15.1",
+    "ftp": "^0.3.10"
+  }
+}

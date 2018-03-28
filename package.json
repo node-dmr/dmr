@@ -4,7 +4,6 @@
   "discription": "Speedup Analysis",
   "main": "src/instantSearch.js",
   "scripts": {
-    "dist": "make dist",
     "doc": "make doc",
     "clean": "make clean"
   },

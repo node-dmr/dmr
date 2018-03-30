@@ -10,7 +10,8 @@ program
   .option('-i, --id <value>', 'Task ID')
   .option('-d, --date <items>', 'Start Date , End Date [option]')
   .option('-t, --time <items>', 'Start Time , End Time [option]')
-  .option('-r, --range <value>', 'Ranges(d,h,m,s)');
+  .option('-r, --range <value>', 'Ranges(d,h,m,s) [option]')
+  .option('-f, --file <file>', 'Output File [option]');
 
 program.on('--help', function(){
     console.log('');
@@ -19,7 +20,7 @@ program.on('--help', function(){
     console.log('    $ dowload -i search_ac -d 20180901 -r 1d ');
     console.log('    $ dowload -i search_ac -d 20180901,20180902');
     console.log('    $ dowload -i search_ac -d 20180901 -t 1200,1300');
-    console.log('    $ dowload -i search_ac -d 20180901 -t 1200 -r 60s');
+    console.log('    $ dowload -i search_ac -d 20180901 -t 1200 -r 60s -f ./test.log');
     console.log('');
     console.log('  Supported Task:');
     console.log('');

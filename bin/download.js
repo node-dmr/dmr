@@ -1,15 +1,20 @@
-// process.argv.forEach(download);
+/*
+ * @Author: qiansc 
+ * @Date: 2018-04-02 11:18:49 
+ * @Last Modified by: qiansc
+ * @Last Modified time: 2018-04-02 18:50:43
+ */
 
-// function download () {
-
-// }
 var program = require('commander');
-  
+var Range = require('../lib/util/range');
+var Time = require('../lib/util/time');
+var DowloadTask = require('../lib/task/dowload-task');
+
 program
   .version('0.1.0', '-v, --version')
   .option('-i, --id <value>', 'Task ID')
-  .option('-d, --date <items>', 'Start Date , End Date [option]')
-  .option('-t, --time <items>', 'Start Time , End Time [option]')
+  .option('-s, --start <items>', 'Start Date / Datetime')
+  .option('-e, --end <items>', 'End Date / Datetime')
   .option('-r, --range <value>', 'Ranges(d,h,m,s) [option]')
   .option('-f, --file <file>', 'Output File [option]');
 
@@ -30,18 +35,62 @@ program.on('--help', function(){
 
 program.parse(process.argv);
 
+var taskId = program.id || false;
+var startDatetime = program.start || false;
+var endDatetime = program.end || false;
+var rangeString = program.range || false;
+var file = program.file || false;
+var range = new Range();
+/**
+ *  参数选项验证
+ */
+if (!taskId){
+    console.log('Task ID is required!');
+    return;
+}
+
+if (startDatetime) {
+    startDatetime = Time.fillDatetime(startDatetime.replace(/[\-\:\\]/g,''));
+    startDatetime = Time.parseDatetime(startDatetime, 'HHHHMMDDhhmmss');
+    range.setStartDatetime(startDatetime);
+} else {
+    console.log('Start Date / Datetime is required!');
+    return;
+}
+if((endDatetime && rangeString) || (!endDatetime && !rangeString)) {
+    console.log('You Should choose Option between  End Datetime / Ranges!');
+    return;
+}
+if (endDatetime) {
+    endDatetime = Time.fillDatetime(endDatetime.replace(/[\-\:\\]/g,''));
+    endDatetime = Time.parseDatetime(endDatetime, 'HHHHMMDDhhmmss');
+    range.setEndDatetime(endDatetime);
+}
+if (rangeString) {
+    range.setRange(rangeString);
+}
+
+
+
+/**
+ *  校验成功后的命令提示
+ */
+console.log('You will start a downlaod job with:');
+console.log('');
+if (taskId) console.log('    Task', taskId);
+console.log('    ' + range.toString('\r\n    '));
+if (file) console.log('    file', file);
+
+
+
+
+
+/**
+ *  部分批处理函数 
+ */
 function range(val) {
     return val.split('..').map(Number);
 }
 function list(val) {
     return val.split(',');
 }
-
-console.log('you will start a downlaod job with:');
-console.log('');
-if (program.id) console.log('    Task', program.id);
-if (program.date) console.log('    date', program.date);
-if (program.time) console.log('    time', program.time);
-if (program.range) console.log('    range', program.range);
-console.log('');
-console.log('当前尚未接入参数校验模块，如任务失败请自行检查参数！');

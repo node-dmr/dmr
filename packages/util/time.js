@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-04-02 14:43:04 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-02 16:36:57
+ * @Last Modified time: 2018-04-03 13:01:23
  */
 'use strict';
 
@@ -71,7 +71,8 @@ module.exports = {
             totalMicroseconds += getMicroseconds(value, unit);
           });
         }
-        return totalMicroseconds / units[returnUnit];
+        var prfix = string.indexOf('-') === 0 ? -1 : 1;
+        return prfix * totalMicroseconds / units[returnUnit];
       }
 }
 

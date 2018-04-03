@@ -2,13 +2,15 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-02 18:50:43
+ * @Last Modified time: 2018-04-03 15:15:43
  */
 
 var program = require('commander');
-var Range = require('../lib/util/range');
-var Time = require('../lib/util/time');
-var DowloadTask = require('../lib/task/dowload-task');
+var Range = require('../packages/util/range');
+var Time = require('../packages/util/time');
+var Log = require('../packages/util/log');
+var DownloadTask = require('../packages/task/download-task');
+var log = new Log(2);
 
 program
   .version('0.1.0', '-v, --version')
@@ -16,24 +18,30 @@ program
   .option('-s, --start <items>', 'Start Date / Datetime')
   .option('-e, --end <items>', 'End Date / Datetime')
   .option('-r, --range <value>', 'Ranges(d,h,m,s) [option]')
-  .option('-f, --file <file>', 'Output File [option]');
+  .option('-f, --file <file>', 'Output File [option]')
+  .option('-l, --log <value>', 'Log Output Level Since Less to All( 0 ~ 9 )');
 
 program.on('--help', function(){
-    console.log('');
-    console.log('  Examples:');
-    console.log('');
-    console.log('    $ dowload -i search_ac -d 20180901 -r 1d ');
-    console.log('    $ dowload -i search_ac -d 20180901,20180902');
-    console.log('    $ dowload -i search_ac -d 20180901 -t 1200,1300');
-    console.log('    $ dowload -i search_ac -d 20180901 -t 1200 -r 60s -f ./test.log');
-    console.log('');
-    console.log('  Supported Task:');
-    console.log('');
-    console.log('    search_ac      search_ac.log');
-    console.log(' ');
+    log.info('');
+    log.info('  Examples:');
+    log.info('');
+    log.info('    $ dowload -i search_ac -start 20180401.1200.00 -e 20180401120010');
+    log.info('    $ dowload -i search_ac -start 20180401.1200.00 -r 10s');
+    log.info('    $ dowload -i search_ac -start 20180401120000 -r 10s -f ./rs.log');
+    log.info('    $ dowload -i search_ac -start -5m -r 10s');
+    log.info('    $ dowload -i search_ac -start -5m -r 10s -l 0');
+    log.info('');
+    log.info('  Supported Task:');
+    log.info('');
+    log.info('    search_ac      search_ac.log');
+    log.info(' ');
 });
 
 program.parse(process.argv);
+
+if (program.log !== undefined){
+    Log.setGlobalLev(program.log);
+}
 
 var taskId = program.id || false;
 var startDatetime = program.start || false;
@@ -45,20 +53,25 @@ var range = new Range();
  *  参数选项验证
  */
 if (!taskId){
-    console.log('Task ID is required!');
+    log.info('Task ID is required!');
     return;
 }
 
 if (startDatetime) {
-    startDatetime = Time.fillDatetime(startDatetime.replace(/[\-\:\\]/g,''));
-    startDatetime = Time.parseDatetime(startDatetime, 'HHHHMMDDhhmmss');
+    if (startDatetime.toString().indexOf('-') === 0) {
+        var prev = Time.parse(startDatetime);
+        startDatetime =  new Date(new Date().getTime() + prev * 1);
+    } else {
+        startDatetime = Time.fillDatetime(startDatetime.replace(/[\-\:\\]/g,''));
+        startDatetime = Time.parseDatetime(startDatetime, 'HHHHMMDDhhmmss');
+    }
     range.setStartDatetime(startDatetime);
 } else {
-    console.log('Start Date / Datetime is required!');
+    log.info('Start Date / Datetime is required!');
     return;
 }
 if((endDatetime && rangeString) || (!endDatetime && !rangeString)) {
-    console.log('You Should choose Option between  End Datetime / Ranges!');
+    log.info('You Should choose Option between  End Datetime / Ranges!');
     return;
 }
 if (endDatetime) {
@@ -70,19 +83,22 @@ if (rangeString) {
     range.setRange(rangeString);
 }
 
-
-
 /**
  *  校验成功后的命令提示
  */
-console.log('You will start a downlaod job with:');
-console.log('');
-if (taskId) console.log('    Task', taskId);
-console.log('    ' + range.toString('\r\n    '));
-if (file) console.log('    file', file);
+log.info('------------------------------------------------------------------------');
+log.group();
+log.info('You will start a downlaod job with:');
+log.info('');
+if (taskId) log.info('Task', taskId);
+log.info('' + range.toString('\r\n    '));
+if (file) log.info('file', file);
+log.groupEnd();
+log.info('------------------------------------------------------------------------');
+log.info('');
+var downloadTask = new DownloadTask();
 
-
-
+downloadTask.start(range);
 
 
 /**

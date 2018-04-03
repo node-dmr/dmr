@@ -2,15 +2,25 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-02 18:43:44
+ * @Last Modified time: 2018-04-03 11:26:51
  */
 var Time = require('./time');
 
 function Range (startDatetime, endDatetime) {
     this.startTimeStamp = null;
     this.endTimeStamp = null;
-    startDatetime && this.setStartDatetime(startDatetime);
-    endDatetime && this.setEndDatetime(endDatetime);
+
+    if (startDatetime && startDatetime.toString().length === 13) {
+        this.startTimeStamp = startDatetime;
+    } else if(startDatetime) {
+        this.setStartDatetime(startDatetime);
+    }
+
+    if (endDatetime && endDatetime.toString().length === 13) {
+        this.startTimeStamp = startDatetime;
+    } else if (endDatetime) {
+        this.setEndDatetime(endDatetime);
+    }
 }
 Range.prototype.setStartDatetime =function (datetime) {
     if(typeof datetime === 'string'){

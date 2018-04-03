@@ -2,15 +2,17 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-03 15:15:43
+ * @Last Modified time: 2018-04-03 19:42:34
  */
+
+var Log = require('../packages/util/log');
+var log = new Log(2);
 
 var program = require('commander');
 var Range = require('../packages/util/range');
 var Time = require('../packages/util/time');
-var Log = require('../packages/util/log');
-var DownloadTask = require('../packages/task/download-task');
-var log = new Log(2);
+// var Task = require('../packages/core/task');
+var ImportTask = require('../packages/task/import-task');
 
 program
   .version('0.1.0', '-v, --version')
@@ -55,6 +57,9 @@ var range = new Range();
 if (!taskId){
     log.info('Task ID is required!');
     return;
+} else if (!ImportTask.exist(taskId)){
+    log.info('Task Config is not exist!');
+    return;
 }
 
 if (startDatetime) {
@@ -87,18 +92,18 @@ if (rangeString) {
  *  校验成功后的命令提示
  */
 log.info('------------------------------------------------------------------------');
-log.group();
+// log.group('    ');
 log.info('You will start a downlaod job with:');
 log.info('');
 if (taskId) log.info('Task', taskId);
-log.info('' + range.toString('\r\n    '));
+log.info('' + range.toString('\r\n'));
 if (file) log.info('file', file);
-log.groupEnd();
+// log.groupEnd();
 log.info('------------------------------------------------------------------------');
 log.info('');
-var downloadTask = new DownloadTask();
+var importTask = new ImportTask();
 
-downloadTask.start(range);
+importTask.start(range);
 
 
 /**

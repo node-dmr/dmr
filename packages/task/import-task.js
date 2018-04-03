@@ -2,19 +2,25 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-03 15:11:12
+ * @Last Modified time: 2018-04-03 19:39:11
  */
+var Log =require('../util/log');
+var config = require('../core/config');
 var Client = require('ftp');
 var http = require('http');
 var fs = require('fs');
 var qs=require('querystring');
-var Log =require('../util/log');
 var log = new Log(5);
+var taskConfigs = config && config.import && config.import.task;
 
 module.exports =  downloadTask;
 
 function downloadTask(){
 
+}
+
+downloadTask.exist = function(taskId){
+    return taskConfigs && taskConfigs[taskId] || false;
 }
 
 downloadTask.prototype.start = function(range){

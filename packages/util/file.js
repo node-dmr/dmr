@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 18:12:08 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-04 10:20:55
+ * @Last Modified time: 2018-04-04 18:27:57
  * 指定filePath，遍历所有文件并提供文件pathlist
  * 存在第二个方法参数时，采用异步方式回调处理，否则同步返回filePathList
  */
@@ -12,16 +12,11 @@ var path = require('path');
 var Log =require('../util/log');
 var log = new Log(8); 
 
-module.exports = FileList;
-
-function FileList (filePath, func) {
-    if (typeof func === 'function') {
-        // 异步方式回调
-        fileDisplay(filePath, func);
-    } else {
-        return fileDisplaySync(filePath);
-    }
-}
+module.exports = {
+    list: fileDisplay,
+    listSync: fileDisplaySync,
+    readJsonSync: readJsonSync
+};
 
  /** 
  * 文件遍历方法 
@@ -78,4 +73,18 @@ function fileDisplay(filePath){
             });  
         }  
     });  
+}
+
+function readJsonSync (filePath) {
+    var txt = fs.readFileSync(filePath, {
+        encoding: 'utf-8'
+    });
+
+    try{
+        var data = JSON.parse(txt);
+    }catch(e){
+        var data = "";
+        log.warn('L9', e);
+    }
+    return data;
 }

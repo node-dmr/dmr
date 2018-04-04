@@ -1,5 +1,5 @@
-# ACE Frame
-Analysis Calculation Evaluation Frame
+# What`s ACE
+ACE is a framework of processing log data  , including , but not limited to , Analysis , Calculate and Evaluate.
 
 ## 简介
 ACE Frame 是在实现Speedup及相关业务需求过程中总结出来的数据分析、量化、评价框架，特点是开放处理过程，满足更多业务角色快速参与数据分析。框架主要聚焦数据处理、数据分析、任务调度等过程的模块化封装。

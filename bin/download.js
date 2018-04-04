@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-03 19:42:34
+ * @Last Modified time: 2018-04-04 18:41:51
  */
 
 var Log = require('../packages/util/log');
@@ -11,7 +11,6 @@ var log = new Log(2);
 var program = require('commander');
 var Range = require('../packages/util/range');
 var Time = require('../packages/util/time');
-// var Task = require('../packages/core/task');
 var ImportTask = require('../packages/task/import-task');
 
 program
@@ -21,7 +20,8 @@ program
   .option('-e, --end <items>', 'End Date / Datetime')
   .option('-r, --range <value>', 'Ranges(d,h,m,s) [option]')
   .option('-f, --file <file>', 'Output File [option]')
-  .option('-l, --log <value>', 'Log Output Level Since Less to All( 0 ~ 9 )');
+  .option('-l, --log <value>', 'Log Output Level Since Less to All( 0 ~ 9 )')
+  .option('-p, --project <value>', 'Specify Project');
 
 program.on('--help', function(){
     log.info('');
@@ -32,6 +32,7 @@ program.on('--help', function(){
     log.info('    $ dowload -i search_ac -start 20180401120000 -r 10s -f ./rs.log');
     log.info('    $ dowload -i search_ac -start -5m -r 10s');
     log.info('    $ dowload -i search_ac -start -5m -r 10s -l 0');
+    log.info('    $ dowload -i search_ac -start -5m -r 10s -p speedup-ace ');
     log.info('');
     log.info('  Supported Task:');
     log.info('');
@@ -39,6 +40,9 @@ program.on('--help', function(){
     log.info(' ');
 });
 
+if (program.project) {
+
+}
 program.parse(process.argv);
 
 if (program.log !== undefined){

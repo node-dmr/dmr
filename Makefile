@@ -27,10 +27,10 @@ exp:
 
 install:
 	npm install
-	apm install --save
+#	apm install
 
 update-apm:
-	apm install --save
+#	apm install --save
 
 apm-instal:
 	npm instal apmjs -g

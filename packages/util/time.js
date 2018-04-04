@@ -2,7 +2,8 @@
  * @Author: qiansc
  * @Date: 2018-04-02 14:43:04 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-03 13:01:23
+ * @Last Modified time: 2018-04-04 13:00:12
+ * Time相关的方法封装
  */
 'use strict';
 

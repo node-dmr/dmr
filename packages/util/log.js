@@ -2,8 +2,10 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 13:55:06 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-03 18:32:23
- * 
+ * @Last Modified time: 2018-04-04 10:24:27
+ * Log模块提供统一的日志信息输出控制，可以按参数控制不输出，输出部分重要级别（默认），完整输出日志功能。
+ * 默认全局日志级（LEV）别为7，默认新建log默认级别也为7
+ * 当单次输出的log的级别高于全局日志级别（LEV）则不打印
  */
 
 module.exports = Log;

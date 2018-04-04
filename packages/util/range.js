@@ -2,7 +2,8 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-03 11:26:51
+ * @Last Modified time: 2018-04-04 12:59:33
+ * 时间范围Range模块
  */
 var Time = require('./time');
 

@@ -2,7 +2,9 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 18:12:08 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-03 18:29:09
+ * @Last Modified time: 2018-04-04 10:20:55
+ * 指定filePath，遍历所有文件并提供文件pathlist
+ * 存在第二个方法参数时，采用异步方式回调处理，否则同步返回filePathList
  */
 
 var fs = require('fs');  

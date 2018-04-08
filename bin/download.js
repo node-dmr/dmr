@@ -2,13 +2,14 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-08 15:40:25
+ * @Last Modified time: 2018-04-08 20:33:44
  */
 
 var Log = require('../packages/util/log');
 var log = new Log(2);
 
 var program = require('commander');
+var path = require('path');
 var Range = require('../packages/util/range');
 var Time = require('../packages/util/time');
 var ImportTask = require('../packages/task/import-task');
@@ -98,7 +99,15 @@ log.info('You will start a downlaod job with:');
 log.info('');
 if (taskId) log.info('Task', taskId);
 log.info('' + range.toString('\r\n'));
-if (file) log.info('file', file);
+if (file == "default") {
+    importTask.setFilePath('default');
+    log.info('filePath ', importTask.getFilePath());
+} else if (file){
+    // 从当前命令执行路径计算目标路径，会覆盖task默认file
+    file = path.resolve(process.cwd(), file);
+    importTask.setFilePath(file);
+    log.info('filePath ', importTask.getFilePath());
+}
 if (program.project) {
     log.info('Specify Project >>> ' + program.project);
 }
@@ -110,7 +119,7 @@ importTask.setParams({
     "starttimestamp": range.startTimeStamp,
     "endtimestamp": range.endTimeStamp
 });
-importTask.start(range);
+importTask.start();
 
 
 /**

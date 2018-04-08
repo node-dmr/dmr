@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-08 19:01:24
+ * @Last Modified time: 2018-04-08 19:31:46
  */
 var Log =require('../util/log');
 var config = require('../core/config');
@@ -21,6 +21,8 @@ function downloadTask(taskId, param){
     var sourceId = this.taskConfig && this.taskConfig.source;
     this.sourceConfig = config.import && config.import.source && config.import.source[sourceId];
     if (!this.taskConfig || !this.sourceConfig){
+        log.warn('L1', 'taskConfig' , this.taskConfig);
+        log.warn('L1', 'sourceConfig ' , this.sourceConfig);
         throw new Error('Undefined taskConfig or sourceConfig of <' + taskId + '>');
     }
     this.param = param || {};
@@ -35,56 +37,39 @@ downloadTask.prototype.setParams = function (json) {
     }
 }
 
-downloadTask.prototype.start = function (range) {
+downloadTask.prototype.start = function () {
     
     var paramTemplate = this.sourceConfig && this.sourceConfig.param || {};
-    var data = ptpl(paramTemplate ,this.param);
-    // var data = {
-    //     starttimestamp: Math.round(range.startTimeStamp/1000),
-    //     endtimestamp: Math.round(range.endTimeStamp/1000),
-    //     from: 'search_ac.log,get_doc_ac.log',
-    //     conditions: 'search_ac.log:index_for_speed,1,==;get_doc_ac.log:index_for_speed,1,==',
-    //     type: 'logs',
-    //     flow: 'wise',
-    //     idc: 'tc',
-    //     code: 'txt'
-    // }
-    console.log(data);
-    return data;
-    http_download(data);
+    var param = ptpl(paramTemplate ,this.param);
+    switch(this.sourceConfig.type){
+        case "http":
+                http_download.call(this, this.sourceConfig, param);
+            break;
+        default:
+            break;
+    }
 
-
-
-
-    // var c = new Client();
-    // c.on('ready', function() {
-    //   c.get('gzhl-ps-201706-m22-www1659.gzhl:8082/',
-    //   function(err, stream) {
-    //     if (err) throw err;
-    //     stream.once('close', function() { c.end(); });
-    //     stream.pipe(fs.createWriteStream('foo.local-copy.txt'));
-    //   });
-    // });
-    // // connect to localhost:21 as anonymous
-    // c.connect();
 }
 
 
-function http_download(data){
+function http_download(sourceConfig, param){
     var options = {
-        hostname: 'gzhl-ps-201706-m22-www1659.gzhl', 
-        port: 8082, 
-        path: '/ligo/beidou?' + qs.stringify(data),
-        method: 'GET' 
+        hostname: sourceConfig.host, 
+        port: sourceConfig.port, 
+        path: sourceConfig.path + '?' + qs.stringify(param),
+        method: sourceConfig.method || 'GET'
     }; 
-    log.info('L9', 'url:', options.hostname + options.path);
+    log.info('L9', 'url:', options.hostname + ':' + options.port + options.path);
     var req = http.request(options, function(res) { 
         log.info('L8', 'STATUS: ' + res.statusCode); 
         log.info('L8', 'HEADERS: ' + JSON.stringify(res.headers)); 
-        res.setEncoding('utf8'); 
+        
+        res.setEncoding('utf8');
+        
         res.on('data', function (chunk) { 
-            log.info('L9', chunk.length); 
-        }); 
+            log.info('L4','chunk data length ', chunk.length); 
+        });
+        
         res.on('end', () => {
             log.info('L8', '---------------------END-----------------------');
         });
@@ -95,4 +80,5 @@ function http_download(data){
     });
     log.info('L8', '--------------------START----------------------'); 
     req.end();
+
 }

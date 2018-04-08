@@ -2,10 +2,11 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-03 19:39:11
+ * @Last Modified time: 2018-04-08 19:01:24
  */
 var Log =require('../util/log');
 var config = require('../core/config');
+var ptpl= require('../util/param-template');
 var Client = require('ftp');
 var http = require('http');
 var fs = require('fs');
@@ -15,27 +16,41 @@ var taskConfigs = config && config.import && config.import.task;
 
 module.exports =  downloadTask;
 
-function downloadTask(){
-
-}
-
-downloadTask.exist = function(taskId){
-    return taskConfigs && taskConfigs[taskId] || false;
-}
-
-downloadTask.prototype.start = function(range){
-    
-    log.info('downloadTask start!');
-    var data = {
-        starttimestamp: Math.round(range.startTimeStamp/1000),
-        endtimestamp: Math.round(range.endTimeStamp/1000),
-        from: 'search_ac.log,get_doc_ac.log',
-        conditions: 'search_ac.log:index_for_speed,1,==;get_doc_ac.log:index_for_speed,1,==',
-        type: 'logs',
-        flow: 'wise',
-        idc: 'tc',
-        code: 'txt'
+function downloadTask(taskId, param){
+    this.taskConfig = config.import && config.import.task && config.import.task[taskId];
+    var sourceId = this.taskConfig && this.taskConfig.source;
+    this.sourceConfig = config.import && config.import.source && config.import.source[sourceId];
+    if (!this.taskConfig || !this.sourceConfig){
+        throw new Error('Undefined taskConfig or sourceConfig of <' + taskId + '>');
     }
+    this.param = param || {};
+}
+
+downloadTask.prototype.setParam = function (key, value) {
+    this.param[key] = value;
+}
+downloadTask.prototype.setParams = function (json) {
+    for (var key in json) {
+        this.param[key] = json[key];
+    }
+}
+
+downloadTask.prototype.start = function (range) {
+    
+    var paramTemplate = this.sourceConfig && this.sourceConfig.param || {};
+    var data = ptpl(paramTemplate ,this.param);
+    // var data = {
+    //     starttimestamp: Math.round(range.startTimeStamp/1000),
+    //     endtimestamp: Math.round(range.endTimeStamp/1000),
+    //     from: 'search_ac.log,get_doc_ac.log',
+    //     conditions: 'search_ac.log:index_for_speed,1,==;get_doc_ac.log:index_for_speed,1,==',
+    //     type: 'logs',
+    //     flow: 'wise',
+    //     idc: 'tc',
+    //     code: 'txt'
+    // }
+    console.log(data);
+    return data;
     http_download(data);
 
 
@@ -53,6 +68,7 @@ downloadTask.prototype.start = function(range){
     // // connect to localhost:21 as anonymous
     // c.connect();
 }
+
 
 function http_download(data){
     var options = {

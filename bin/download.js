@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-04 18:41:51
+ * @Last Modified time: 2018-04-08 15:40:25
  */
 
 var Log = require('../packages/util/log');
@@ -40,9 +40,6 @@ program.on('--help', function(){
     log.info(' ');
 });
 
-if (program.project) {
-
-}
 program.parse(process.argv);
 
 if (program.log !== undefined){
@@ -55,15 +52,15 @@ var endDatetime = program.end || false;
 var rangeString = program.range || false;
 var file = program.file || false;
 var range = new Range();
+var importTask;
 /**
  *  参数选项验证
  */
 if (!taskId){
     log.info('Task ID is required!');
     return;
-} else if (!ImportTask.exist(taskId)){
-    log.info('Task Config is not exist!');
-    return;
+} else {
+    importTask = new ImportTask(taskId);
 }
 
 if (startDatetime) {
@@ -102,11 +99,17 @@ log.info('');
 if (taskId) log.info('Task', taskId);
 log.info('' + range.toString('\r\n'));
 if (file) log.info('file', file);
+if (program.project) {
+    log.info('Specify Project >>> ' + program.project);
+}
 // log.groupEnd();
 log.info('------------------------------------------------------------------------');
 log.info('');
-var importTask = new ImportTask();
 
+importTask.setParams({
+    "starttimestamp": range.startTimeStamp,
+    "endtimestamp": range.endTimeStamp
+});
 importTask.start(range);
 
 

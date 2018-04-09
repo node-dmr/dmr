@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-04-02 14:43:04 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-04 13:00:12
+ * @Last Modified time: 2018-04-09 21:27:39
  * Time相关的方法封装
  */
 'use strict';
@@ -59,7 +59,7 @@ module.exports = {
         ms: milliseconds
         μs: microseconds
     */
-    parse: function(string, returnUnit) {
+    parseInterval: function (string, returnUnit) {
         returnUnit = returnUnit || 'ms';
         var totalMicroseconds = 0;
         var groups = string
@@ -74,6 +74,27 @@ module.exports = {
         }
         var prfix = string.indexOf('-') === 0 ? -1 : 1;
         return prfix * totalMicroseconds / units[returnUnit];
+      },
+      parseParam: function (date, endDate){
+          var param ={
+            "YYYY": autoCompleteNumber(date.getFullYear(), 4),
+            "MM": autoCompleteNumber(date.getMonth() + 1, 2),
+            "DD": autoCompleteNumber(date.getDate(), 2),
+            "hh": autoCompleteNumber(date.getHours(), 2),
+            "mm": autoCompleteNumber(date.getMinutes(), 2),
+            "ss": autoCompleteNumber(date.getSeconds(), 2),
+            "ms": autoCompleteNumber(date.getMilliseconds(), 3)
+        };
+        if (endDate) {
+            var interval = (endDate.getTime() - date.getTime()).toString() + "ms";
+            param.interval = {
+                "s": this.parseInterval(interval, "s"),
+                "m": this.parseInterval(interval, "m"),
+                "h": this.parseInterval(interval, "h"),
+                "d": this.parseInterval(interval, "d")
+            }
+        }
+        return param;
       }
 }
 
@@ -95,4 +116,13 @@ function getMicroseconds(value, unit) {
   }
 
   throw new Error('The unit "' + unit + '" could not be recognized');
+}
+
+function autoCompleteNumber(number, length){
+    number = number.toString();
+    if (number.length >= length){
+        return number.substring(0, length);
+    } else {
+        return new Array(length - number.length + 1).join("0") + number;
+    }
 }

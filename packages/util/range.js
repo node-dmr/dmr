@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-04 12:59:33
+ * @Last Modified time: 2018-04-09 21:44:09
  * 时间范围Range模块
  */
 var Time = require('./time');
@@ -37,12 +37,12 @@ Range.prototype.setEndDatetime =function (datetime) {
     this.endTimeStamp = datetime.getTime();
 }
 
-Range.prototype.setRange = function (range) {
+Range.prototype.setInterval = function (range) {
     if (!this.startTimeStamp) {
         throw new Error('You should set StartDatetime first!');
     }
     if (typeof range === 'string'){
-        range = Time.parse(range);
+        range = Time.parseInterval(range);
     } else if(typeof range !=='number'){
         throw new Error('Invalid Range!');
         return;

@@ -2,12 +2,13 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-09 16:32:57
+ * @Last Modified time: 2018-04-09 21:55:12
  */
 var Log =require('../util/log');
 var config = require('../core/config');
-var ptpl= require('../util/param-template');
+var dtpl= require('../util/data-template');
 var file = require('../util/file');
+var Time = require('../util/time');
 var Client = require('ftp');
 var http = require('http');
 var fs  = require('fs');
@@ -57,12 +58,18 @@ downloadTask.prototype.getFilePath = function (file) {
 downloadTask.prototype.start = function (options) {
     options = options || {};
     var paramTemplate = this.sourceConfig && this.sourceConfig.param || {};
-    var param = ptpl(paramTemplate ,this.param);
+    var param = dtpl(paramTemplate, this.param);
+    var filePath = this.getFilePath();
+    var filePathParam = Time.parseParam(
+        new Date(this.param.starttimestamp),
+        new Date(this.param.endtimestamp)
+    );
+    this.checkRange();
     switch(this.sourceConfig.type){
         case "http":
-                http_download(this.sourceConfig , {
+                httpDownload(this.sourceConfig , {
                     param: param,
-                    filePath: this.getFilePath()
+                    filePath: dtpl(filePath, filePathParam)
                 });
             break;
         default:
@@ -71,26 +78,42 @@ downloadTask.prototype.start = function (options) {
 
 }
 
-
-function http_download(sourceConfig , options){
-    
-    var writer;
-    if (options.filePath) {
-        var baseUrl = path.dirname(options.filePath);
-        if (!fs.existsSync(baseUrl)) {
-            file.mkdirsSync(baseUrl);
-        }
-        var writer = fs.createWriteStream(options.filePath);
-        log.warn('L1', 'file: ' , options.filePath);
+downloadTask.prototype.checkRange = function(){
+    var limitConfig = this.taskConfig["max-range"] || '1d';
+    var interval = this.param.endtimestamp - this.param.starttimestamp;
+    var limit = Time.parseInterval(limitConfig, 'ms');
+    if (interval > limit * 1 ) {
+        throw new Error('Please Reduce Range Param, max-range is ' + limitConfig);
+        return false;
     }
+    return true;
+    
+}
+
+function httpDownload(sourceConfig, options){
+    options = options || {};
     var opt = {
         hostname: sourceConfig.host, 
         port: sourceConfig.port, 
         path: sourceConfig.path + '?' + qs.stringify(options.param),
         method: sourceConfig.method || 'GET'
     }; 
-    log.info('L5', '[URL] ' , opt.hostname + ':' + opt.port + opt.path);
-
+    log.info('L5', '[from] ' , opt.hostname + ':' + opt.port + opt.path);
+    var writer;
+    var filePath = options.filePath;
+    if (filePath) {
+        // 获取文件目录，不存在则创建
+        var baseUrl = path.dirname(filePath);
+        if (!fs.existsSync(baseUrl)) {
+            file.mkdirsSync(baseUrl);
+        }
+        
+        //创建writer
+        var writer = fs.createWriteStream(filePath, {
+            encoding: 'utf8'
+        });
+        log.warn('L1', '[ to ] ' , filePath);
+    }
     var req = http.request(opt, function(res) { 
         log.info('L8', 'STATUS: ' + res.statusCode); 
         log.info('L8', 'HEADERS: ' + JSON.stringify(res.headers)); 
@@ -109,7 +132,9 @@ function http_download(sourceConfig , options){
 
         res.on('end', () => {
             log.info('L8', '---------------------END-----------------------');
-            writer.end();
+            if (writer) {
+                writer.end();
+            }
         });
     }); 
             

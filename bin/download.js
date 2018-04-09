@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-08 20:47:50
+ * @Last Modified time: 2018-04-09 21:44:26
  */
 
 var Log = require('../packages/util/log');
@@ -66,7 +66,7 @@ if (!taskId){
 
 if (startDatetime) {
     if (startDatetime.toString().indexOf('-') === 0) {
-        var prev = Time.parse(startDatetime);
+        var prev = Time.parseInterval(startDatetime);
         startDatetime =  new Date(new Date().getTime() + prev * 1);
     } else {
         startDatetime = Time.fillDatetime(startDatetime.replace(/[\-\:\\]/g,''));
@@ -87,7 +87,15 @@ if (endDatetime) {
     range.setEndDatetime(endDatetime);
 }
 if (rangeString) {
-    range.setRange(rangeString);
+    if (rangeString === "default"){
+        if (importTask.taskConfig.interval){
+            // 如果默认配置有interval
+            rangeString = importTask.taskConfig.interval;
+        } else {
+            log.info('No Default Interval Config Of Range!');
+        }
+    }
+    range.setInterval(rangeString);
 }
 
 /**
@@ -101,7 +109,7 @@ if (taskId) log.info('Task', taskId);
 log.info('' + range.toString('\r\n'));
 if (file == "default") {
     importTask.setFilePath('default');
-    log.info('filePath ', importTask.getFilePath());
+    log.info('FilePath ', 'Use TaskConfig');
 } else if (file){
     // 从当前命令执行路径计算目标路径，会覆盖task默认file
     file = path.resolve(process.cwd(), file);

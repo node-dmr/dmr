@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 18:12:08 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-04 18:27:57
+ * @Last Modified time: 2018-04-09 16:34:49
  * 指定filePath，遍历所有文件并提供文件pathlist
  * 存在第二个方法参数时，采用异步方式回调处理，否则同步返回filePathList
  */
@@ -15,7 +15,8 @@ var log = new Log(8);
 module.exports = {
     list: fileDisplay,
     listSync: fileDisplaySync,
-    readJsonSync: readJsonSync
+    readJsonSync: readJsonSync,
+    mkdirsSync: mkdirsSync
 };
 
  /** 
@@ -88,3 +89,18 @@ function readJsonSync (filePath) {
     }
     return data;
 }
+
+/**
+ * 递归创建目录
+ * @param dirname 目录名
+ */
+function mkdirsSync(dirname) {
+    if (fs.existsSync(dirname)) {
+      return true;
+    } else {
+      if (mkdirsSync(path.dirname(dirname))) {
+        fs.mkdirSync(dirname);
+        return true;
+      }
+    }
+  }

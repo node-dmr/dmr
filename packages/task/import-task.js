@@ -2,12 +2,12 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 17:20:23
+ * @Last Modified time: 2018-04-10 17:36:18
  */
 var Log =require('../util/log');
 var config = require('../core/config');
 var Task = require('../core/task');
-var Source = require('../core/source');
+var SourceFactory = require('../core/source-factory');
 var file = require('../util/file');
 var Time = require('../util/time');
 // var Client = require('ftp');
@@ -51,7 +51,7 @@ class ImportTask{
         var filePath = this.getFilePath();
 
         this.checkRange();
-        var source = Source.creatById(this.taskConfig.sourceId);
+        var source = SourceFactory.createById(this.taskConfig.sourceId);
         source.setParams({
             "starttimestamp": this.param.starttimestamp,
             "endtimestamp": this.param.endtimestamp

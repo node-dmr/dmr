@@ -2,11 +2,11 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 17:20:44
+ * @Last Modified time: 2018-04-10 17:39:29
  */
 var Log =require('../util/log');
-var EventEmitter = require('events');
 var config = require('../core/config');
+var Source = require('../core/source');
 var Time = require('../util/time');
 var dtpl= require('../util/data-template');
 var file = require('../util/file');
@@ -17,22 +17,9 @@ var path = require('path');
 
 var log = new Log(5);
 
-class HttpSource extends EventEmitter{
+class HttpSource extends Source{
     constructor(sourceConfig){
-        super();
-        this.sourceConfig = sourceConfig || {};
-        this.param = {
-            starttimestamp: null,
-            endtimestamp: null
-        };
-    }
-    setParam (key, value) {
-        this.param[key] = value;
-    }
-    setParams (json) {
-        for (var key in json) {
-            this.param[key] = json[key];
-        }
+        super(sourceConfig);
     }
     saveTo (filePath){
         var filePathParam = Time.parseParam(
@@ -69,7 +56,7 @@ class HttpSource extends EventEmitter{
             log.warn('L1', '[ to ] ' , filePath);
         }
         
-
+        return;
         var req = http.request(requestParam, function(res) { 
             log.info('L8', 'STATUS: ' + res.statusCode); 
             log.info('L8', 'HEADERS: ' + JSON.stringify(res.headers)); 

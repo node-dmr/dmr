@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 11:19:25
+ * @Last Modified time: 2018-04-10 20:00:23
  */
 
 var Log = require('../packages/util/log');
@@ -108,13 +108,13 @@ log.info('');
 if (taskId) log.info('Task', taskId);
 log.info('' + range.toString('\r\n'));
 if (file == "default") {
-    importTask.setFilePath('default');
+    importTask.setOutputFile('default');
     log.info('FilePath ', 'Use TaskConfig');
 } else if (file){
     // 从当前命令执行路径计算目标路径，会覆盖task默认file
     file = path.resolve(process.cwd(), file);
-    importTask.setFilePath(file);
-    log.info('filePath ', importTask.getFilePath());
+    importTask.setOutputFile(file);
+    log.info('FilePath ', file);
 }
 if (program.project) {
     log.info('Specify Project >>> ' + program.project);
@@ -127,7 +127,7 @@ importTask.setParams({
     "starttimestamp": range.startTimeStamp,
     "endtimestamp": range.endTimeStamp
 });
-importTask.start();
+importTask.run();
 
 
 /**

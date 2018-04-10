@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 17:38:20
+ * @Last Modified time: 2018-04-10 19:51:56
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -19,6 +19,7 @@ class Source extends EventEmitter{
             starttimestamp: null,
             endtimestamp: null
         };
+        this.output = null;
     }
     setParam (key, value) {
         this.param[key] = value;
@@ -27,6 +28,9 @@ class Source extends EventEmitter{
         for (var key in json) {
             this.param[key] = json[key];
         }
+    }
+    pipe (writer){
+        this.output = writer;
     }
 }
 

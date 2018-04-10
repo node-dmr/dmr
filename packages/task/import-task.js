@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-09 21:55:12
+ * @Last Modified time: 2018-04-10 11:14:08
  */
 var Log =require('../util/log');
 var config = require('../core/config');
@@ -16,12 +16,10 @@ var qs=require('querystring');
 var path = require('path');
 
 var log = new Log(5);
-const MAX_CHUNK_LOG_LINE= 20;
-var taskConfigs = config && config.import && config.import.task;
 
-module.exports =  downloadTask;
+module.exports =  ImportTask;
 
-function downloadTask(taskId, param){
+function ImportTask(taskId, param){
     this.taskConfig = config.import && config.import.task && config.import.task[taskId];
     var sourceId = this.taskConfig && this.taskConfig.source;
     this.sourceConfig = config.import && config.import.source && config.import.source[sourceId];
@@ -33,15 +31,15 @@ function downloadTask(taskId, param){
     this.param = param || {};
 }
 
-downloadTask.prototype.setParam = function (key, value) {
+ImportTask.prototype.setParam = function (key, value) {
     this.param[key] = value;
 }
-downloadTask.prototype.setParams = function (json) {
+ImportTask.prototype.setParams = function (json) {
     for (var key in json) {
         this.param[key] = json[key];
     }
 }
-downloadTask.prototype.setFilePath = function (file) {
+ImportTask.prototype.setFilePath = function (file) {
     if (file == 'default'){
         if (this.taskConfig.file) {
             this.targetFile = path.resolve(config.root ,this.taskConfig.file);
@@ -50,12 +48,12 @@ downloadTask.prototype.setFilePath = function (file) {
     }
     this.targetFile = file;
 }
-downloadTask.prototype.getFilePath = function (file) {
+ImportTask.prototype.getFilePath = function (file) {
     // options.file || this.taskConfig.file
     //this.targetFile = file;
     return this.targetFile;
 }
-downloadTask.prototype.start = function (options) {
+ImportTask.prototype.start = function (options) {
     options = options || {};
     var paramTemplate = this.sourceConfig && this.sourceConfig.param || {};
     var param = dtpl(paramTemplate, this.param);
@@ -78,7 +76,7 @@ downloadTask.prototype.start = function (options) {
 
 }
 
-downloadTask.prototype.checkRange = function(){
+ImportTask.prototype.checkRange = function(){
     var limitConfig = this.taskConfig["max-range"] || '1d';
     var interval = this.param.endtimestamp - this.param.starttimestamp;
     var limit = Time.parseInterval(limitConfig, 'ms');

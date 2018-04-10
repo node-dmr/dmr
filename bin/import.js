@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-09 21:44:26
+ * @Last Modified time: 2018-04-10 11:19:25
  */
 
 var Log = require('../packages/util/log');
@@ -28,12 +28,12 @@ program.on('--help', function(){
     log.info('');
     log.info('  Examples:');
     log.info('');
-    log.info('    $ download -i search_ac -s 20180401.1200.00 -e 20180401120010');
-    log.info('    $ download -i search_ac -s 20180401.1200.00 -r 10s');
-    log.info('    $ download -i search_ac -s 20180401120000 -r 10s -f ./rs.log');
-    log.info('    $ download -i search_ac -s -5m -r 10s');
-    log.info('    $ download -i search_ac -s -5m -r 10s -l 0');
-    log.info('    $ download -i search_ac -s -5m -r 10s -p speedup-ace ');
+    log.info('    $ import -i search_ac -s 20180401.1200.00 -e 20180401120010');
+    log.info('    $ import -i search_ac -s 20180401.1200.00 -r 10s');
+    log.info('    $ import -i search_ac -s 20180401120000 -r 10s -f ./rs.log');
+    log.info('    $ import -i search_ac -s -5m -r 10s');
+    log.info('    $ import -i search_ac -s -5m -r 10s -l 0');
+    log.info('    $ import -i search_ac -s -5m -r 10s -p speedup-ace ');
     log.info('');
     log.info('  Supported Task:');
     log.info('');

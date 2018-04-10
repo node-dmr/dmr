@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 17:39:29
+ * @Last Modified time: 2018-04-10 17:40:02
  */
 var Log =require('../util/log');
 var config = require('../core/config');
@@ -56,7 +56,7 @@ class HttpSource extends Source{
             log.warn('L1', '[ to ] ' , filePath);
         }
         
-        return;
+        // return;
         var req = http.request(requestParam, function(res) { 
             log.info('L8', 'STATUS: ' + res.statusCode); 
             log.info('L8', 'HEADERS: ' + JSON.stringify(res.headers)); 

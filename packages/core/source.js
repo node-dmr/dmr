@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 19:51:56
+ * @Last Modified time: 2018-04-10 21:08:13
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -12,9 +12,9 @@ var HttpSource = require('../source/http-source.js');
 var log = new Log(5);
 
 class Source extends EventEmitter{
-    constructor (sourceConfig) {
+    constructor (config) {
         super();
-        this.sourceConfig = sourceConfig || {};
+        this.config = config || {};
         this.param = {
             starttimestamp: null,
             endtimestamp: null

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 21:01:37
+ * @Last Modified time: 2018-04-10 21:08:53
  */
 var Log =require('../util/log');
 var config = require('../core/config');
@@ -15,15 +15,15 @@ var qs=require('querystring');
 var log = new Log(5);
 
 class HttpSource extends Source{
-    constructor(sourceConfig){
-        super(sourceConfig);
+    constructor(config){
+        super(config);
     }
 
-    request (){
+    request (requestParam){
         var self = this;
         // writer 为目标可写流
         var writer = this.output;
-        var requestParam = this.getRequestParam();
+        requestParam = requestParam || this.getRequestParam();
         
         var req = http.request(requestParam, function(res) { 
             log.info('L8', 'STATUS: ' + res.statusCode); 
@@ -50,14 +50,14 @@ class HttpSource extends Source{
 
     getRequestParam() {
         // 获取http请求的参数
-        var sourceConfig = this.sourceConfig || {};
-        var paramTemplate = sourceConfig.param || {};
+        var config = this.config || {};
+        var paramTemplate = config.param || {};
         var param = dtpl(paramTemplate, this.param);
         return  {
-            hostname: sourceConfig.host, 
-            port: sourceConfig.port, 
-            path: sourceConfig.path + '?' + qs.stringify(param),
-            method: sourceConfig.method || 'GET'
+            hostname: config.host, 
+            port: config.port, 
+            path: config.path + '?' + qs.stringify(param),
+            method: config.method || 'GET'
         };
     }
 }

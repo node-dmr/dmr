@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:20:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 11:38:14
+ * @Last Modified time: 2018-04-10 15:27:23
  */
 
 var Log = require('../packages/util/log');
@@ -12,6 +12,7 @@ var program = require('commander');
 var path = require('path');
 var Range = require('../packages/util/range');
 var Time = require('../packages/util/time');
+var StoreTask = require('../packages/task/store-task');
 
 program
 .version('0.1.0', '-v, --version')
@@ -44,11 +45,25 @@ if (program.log !== undefined){
     Log.setGlobalLev(program.log);
 }
 
+var taskId = program.id || false;
 var file = program.file || false;
+var task;
+/**
+ *  参数选项验证
+ */
+if (!taskId){
+    log.info('Task ID is required!');
+    return;
+} else {
+    task = new StoreTask(taskId);
+}
+
+StoreTask.test();
 
 if (file){
     // 从当前命令执行路径计算目标路径，会覆盖task默认file
     file = path.resolve(process.cwd(), file);
+    console.log(path);
     // importTask.setFilePath(file);
-    // log.info('filePath ', importTask.getFilePath());
+    //log.info('filePath ', importTask.getFilePath());
 }

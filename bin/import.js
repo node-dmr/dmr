@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-11 16:59:18
+ * @Last Modified time: 2018-04-11 19:40:48
  */
 
 var Log = require('../packages/util/log');
@@ -17,7 +17,7 @@ var TaskFactory = require('../packages/core/task-factory');
 
 program
   .version('0.1.0', '-v, --version')
-  .option('-i, --id <value>', 'Task ID')
+  .option('-t, --task <value>', 'Task ID')
   .option('-s, --start <items>', 'Start Date / Datetime')
   .option('-e, --end <items>', 'End Date / Datetime')
   .option('-r, --range <value>', 'Ranges(d,h,m,s) [option]')
@@ -29,12 +29,12 @@ program.on('--help', function(){
     log.info('');
     log.info('  Examples:');
     log.info('');
-    log.info('    $ import -i search_ac -s 20180401.1200.00 -e 20180401120010');
-    log.info('    $ import -i search_ac -s 20180401.1200.00 -r 10s');
-    log.info('    $ import -i search_ac -s 20180401120000 -r 10s -f ./rs.log');
-    log.info('    $ import -i search_ac -s -5m -r 10s');
-    log.info('    $ import -i search_ac -s -5m -r 10s -l 0');
-    log.info('    $ import -i search_ac -s -5m -r 10s -p speedup-ace ');
+    log.info('    $ import -t search_ac -s 20180401.1200.00 -e 20180401120010');
+    log.info('    $ import -t search_ac -s 20180401.1200.00 -r 10s');
+    log.info('    $ import -t search_ac -s 20180401120000 -r 10s -f ./rs.log');
+    log.info('    $ import -t search_ac -s -5m -r 10s');
+    log.info('    $ import -t search_ac -s -5m -r 10s -l 0');
+    log.info('    $ import -t search_ac -s -5m -r 10s -p speedup-ace ');
     log.info('');
     log.info('  Supported Task:');
     log.info('');
@@ -48,7 +48,7 @@ if (program.log !== undefined){
     Log.setGlobalLev(program.log);
 }
 
-var taskId = program.id || false;
+var taskId = program.task || false;
 var startDatetime = program.start || false;
 var endDatetime = program.end || false;
 var rangeString = program.range || false;

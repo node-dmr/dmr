@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-11 16:23:21
+ * @Last Modified time: 2018-04-11 21:21:29
  */
 var EventEmitter = require('events');
 var Base = require('../core/base');

@@ -2,15 +2,15 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-11 16:58:10
+ * @Last Modified time: 2018-04-11 21:22:53
  */
+var http = require('http')
+var qs=require('querystring');
 var Log =require('../util/log');
 var Source = require('../core/source');
 var Time = require('../util/time');
 var dtpl= require('../util/data-template');
 var file = require('../util/file');
-var http = require('http')
-var qs=require('querystring');
 var log = new Log(5);
 
 class HttpSource extends Source{
@@ -18,10 +18,9 @@ class HttpSource extends Source{
         super(config);
     }
 
-    request (requestParam){
+    createReadStream (requestParam){
         var self = this;
         // writer 为目标可写流
-        var writer = this.output;
         requestParam = requestParam || this.getRequestParam();
         
         var req = http.request(requestParam, function(res) { 
@@ -29,11 +28,11 @@ class HttpSource extends Source{
             log.info('L8', 'HEADERS: ' + JSON.stringify(res.headers)); 
             res.setEncoding('utf8');
             // 定向到控制台
-            if (writer) {
-                res.pipe(writer);
+            if (self.output) {
+                res.pipe(self.output);
             }
             res.on('end', function(){
-                self.emit('end', writer);
+                self.emit('end', self.output);
             });
         }); 
 

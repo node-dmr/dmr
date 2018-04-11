@@ -35,18 +35,18 @@ ACE 主要处理“原数据”至“报表数据”产出过程，不负责数�
 bin/import --help
 
 # 下载search_ac日志，时间范围从-s 到 -e的时间，时间支持非空格的字符切分，支持精确到天/分钟/秒三种选择
-bin/import -i search_ac -s 20180401.1200.00 -e 20180401120010
+bin/import -t search_ac -s 20180401.1200.00 -e 20180401120010
 # 不指定结束时间，采用-r参数指定一段时间，支持单位d/m/s/ms(day/minute/seconde/ms)
-bin/import -i search_ac -s 20180401.1200.00 -r 10s
+bin/import -t search_ac -s 20180401.1200.00 -r 10s
 # -s/e 时间参数支持倒推一段时间，请采用-开头，支持d/m/s/ms(day/minute/seconde/ms)
-bin/import -i search_ac -s -5m -r 10s
+bin/import -t search_ac -s -5m -r 10s
 
 #-f 自定义基于当前命令行的存储路径./rs.log 或 使用project配置生成 -f default 不指定-f会直接打印
-bin/import -i search_ac -s 20180401120000 -r 10s -f ./rs.log
+bin/import -t search_ac -s 20180401120000 -r 10s -f ./rs.log
 # 默认会打印L5级别的日志，如果不希望打印任何日志可以设置0级别，如果希望打印所有细节调试可以设置9级别
-bin/import -i search_ac -s -5m -r 10s -l 0
+bin/import -t search_ac -s -5m -r 10s -l 0
 # 同上章节介绍，通过使用-p命令临时切换指定project的配置，而非使用缺省配置
-bin/import -i search_ac -s -5m -r 10s -p speedup-ace 
+bin/import -t search_ac -s -5m -r 10s -p speedup-ace 
 
 ```
 

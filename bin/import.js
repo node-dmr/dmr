@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 20:00:23
+ * @Last Modified time: 2018-04-11 16:59:18
  */
 
 var Log = require('../packages/util/log');
@@ -12,7 +12,8 @@ var program = require('commander');
 var path = require('path');
 var Range = require('../packages/util/range');
 var Time = require('../packages/util/time');
-var ImportTask = require('../packages/task/import-task');
+var Time = require('../packages/util/time');
+var TaskFactory = require('../packages/core/task-factory');
 
 program
   .version('0.1.0', '-v, --version')
@@ -61,7 +62,7 @@ if (!taskId){
     log.info('Task ID is required!');
     return;
 } else {
-    importTask = new ImportTask(taskId);
+    importTask = TaskFactory.create('import', taskId);
 }
 
 if (startDatetime) {
@@ -88,9 +89,9 @@ if (endDatetime) {
 }
 if (rangeString) {
     if (rangeString === "default"){
-        if (importTask.taskConfig.interval){
+        if (importTask.config.interval){
             // 如果默认配置有interval
-            rangeString = importTask.taskConfig.interval;
+            rangeString = importTask.config.interval;
         } else {
             log.info('No Default Interval Config Of Range!');
         }
@@ -108,13 +109,13 @@ log.info('');
 if (taskId) log.info('Task', taskId);
 log.info('' + range.toString('\r\n'));
 if (file == "default") {
-    importTask.setOutputFile('default');
+    importTask.set("file", "default");
     log.info('FilePath ', 'Use TaskConfig');
 } else if (file){
     // 从当前命令执行路径计算目标路径，会覆盖task默认file
     file = path.resolve(process.cwd(), file);
-    importTask.setOutputFile(file);
-    log.info('FilePath ', file);
+    importTask.set('file', file);
+    //log.info('FilePath ', file);
 }
 if (program.project) {
     log.info('Specify Project >>> ' + program.project);
@@ -123,9 +124,9 @@ if (program.project) {
 log.info('------------------------------------------------------------------------');
 log.info('');
 
-importTask.setParams({
-    "starttimestamp": range.startTimeStamp,
-    "endtimestamp": range.endTimeStamp
+importTask.set({
+    "startTimeStamp": range.startTimeStamp,
+    "endTimeStamp": range.endTimeStamp
 });
 importTask.run();
 

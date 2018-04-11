@@ -2,10 +2,9 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-10 21:08:53
+ * @Last Modified time: 2018-04-11 16:58:10
  */
 var Log =require('../util/log');
-var config = require('../core/config');
 var Source = require('../core/source');
 var Time = require('../util/time');
 var dtpl= require('../util/data-template');
@@ -52,7 +51,7 @@ class HttpSource extends Source{
         // 获取http请求的参数
         var config = this.config || {};
         var paramTemplate = config.param || {};
-        var param = dtpl(paramTemplate, this.param);
+        var param = dtpl(paramTemplate, this.option);
         return  {
             hostname: config.host, 
             port: config.port, 

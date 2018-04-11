@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-11 19:40:48
+ * @Last Modified time: 2018-04-11 21:32:42
  */
 
 var Log = require('../packages/util/log');
@@ -11,7 +11,6 @@ var log = new Log(2);
 var program = require('commander');
 var path = require('path');
 var Range = require('../packages/util/range');
-var Time = require('../packages/util/time');
 var Time = require('../packages/util/time');
 var TaskFactory = require('../packages/core/task-factory');
 

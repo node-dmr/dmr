@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-11 21:28:08
+ * @Last Modified time: 2018-04-13 12:26:58
  */
 var http = require('http')
 var qs=require('querystring');
@@ -11,14 +11,16 @@ var fs=require('fs');
 var env = require('../core/env');
 var Log =require('../util/log');
 var Source = require('../core/source');
-var Time = require('../util/time');
-var dtpl= require('../util/data-template');
-var file = require('../util/file');
+var File = require('../util/file');
 var log = new Log(5);
 
 class FileSource extends Source{
     constructor(config){
         super(config);
+        this.formatter;
+    }
+    setFilePathFormatter (formatter){
+        this.formatter = formatter;
     }
     createWriteStream (file){
         if (file == 'default'){
@@ -28,17 +30,14 @@ class FileSource extends Source{
                 throw new Error('No Default FilePath Config!');
             }
         }
-
-        var pathParam = Time.parseParam(
-            new Date(this.option.startTimeStamp),
-            new Date(this.option.endTimeStamp)
-        );
-        file = dtpl(file, pathParam);
-
+        if (this.formatter){
+            file = this.formatter.format(file);
+        }
+        
         // 获取文件目录，不存在则创建
         var baseUrl = path.dirname(file);
         if (!fs.existsSync(baseUrl)) {
-            file.mkdirsSync(baseUrl);
+            File.mkdirsSync(baseUrl);
         }
 
         // 如果文件创建成功则writer定向为文件写流

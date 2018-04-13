@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-11 21:32:42
+ * @Last Modified time: 2018-04-13 12:13:44
  */
 
 var Log = require('../packages/util/log');
@@ -11,7 +11,7 @@ var log = new Log(2);
 var program = require('commander');
 var path = require('path');
 var Range = require('../packages/util/range');
-var Time = require('../packages/util/time');
+var TimeFormatter = require('../packages/formatter/time-formatter');
 var TaskFactory = require('../packages/core/task-factory');
 
 program
@@ -66,11 +66,11 @@ if (!taskId){
 
 if (startDatetime) {
     if (startDatetime.toString().indexOf('-') === 0) {
-        var prev = Time.parseInterval(startDatetime);
+        var prev = TimeFormatter.parseInterval(startDatetime);
         startDatetime =  new Date(new Date().getTime() + prev * 1);
     } else {
-        startDatetime = Time.fillDatetime(startDatetime.replace(/[\-\:\\]/g,''));
-        startDatetime = Time.parseDatetime(startDatetime, 'HHHHMMDDhhmmss');
+        startDatetime = TimeFormatter.fillDatetime(startDatetime.replace(/[\-\:\\]/g,''));
+        startDatetime = TimeFormatter.parseDatetime(startDatetime, 'HHHHMMDDhhmmss');
     }
     range.setStartDatetime(startDatetime);
 } else {
@@ -82,8 +82,8 @@ if((endDatetime && rangeString) || (!endDatetime && !rangeString)) {
     return;
 }
 if (endDatetime) {
-    endDatetime = Time.fillDatetime(endDatetime.replace(/[\-\:\\]/g,''));
-    endDatetime = Time.parseDatetime(endDatetime, 'HHHHMMDDhhmmss');
+    endDatetime = TimeFormatter.fillDatetime(endDatetime.replace(/[\-\:\\]/g,''));
+    endDatetime = TimeFormatter.parseDatetime(endDatetime, 'HHHHMMDDhhmmss');
     range.setEndDatetime(endDatetime);
 }
 if (rangeString) {

@@ -2,10 +2,10 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-09 21:44:09
+ * @Last Modified time: 2018-04-13 12:14:30
  * 时间范围Range模块
  */
-var Time = require('./time');
+var TimeFormatter = require('../formatter/time-formatter');
 
 function Range (startDatetime, endDatetime) {
     this.startTimeStamp = null;
@@ -25,14 +25,14 @@ function Range (startDatetime, endDatetime) {
 }
 Range.prototype.setStartDatetime =function (datetime) {
     if(typeof datetime === 'string'){
-        datetime = Time.parseDatetime(datetime);
+        datetime = TimeFormatter.parseDatetime(datetime);
     }
     this.startTimeStamp = datetime.getTime();
 }
 
 Range.prototype.setEndDatetime =function (datetime) {
     if(typeof datetime === 'string'){
-        datetime = Time.parseDatetime(datetime);
+        datetime = TimeFormatter.parseDatetime(datetime);
     }
     this.endTimeStamp = datetime.getTime();
 }
@@ -42,7 +42,7 @@ Range.prototype.setInterval = function (range) {
         throw new Error('You should set StartDatetime first!');
     }
     if (typeof range === 'string'){
-        range = Time.parseInterval(range);
+        range = TimeFormatter.parseInterval(range);
     } else if(typeof range !=='number'){
         throw new Error('Invalid Range!');
         return;

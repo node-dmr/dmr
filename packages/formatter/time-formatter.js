@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-04-02 14:43:04 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 12:22:27
+ * @Last Modified time: 2018-04-13 15:48:43
  * Time相关的方法封装
  */
 'use strict';
@@ -14,7 +14,7 @@ module.exports = {
         partten =  new RegExp(partten);
         var matches = partten.exec(datetimeString);
         if(matches){
-            return new Date(matches[1] + matches[2], matches[3], matches[4], matches[5], matches[6], matches[7]);
+            return new Date(matches[1] + matches[2], matches[3] * 1 - 1, matches[4], matches[5], matches[6], matches[7]);
         }
         throw new Error('Invalid Datetime!');
     },
@@ -23,8 +23,9 @@ module.exports = {
         partten = partten.replace(/HHHH|MM|DD/g,'(\\d\\d)');
         partten =  new RegExp(partten);
         var matches = partten.exec(dateString);
+        console.log(222,matches);
         if(matches){
-            return new Date(matches[1] + matches[2], matches[3], matches[4]);
+            return new Date(matches[1] + matches[2], matches[3] * 1 - 1, matches[4]);
         }
         throw new Error('Invalid Date!');
     },

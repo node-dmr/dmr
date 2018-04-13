@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 14:11:57
+ * @Last Modified time: 2018-04-13 15:24:08
  */
 var fs  = require('fs');
 var path = require('path');
@@ -10,7 +10,7 @@ var Log =require('../util/log');
 var Task = require('../core/task');
 var SourceFactory = require('../core/source-factory');
 var TimeFormatter = require('../formatter/time-formatter');
-var TimeRangeFormatter = require('../formatter/time-range-formatter');
+var RangeFormatter = require('../formatter/range-formatter');
 
 var log = new Log(5);
 
@@ -22,8 +22,8 @@ class ImportTask extends Task{
     // 根据参数检测区间范围避免过大
     checkRange (){
         var limitConfig = this.config["max-range"] || '1d';
-        var interval = this.option.endTimestamp - this.option.startTimeStamp;
         var limit = TimeFormatter.parseInterval(limitConfig, 'ms');
+        var interval = this.option.range.getInterval();
         if (interval > limit * 1 ) {
             throw new Error('Please Reduce Range Param, max-range is ' + limitConfig);
             return false;
@@ -37,10 +37,7 @@ class ImportTask extends Task{
         this.checkRange();
         // 默认输出writer为控制台
         var writer = process.stdout;
-        var formatter = new TimeRangeFormatter({
-            "startTimeStamp": this.option.startTimeStamp,
-            "endTimeStamp": this.option.endTimeStamp
-        });
+        var formatter = new RangeFormatter(this.option.range);
 
         // 如果file存在则创建fileSource，传入配置，获取file-writer
         if (this.option.file){
@@ -55,7 +52,7 @@ class ImportTask extends Task{
         importSource.createReadStream().pipe(writer);
         importSource.on('end', function(){
             log.warn('L5', '[result] Successful end!');
-            self.emit('end',fileSource);
+            self.emit('end', fileSource);
         });
         return self;
     }

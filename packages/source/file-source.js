@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 12:26:58
+ * @Last Modified time: 2018-04-13 15:00:30
  */
 var http = require('http')
 var qs=require('querystring');
@@ -18,6 +18,7 @@ class FileSource extends Source{
     constructor(config){
         super(config);
         this.formatter;
+        this.parser;
     }
     setFilePathFormatter (formatter){
         this.formatter = formatter;
@@ -47,6 +48,11 @@ class FileSource extends Source{
         
         log.warn('L1', '[save] ' , file);
         return writer;
+    }
+    createReadStream (file){
+        if (file && this.formatter){
+            var range
+        }
     }
 }
 

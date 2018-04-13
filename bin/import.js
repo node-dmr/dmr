@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 12:13:44
+ * @Last Modified time: 2018-04-13 15:04:36
  */
 
 var Log = require('../packages/util/log');
@@ -123,10 +123,7 @@ if (program.project) {
 log.info('------------------------------------------------------------------------');
 log.info('');
 
-importTask.set({
-    "startTimeStamp": range.startTimeStamp,
-    "endTimeStamp": range.endTimeStamp
-});
+importTask.set('range', range);
 importTask.run();
 
 

@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 15:32:22
+ * @Last Modified time: 2018-04-13 21:02:13
  * 时间范围Range模块
  */
 var TimeFormatter = require('../formatter/time-formatter');
@@ -61,6 +61,17 @@ class Range {
         throw new Error('startTimeStamp / endTimeStamp is Empty!');
     }
 
+    toJson () {
+        return {
+            startTimeStamp: this.startTimeStamp,
+            endTimeStamp: this.endTimeStamp,
+            interval: this.startTimeStamp - this.endTimeStamp
+        }
+    }
+    parseJson (option) {
+        this.startTimeStamp = option.startTimeStamp;
+        this.endTimeStamp = option.endTimeStamp;
+    }
 
     toString (split) {
         if(this.startTimeStamp && this.endTimeStamp) {

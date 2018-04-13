@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 11:34:45 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 15:41:23
+ * @Last Modified time: 2018-04-13 20:39:10
  */
 var Formatter = require('../core/formatter');
 var TimeFormatter = require('./time-formatter');

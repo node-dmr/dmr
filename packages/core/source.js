@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 11:45:56
+ * @Last Modified time: 2018-04-13 21:19:39
  */
 var Log =require('../util/log');
 var Base = require('../core/Base');
@@ -22,6 +22,18 @@ class Source extends Base{
     
     pipe (writer){
         this.output = writer;
+    }
+
+    parameters (){
+        var parameters = {};
+        for(var key in this.option) {
+            if (this.option[key].toJson) {
+                parameters[key] = this.option[key].toJson();
+            } else {
+                parameters[key] =  this.option[key].toString();
+            }
+        }
+        return parameters;
     }
 }
 

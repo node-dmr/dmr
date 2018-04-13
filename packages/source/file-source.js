@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 15:58:41
+ * @Last Modified time: 2018-04-13 21:19:54
  */
 var http = require('http')
 var qs=require('querystring');
@@ -20,7 +20,8 @@ class FileSource extends Source{
         super(config);
         this.parser;
     }
-    createWriteStream (file){
+    createWriteStream (){
+        var file = this.option.file;
         if (file == 'default'){
             if (this.config.path) {
                 file = path.resolve(env.root ,this.config.path);
@@ -43,15 +44,25 @@ class FileSource extends Source{
         var writer = fs.createWriteStream(file, {
             encoding: 'utf8'
         });
-        
+        writer.write(JSON.stringify(this.parameters())+'\n');
         log.warn('L1', '[save] ' , file);
         return writer;
     }
     createReadStream (file){
-        // if (file && this.formatter){
-        //     var range = this.formatter.;
-        // }
+        if (file === undefined) {
+            // 文件名不存在则生成
+            if(!this.config.path){
+                throw new Error('No Default FilePath Config!');
+            }
+            if(!this.option.range){
+                throw new Error('No Default FilePath Config!');
+            }
+            // 有config.path 及 option.range 生成file
+            var formatter = new RangeFormatter(this.option.range);
+            file = formatter.format(this.config.path);
+        }
     }
+
 }
 
 module.exports = FileSource;

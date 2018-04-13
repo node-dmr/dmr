@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 16:37:59
+ * @Last Modified time: 2018-04-13 20:39:31
  */
 var fs  = require('fs');
 var path = require('path');
@@ -20,10 +20,8 @@ class TransferTask extends Task{
     }
     run () {
         var importSource = SourceFactory.create(this.config["input-source"]);
-        if (this.option.file) {
-            importSource.createReadStream();
-            // importSource.pipe();
-        }
+        importSource.set('range', this.option.range);
+        var reader = importSource.createReadStream(this.option.file);
     }
     
 }

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 15:00:30
+ * @Last Modified time: 2018-04-13 15:58:41
  */
 var http = require('http')
 var qs=require('querystring');
@@ -12,16 +12,13 @@ var env = require('../core/env');
 var Log =require('../util/log');
 var Source = require('../core/source');
 var File = require('../util/file');
+var RangeFormatter = require('../formatter/range-formatter');
 var log = new Log(5);
 
 class FileSource extends Source{
     constructor(config){
         super(config);
-        this.formatter;
         this.parser;
-    }
-    setFilePathFormatter (formatter){
-        this.formatter = formatter;
     }
     createWriteStream (file){
         if (file == 'default'){
@@ -31,8 +28,9 @@ class FileSource extends Source{
                 throw new Error('No Default FilePath Config!');
             }
         }
-        if (this.formatter){
-            file = this.formatter.format(file);
+        if (this.option.range) {
+            var formatter = new RangeFormatter(this.option.range);
+            file = formatter.format(file);
         }
         
         // 获取文件目录，不存在则创建
@@ -50,9 +48,9 @@ class FileSource extends Source{
         return writer;
     }
     createReadStream (file){
-        if (file && this.formatter){
-            var range
-        }
+        // if (file && this.formatter){
+        //     var range = this.formatter.;
+        // }
     }
 }
 

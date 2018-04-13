@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 15:24:08
+ * @Last Modified time: 2018-04-13 15:55:33
  */
 var fs  = require('fs');
 var path = require('path');
@@ -10,7 +10,6 @@ var Log =require('../util/log');
 var Task = require('../core/task');
 var SourceFactory = require('../core/source-factory');
 var TimeFormatter = require('../formatter/time-formatter');
-var RangeFormatter = require('../formatter/range-formatter');
 
 var log = new Log(5);
 
@@ -37,17 +36,16 @@ class ImportTask extends Task{
         this.checkRange();
         // 默认输出writer为控制台
         var writer = process.stdout;
-        var formatter = new RangeFormatter(this.option.range);
-
+        
         // 如果file存在则创建fileSource，传入配置，获取file-writer
         if (this.option.file){
             var fileSource = SourceFactory.create(this.config["output-source"]);
-            fileSource.setFilePathFormatter(formatter);
+            fileSource.set('range', this.option.range);
             writer = fileSource.createWriteStream(this.option.file);
         }
         
         var importSource = SourceFactory.create(this.config["input-source"]);
-        importSource.setRequestParamFormatter(formatter);
+        importSource.set('range', this.option.range);
 
         importSource.createReadStream().pipe(writer);
         importSource.on('end', function(){

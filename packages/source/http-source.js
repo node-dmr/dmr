@@ -2,19 +2,19 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 12:22:55
+ * @Last Modified time: 2018-04-13 16:06:17
  */
 var http = require('http')
 var qs=require('querystring');
 var Log =require('../util/log');
 var Source = require('../core/source');
 var file = require('../util/file');
+var RangeFormatter = require('../formatter/range-formatter');
 var log = new Log(5);
 
 class HttpSource extends Source{
     constructor(config){
         super(config);
-        this.requestParamFormatter;
     }
 
     createReadStream (requestParam){
@@ -43,13 +43,15 @@ class HttpSource extends Source{
 
         return this;
     }
-    setRequestParamFormatter (formatter){
-        this.requestParamFormatter = formatter;
-    }
     getRequestParam() {
         // 获取http请求的参数
         var config = this.config || {};
-        var param = this.requestParamFormatter.format(config.param || {}, this.option);
+        var param = {};
+        if(this.option.range) {
+            var requestParamFormatter = new RangeFormatter(this.option.range);
+            param = requestParamFormatter.format(config.param || {}, this.option);
+        }
+        
         return  {
             hostname: config.host, 
             port: config.port, 

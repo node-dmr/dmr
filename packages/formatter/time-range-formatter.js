@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 11:34:45 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 12:22:34
+ * @Last Modified time: 2018-04-13 14:00:25
  */
 var Formatter = require('../core/formatter');
 var TimeFormatter = require('../formatter/time-formatter');
@@ -13,6 +13,11 @@ class TimeRangeFormatter extends Formatter {
     constructor (option) {
         super(option);
     }
+    /**
+     * @param {string|object} 
+     * support format string or object , following fields will be replaced:
+     * YYYY/MM/DD/hh/mm/ss/ms |  interval{s/m/h/d} | startTimeStamp/endTimeStamp
+     */
     format (string){
         
         var timeParam = TimeRangeFormatter.parseRange(

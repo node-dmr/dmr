@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 12:21:29
+ * @Last Modified time: 2018-04-13 14:11:57
  */
 var fs  = require('fs');
 var path = require('path');
@@ -49,13 +49,13 @@ class ImportTask extends Task{
             writer = fileSource.createWriteStream(this.option.file);
         }
         
-        var source = SourceFactory.create(this.config["input-source"]);
-        source.setRequestParamFormatter(formatter);
+        var importSource = SourceFactory.create(this.config["input-source"]);
+        importSource.setRequestParamFormatter(formatter);
 
-        source.createReadStream().pipe(writer);
-        source.on('end', function(writer){
+        importSource.createReadStream().pipe(writer);
+        importSource.on('end', function(){
             log.warn('L5', '[result] Successful end!');
-            self.emit('end');
+            self.emit('end',fileSource);
         });
         return self;
     }

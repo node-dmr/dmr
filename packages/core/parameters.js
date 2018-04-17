@@ -2,31 +2,26 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 12:28:01 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 15:51:24
+ * @Last Modified time: 2018-04-17 20:03:34
  */
 
 class Parameters {
     constructor (param) {
-        param = param || {};
         this.paramList = {};
         this.option = {};
-        // this.paramList.forEach((name) =>{
-        //     this.set(name, param[name]);
-        // });
-        for (var name in param) {
-            this.set(name, param[name]);
-
-        }
+        param = param || {};
+        this.set(param);
     }
-    set (name, value, opt) {
+    set (name, value) {
         var option = name;
         if (typeof option === "object") {
             // 重载
-            name = option.name;
-            value = option.value;
+            for (var name in option){
+                this.set(name, option[name]);
+            }
         }
         // 注册属性
-        this.option[name] = opt || {};
+        this.option[name] = {};
         this.paramList[name] = true;
         this[name] = value;
     }

@@ -2,12 +2,17 @@
  * @Author: qiansc
  * @Date: 2018-04-02 14:43:04 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 15:48:43
+ * @Last Modified time: 2018-04-17 19:53:28
  * Time相关的方法封装
  */
 'use strict';
 
 module.exports = {
+    format: function (tpl, time){
+        tpl = tpl || 'YYYYMMDDhhmmssms';
+        time = time || new Date();
+        return formatTime(tpl, time);
+    },
     parseDatetime: function(datetimeString, partten){
         partten = partten || 'HHHH-MM-DD hh:mm:ss';
         partten = partten.replace(/HH|MM|DD|hh|mm|ss/g,'(\\d\\d)');
@@ -97,3 +102,19 @@ function getMicroseconds(value, unit) {
 
   throw new Error('The unit "' + unit + '" could not be recognized');
 }
+function fixnumber(n,length) {
+    length = length || 2;
+    return [0,n].join('').slice(-1 * length);  
+}  
+function formatTime(format, curdate) {  
+    if (format == undefined) return curdate;  
+    format = format.replace(/YYYY/i, fixnumber(curdate.getFullYear(),4));
+    format = format.replace(/YY/i, fixnumber(curdate.getFullYear(),2));  
+    format = format.replace(/MM/i, fixnumber(curdate.getMonth() + 1));  
+    format = format.replace(/DD/i, fixnumber(curdate.getDate()));  
+    format = format.replace(/HH/i, fixnumber(curdate.getHours()));  
+    format = format.replace(/mm/i, fixnumber(curdate.getMinutes()));  
+    format = format.replace(/ss/i, fixnumber(curdate.getSeconds()));  
+    format = format.replace(/ms/i, fixnumber(curdate.getMilliseconds(),3));  
+    return format;  
+}  

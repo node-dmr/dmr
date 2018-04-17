@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 16:16:30
+ * @Last Modified time: 2018-04-17 19:45:34
  */
 var fs  = require('fs');
 var path = require('path');
@@ -39,15 +39,19 @@ class ImportTask extends Task{
         var writer = process.stdout;
             
         this.checkRange();
-
+        log.warn('L1', 'ID-KEY\t' , this.id + '-' + this.key);
         // 如果file存在则创建fileSource，传入配置，获取file-writer
         if (action.file){
             var fileSource = SourceFactory.create(config["output-source"]);
             fileSource.set('range', action.range);
             fileSource.set('file', action.file);
+            fileSource.on('create', function (file) {
+                log.warn('L1', 'FILE\t' , file);
+            })
+
             writer = fileSource.createWriteStream();
-            log.warn('L9', JSON.stringify(action.stringify())+'\n');
-            writer.write(JSON.stringify(action.stringify())+'\n');
+            log.warn('L9',action.stringify()+'\n');
+            writer.write(action.stringify()+'\n');
         }
         
         var importSource = SourceFactory.create(config["input-source"]);
@@ -55,8 +59,8 @@ class ImportTask extends Task{
         importSource.createReadStream().pipe(writer);
         
         importSource.on('end', function(){
-            log.warn('L5', '[result] Successful end!');
-            self.emit('end', fileSource);
+            log.warn('L5', '\r\nSucc\tSuccessful end! Remeber The Key : ' + self.key);
+            self.emit('end');
         });
         
         return self;

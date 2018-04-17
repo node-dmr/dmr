@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 10:36:58
+ * @Last Modified time: 2018-04-17 19:36:49
  */
 var http = require('http')
 var qs=require('querystring');
@@ -44,7 +44,7 @@ class FileSource extends Source{
         var writer = fs.createWriteStream(file, {
             encoding: 'utf8'
         });
-        log.warn('L1', '[save] ' , file);
+        this.emit('create', file, writer);
         return writer;
     }
     createReadStream (file){

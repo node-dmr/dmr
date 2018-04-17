@@ -2,9 +2,9 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 10:05:18 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 16:15:55
+ * @Last Modified time: 2018-04-17 19:56:53
  */
-var Parameters = require('../util/Parameters');
+var Parameters = require('../core/parameters');
 
 class Action extends Parameters{
     constructor (param) {

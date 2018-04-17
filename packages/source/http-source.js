@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 15:58:06
+ * @Last Modified time: 2018-04-17 19:44:25
  */
 var http = require('http')
 var qs=require('querystring');
@@ -40,7 +40,7 @@ class HttpSource extends Source{
         req.on('error', function(e) { 
             log.warn('problem with request: ' + e.message); 
         });
-        log.info('L5', '[from] ' , requestParam.hostname + ':' + requestParam.port + requestParam.path);
+        log.info('L5', 'FROM\t' , requestParam.hostname + ':' + requestParam.port + requestParam.path);
         req.end();
         return duplexer;
     }

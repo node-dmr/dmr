@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 13:15:41 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 20:38:47
+ * @Last Modified time: 2018-04-18 00:29:15
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');

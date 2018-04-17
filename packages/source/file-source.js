@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 21:50:54
+ * @Last Modified time: 2018-04-18 00:47:09
  */
 var http = require('http')
 var qs=require('querystring');
@@ -64,12 +64,13 @@ class FileSource extends Source{
         } else {
             file = this.option.file;
         }
-
-        var writer = fs.createReadStream(file, {
-            encoding: 'utf8'
+        var bufferSize = (this.config["read-buffer-size"] || 10) * 1024;
+        var reader = fs.createReadStream(file, {
+            encoding: 'utf8',
+            highWaterMark: bufferSize
         });
-        this.emit('create', file, writer);
-        return writer;
+        this.emit('create', file, reader);
+        return reader;
     }
 
 }

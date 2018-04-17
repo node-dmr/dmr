@@ -2,11 +2,12 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 18:18:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 21:15:11
+ * @Last Modified time: 2018-04-18 00:15:45
  */
 var path=require('path');
 var fs=require('fs');
 var env = require('../core/env');
+var File = require('../util/file');
 var TimeFormatter = require('../formatter/time-formatter');
 
  // 没有考虑清楚怎么抽象，先把ActionLog解耦出来，后续调整模式

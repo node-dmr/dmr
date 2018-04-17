@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 18:58:22 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 19:18:55
+ * @Last Modified time: 2018-04-18 00:17:26
  */
 
 
@@ -10,7 +10,7 @@ function RandomKey(){
     var me = this;
     me.source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     me.letter = "EFGHIJKLMNOPQRSTUVWXYZ";
-    me.number = "0123456789";
+    me.number = "123456789";
     me.mark = "SPEEDUPACEISTHEBEST";
 
     me.get = function(){

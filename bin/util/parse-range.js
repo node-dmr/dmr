@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 20:14:34 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 21:24:49
+ * @Last Modified time: 2018-04-18 00:12:59
  */
 var TimeFormatter = require('../../packages/formatter/time-formatter');
 var Log = require('../../packages/util/log');
@@ -11,7 +11,7 @@ var TaskFactory = require('../../packages/core/task-factory');
 var log = new Log(2);
 
 module.exports = function(program) {
-    
+
     var taskId = program.task || false;
     var startDatetime = program.start || false;
     var endDatetime = program.end || false;

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 12:28:01 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 20:03:34
+ * @Last Modified time: 2018-04-17 20:37:26
  */
 
 class Parameters {
@@ -19,6 +19,7 @@ class Parameters {
             for (var name in option){
                 this.set(name, option[name]);
             }
+            return;
         }
         // 注册属性
         this.option[name] = {};

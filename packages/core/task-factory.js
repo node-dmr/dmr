@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 13:15:41 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 15:56:11
+ * @Last Modified time: 2018-04-17 20:38:47
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -22,9 +22,8 @@ class TaskFactory {
             config = action.config || false;
         }
         if (!config){
-            action.config = config = Config.get('task', type, id);
+            action["config"] = config = Config.get('task', type, id);
         }
-
         switch (type){
             case 'import':
                 task = new ImportTask(action);

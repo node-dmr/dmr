@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 15:30:56
+ * @Last Modified time: 2018-04-17 20:20:57
  */
 
 var Log = require('../packages/util/log');
@@ -10,10 +10,9 @@ var log = new Log(2);
 
 var program = require('commander');
 var path = require('path');
-var Range = require('../packages/util/range');
-var TimeFormatter = require('../packages/formatter/time-formatter');
 var TaskFactory = require('../packages/core/task-factory');
 var Action = require('../packages/core/Action');
+var parseRange = require('./util/parse-range');
 
 program
   .version('0.1.0', '-v, --version')
@@ -49,11 +48,7 @@ if (program.log !== undefined){
 }
 
 var taskId = program.task || false;
-var startDatetime = program.start || false;
-var endDatetime = program.end || false;
-var rangeString = program.range || false;
 var file = program.file || false;
-var range = new Range();
 var action = new Action();
 /**
  *  参数选项验证
@@ -65,47 +60,14 @@ if (!taskId){
     var taskConfig = TaskFactory.getConfig('import', taskId);
 }
 
-if (startDatetime) {
-    if (startDatetime.toString().indexOf('-') === 0) {
-        var prev = TimeFormatter.parseInterval(startDatetime);
-        startDatetime =  new Date(new Date().getTime() + prev * 1);
-    } else {
-        startDatetime = TimeFormatter.fillDatetime(startDatetime.replace(/[\-\:\\]/g,''));
-        startDatetime = TimeFormatter.parseDatetime(startDatetime, 'HHHHMMDDhhmmss');
-    }
-    range.setStartDatetime(startDatetime);
-} else {
-    log.info('Start Date / Datetime is required!');
-    return;
-}
-if((endDatetime && rangeString) || (!endDatetime && !rangeString)) {
-    log.info('You Should choose Option between  End Datetime / Ranges!');
-    return;
-}
-if (endDatetime) {
-    endDatetime = TimeFormatter.fillDatetime(endDatetime.replace(/[\-\:\\]/g,''));
-    endDatetime = TimeFormatter.parseDatetime(endDatetime, 'HHHHMMDDhhmmss');
-    range.setEndDatetime(endDatetime);
-}
-if (rangeString) {
-    if (rangeString === "default"){
-        if (taskConfig.interval){
-            // 如果默认配置有interval
-            rangeString = taskConfig.interval;
-        } else {
-            log.info('No Default Interval Config Of Range!');
-        }
-    }
-    range.setInterval(rangeString);
-}
+var range = parseRange(program, taskConfig);
 
 /**
  *  校验成功后的命令提示
  */
 log.info('------------------------------------------------------------------------');
 // log.group('    ');
-log.info('You will start a downlaod job with:');
-log.info('');
+log.info('You will start a downlaod job with:\r\n');
 if (taskId) log.info('Task', taskId);
 log.info('' + range.toString('\r\n'));
 if (file == "default") {
@@ -121,8 +83,7 @@ if (program.project) {
     log.info('Specify Project >>> ' + program.project);
 }
 // log.groupEnd();
-log.info('------------------------------------------------------------------------');
-log.info('');
+log.info('------------------------------------------------------------------------\r\n');
 
 action.set('range', range.param());
 action.set('task-type', "import");

@@ -2,14 +2,15 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:20:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 20:38:09
+ * @Last Modified time: 2018-04-17 21:31:17
  */
 var path = require('path');
 var program = require('commander');
 var Log = require('../packages/util/log');
-var parseRange = require('./util/parse-range');
 var TaskFactory = require('../packages/core/task-factory');
 var Action = require('../packages/core/Action');
+var parseRange = require('./util/parse-range');
+var parseAction = require('./util/parse-action');
 
 var log = new Log(2);
 
@@ -49,29 +50,31 @@ var action = new Action();
 /**
  *  参数选项验证
  */
-if (!taskId){
-    log.info('Task ID is required!');
-    return;
-} else {
-    var taskConfig = TaskFactory.getConfig('transfer', taskId);
-}
-var range = parseRange(program, taskConfig);
+var range = parseRange(program);
 
 log.info('------------------------------------------------------------------------');
 // log.group('    ');
 log.info('You will start a downlaod job with:\r\n');
+if (taskId){
+    log.info('Task', taskId);
+}else {
+    log.info('Task ID is required!');
+}
 
 if (key){
     // 从当前命令执行路径计算目标路径，会覆盖task默认file
     // file = path.resolve(process.cwd(), file);
     // action.set('file', file);
     // log.info('[file] ', file);
+    action = parseAction(key);
 } else if (range) {
     action.set('range', range.param());
 } else {
-    log.info('File or  Range is required!');
+    log.info('Key or RangeInfo is required!');
     return;
 }
+
+log.info('------------------------------------------------------------------------\r\n');
 
 action.set('task-type', "transfer");
 action.set('task-id', taskId);

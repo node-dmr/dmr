@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 20:20:57
+ * @Last Modified time: 2018-04-17 20:48:19
  */
 
 var Log = require('../packages/util/log');
@@ -56,11 +56,9 @@ var action = new Action();
 if (!taskId){
     log.info('Task ID is required!');
     return;
-} else {
-    var taskConfig = TaskFactory.getConfig('import', taskId);
 }
 
-var range = parseRange(program, taskConfig);
+var range = parseRange(program);
 
 /**
  *  校验成功后的命令提示
@@ -68,8 +66,13 @@ var range = parseRange(program, taskConfig);
 log.info('------------------------------------------------------------------------');
 // log.group('    ');
 log.info('You will start a downlaod job with:\r\n');
-if (taskId) log.info('Task', taskId);
+if (taskId){
+    log.info('Task', taskId);
+}else {
+    log.info('Task ID is required!');
+}
 log.info('' + range.toString('\r\n'));
+
 if (file == "default") {
     action.set("file", "default");
     log.info('FilePath ', 'Use TaskConfig');
@@ -77,11 +80,12 @@ if (file == "default") {
     // 从当前命令执行路径计算目标路径，会覆盖task默认file
     file = path.resolve(process.cwd(), file);
     action.set('file', file);
-    //log.info('FilePath ', file);
 }
+
 if (program.project) {
     log.info('Specify Project >>> ' + program.project);
 }
+
 // log.groupEnd();
 log.info('------------------------------------------------------------------------\r\n');
 

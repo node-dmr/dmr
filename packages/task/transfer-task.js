@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 20:39:01
+ * @Last Modified time: 2018-04-17 21:30:37
  */
 var fs  = require('fs');
 var path = require('path');
@@ -25,10 +25,12 @@ class TransferTask extends Task{
         // 默认输出writer为控制台
         var writer = process.stdout;
 
-        console.log(action);
         var importSource = SourceFactory.create(config["input-source"]);
         importSource.set('range', action.range);
-        var reader = importSource.createReadStream(action.file);
+        importSource.on('create', function (file) {
+            log.warn('L1', 'FROM\t' , file);
+        });
+        var reader = importSource.createReadStream();
 
     }
     

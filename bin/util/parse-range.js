@@ -2,19 +2,23 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 20:14:34 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 20:21:08
+ * @Last Modified time: 2018-04-17 21:24:49
  */
 var TimeFormatter = require('../../packages/formatter/time-formatter');
 var Log = require('../../packages/util/log');
 var Range = require('../../packages/util/range');
+var TaskFactory = require('../../packages/core/task-factory');
 var log = new Log(2);
 
-module.exports = function(program, taskConfig) {
-
+module.exports = function(program) {
+    
+    var taskId = program.task || false;
     var startDatetime = program.start || false;
     var endDatetime = program.end || false;
     var rangeString = program.range || false;
+    var key = program.key || false;
     var range = new Range();
+    var taskConfig = TaskFactory.getConfig('import', taskId);
 
     if (startDatetime) {
         if (startDatetime.toString().indexOf('-') === 0) {
@@ -25,11 +29,13 @@ module.exports = function(program, taskConfig) {
             startDatetime = TimeFormatter.parseDatetime(startDatetime, 'HHHHMMDDhhmmss');
         }
         range.setStartDatetime(startDatetime);
-    } else {
+    } else if(!key){
         log.info('Start Date / Datetime is required!');
         return;
     }
-    if((endDatetime && rangeString) || (!endDatetime && !rangeString)) {
+    if(key){
+
+    }else if((endDatetime && rangeString) || (!endDatetime && !rangeString)) {
         log.info('You Should choose Option between  End Datetime / Ranges!');
         return;
     }

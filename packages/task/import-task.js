@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 19:45:34
+ * @Last Modified time: 2018-04-17 21:31:41
  */
 var fs  = require('fs');
 var path = require('path');
@@ -47,7 +47,7 @@ class ImportTask extends Task{
             fileSource.set('file', action.file);
             fileSource.on('create', function (file) {
                 log.warn('L1', 'FILE\t' , file);
-            })
+            });
 
             writer = fileSource.createWriteStream();
             log.warn('L9',action.stringify()+'\n');

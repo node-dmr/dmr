@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 19:36:49
+ * @Last Modified time: 2018-04-17 21:29:08
  */
 var http = require('http')
 var qs=require('querystring');
@@ -57,8 +57,15 @@ class FileSource extends Source{
                 throw new Error('No Default FilePath Config!');
             }
             // 有config.path 及 option.range 生成file
+            file = path.resolve(env.root ,this.config.path);
             var formatter = new RangeFormatter(this.option.range);
-            file = formatter.format(this.config.path);
+            file = formatter.format(file);
+
+            var writer = fs.createReadStream(file, {
+                encoding: 'utf8'
+            });
+            this.emit('create', file, writer);
+            return writer;
         }
     }
 

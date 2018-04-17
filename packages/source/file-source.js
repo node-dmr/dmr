@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 21:29:08
+ * @Last Modified time: 2018-04-17 21:50:54
  */
 var http = require('http')
 var qs=require('querystring');
@@ -47,8 +47,9 @@ class FileSource extends Source{
         this.emit('create', file, writer);
         return writer;
     }
-    createReadStream (file){
-        if (file === undefined) {
+    createReadStream (){
+        var file;
+        if (this.option.file === undefined || this.option.file === "default") {
             // 文件名不存在则生成
             if(!this.config.path){
                 throw new Error('No Default FilePath Config!');
@@ -60,13 +61,15 @@ class FileSource extends Source{
             file = path.resolve(env.root ,this.config.path);
             var formatter = new RangeFormatter(this.option.range);
             file = formatter.format(file);
-
-            var writer = fs.createReadStream(file, {
-                encoding: 'utf8'
-            });
-            this.emit('create', file, writer);
-            return writer;
+        } else {
+            file = this.option.file;
         }
+
+        var writer = fs.createReadStream(file, {
+            encoding: 'utf8'
+        });
+        this.emit('create', file, writer);
+        return writer;
     }
 
 }

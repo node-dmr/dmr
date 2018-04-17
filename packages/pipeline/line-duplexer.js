@@ -2,14 +2,14 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 18:05:00
+ * @Last Modified time: 2018-04-17 22:47:20
  */
 
-var stream = require('stream');
+var Pipeline = require('../core/pipeline');
 var util = require('util');
-class Duplexer extends stream.Duplex{
-    constructor (option) {
-        super();
+class Duplexer extends Pipeline{
+    constructor (config) {
+        super(config);
         //this.data = [];
     }
     _read (size) {

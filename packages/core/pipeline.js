@@ -2,27 +2,23 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 22:46:46
+ * @Last Modified time: 2018-04-17 22:46:38
  */
 var Log =require('../util/log');
-var Base = require('../core/Base');
+var Stream = require('stream');
 
 var log = new Log(5);
 
-class Source extends Base{
+class Pipeline extends Stream.Duplex{
     constructor (config) {
         super();
         this.config = config;
         
         if (!this.config){
-            throw new Error('Undefined sourceConfig!');
+            throw new Error('Undefined pipelineConfig!');
         }
         // this.output = null;
     }
-    
-    // pipe (writer){
-    //     this.output = writer;
-    // }
 }
 
-module.exports = Source;
+module.exports = Pipeline;

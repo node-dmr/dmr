@@ -2,25 +2,24 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 22:43:38
+ * @Last Modified time: 2018-04-17 22:47:34
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
 var env = require('../core/env');
 var Config = require('../core/config.js');
-var HttpSource = require('../source/http-source.js');
-var FileSource = require('../source/file-source');
+var LineDuplexer = require('../pipeline/line-duplexer');
 
 var log = new Log(5);
-class SourceFactory {
+class Factory {
     static create(key){
-        var config = Config.get('source', key);
+        var config = Config.get('pipeline', key);
         switch(config.type){
-            case "http":
-                return new HttpSource(config);
+            case "line":
+                return new LineDuplexer(config);
                 break;
             case "file":
-                return new FileSource(config);
+                // return new FileSource(config);
                 break;
             default:
                 break;
@@ -28,4 +27,4 @@ class SourceFactory {
     }
 }
 
-module.exports = SourceFactory;
+module.exports = Factory;

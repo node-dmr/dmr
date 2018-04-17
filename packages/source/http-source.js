@@ -2,11 +2,11 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 19:44:25
+ * @Last Modified time: 2018-04-17 22:25:11
  */
 var http = require('http')
 var qs=require('querystring');
-var HttpDuplexer = require('./http-duplexer');
+var HttpDuplexer = require('../pipeline/http-duplexer');
 var Log =require('../util/log');
 var Source = require('../core/source');
 var file = require('../util/file');

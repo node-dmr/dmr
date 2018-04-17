@@ -2,12 +2,11 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 11:34:45 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 20:39:10
+ * @Last Modified time: 2018-04-17 10:52:36
  */
 var Formatter = require('../core/formatter');
 var TimeFormatter = require('./time-formatter');
 var dtpl= require('../util/data-template');
-var Range = require('../util/range');
 
 class RangeFormatter extends Formatter {
     constructor (range) {

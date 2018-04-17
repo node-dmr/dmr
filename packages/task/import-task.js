@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 21:19:50
+ * @Last Modified time: 2018-04-17 16:16:30
  */
 var fs  = require('fs');
 var path = require('path');
@@ -14,15 +14,15 @@ var TimeFormatter = require('../formatter/time-formatter');
 var log = new Log(5);
 
 class ImportTask extends Task{
-    constructor(config){
-        super(config);
+    constructor(action){
+        super(action);
     }
 
     // 根据参数检测区间范围避免过大
     checkRange (){
-        var limitConfig = this.config["max-range"] || '1d';
+        var limitConfig = this.action.config["max-range"] || '1d';
         var limit = TimeFormatter.parseInterval(limitConfig, 'ms');
-        var interval = this.option.range.getInterval();
+        var interval = this.action.range.endTimeStamp - this.action.range.startTimeStamp;
         if (interval > limit * 1 ) {
             throw new Error('Please Reduce Range Param, max-range is ' + limitConfig);
             return false;
@@ -30,23 +30,28 @@ class ImportTask extends Task{
         return true;
 
     }
-
+    
     run () {
-        var self = this;
-        this.checkRange();
+        var self = this,
+            action =  this.action,
+            config = this.action.config;
         // 默认输出writer为控制台
         var writer = process.stdout;
-        
+            
+        this.checkRange();
+
         // 如果file存在则创建fileSource，传入配置，获取file-writer
-        if (this.option.file){
-            var fileSource = SourceFactory.create(this.config["output-source"]);
-            fileSource.set('range', this.option.range);
-            fileSource.set('file', this.option.file);
+        if (action.file){
+            var fileSource = SourceFactory.create(config["output-source"]);
+            fileSource.set('range', action.range);
+            fileSource.set('file', action.file);
             writer = fileSource.createWriteStream();
+            log.warn('L9', JSON.stringify(action.stringify())+'\n');
+            writer.write(JSON.stringify(action.stringify())+'\n');
         }
         
-        var importSource = SourceFactory.create(this.config["input-source"]);
-        importSource.set('range', this.option.range);
+        var importSource = SourceFactory.create(config["input-source"]);
+        importSource.set('range', action.range);
         importSource.createReadStream().pipe(writer);
         
         importSource.on('end', function(){

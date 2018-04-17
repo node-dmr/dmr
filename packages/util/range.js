@@ -2,31 +2,29 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 21:02:13
+ * @Last Modified time: 2018-04-17 15:50:33
  * 时间范围Range模块
  */
 var TimeFormatter = require('../formatter/time-formatter');
+var Parameters = require('../util/Parameters');
 
-class Range {
-    constructor (startDatetime, endDatetime) {
-        this.startTimeStamp = null;
-        this.endTimeStamp = null;
-
-        if (startDatetime && startDatetime.toString().length === 13) {
-            this.startTimeStamp = startDatetime;
-        } else if(startDatetime) {
-            // 补全
-            this.setStartDatetime(startDatetime);
-        }
-
-        if (endDatetime && endDatetime.toString().length === 13) {
-            this.startTimeStamp = startDatetime;
-        } else if (endDatetime) {
-            // 补全
-            this.setEndDatetime(endDatetime);
-        }
+class Range extends Parameters{
+    constructor (param) {
+        param = Object.assign({
+            startTimeStamp: null,
+            endTimeStamp: null
+        }, param);
+        
+        super(param);
     }
-    
+    setTimeStamp (startTimeStamp, endTimeStamp) {
+        if (endTimeStamp) this.startTimeStamp = startTimeStamp;
+        if (endTimeStamp) this.endTimeStamp = endTimeStamp;
+    }
+    setDatetime (startDatetime, endDatetime){
+        startDatetime && this.setStartDatetime(startDatetime);
+        endDatetime && this.setEndDatetime(endDatetime);
+    }
     setStartDatetime  (datetime) {
         if(typeof datetime === 'string'){
             datetime = TimeFormatter.parseDatetime(datetime);
@@ -61,17 +59,17 @@ class Range {
         throw new Error('startTimeStamp / endTimeStamp is Empty!');
     }
 
-    toJson () {
-        return {
-            startTimeStamp: this.startTimeStamp,
-            endTimeStamp: this.endTimeStamp,
-            interval: this.startTimeStamp - this.endTimeStamp
-        }
-    }
-    parseJson (option) {
-        this.startTimeStamp = option.startTimeStamp;
-        this.endTimeStamp = option.endTimeStamp;
-    }
+    // toJson () {
+    //     return {
+    //         startTimeStamp: this.startTimeStamp,
+    //         endTimeStamp: this.endTimeStamp,
+    //         interval: this.startTimeStamp - this.endTimeStamp
+    //     }
+    // }
+    // parseJson (option) {
+    //     this.startTimeStamp = option.startTimeStamp;
+    //     this.endTimeStamp = option.endTimeStamp;
+    // }
 
     toString (split) {
         if(this.startTimeStamp && this.endTimeStamp) {

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 18:11:24
+ * @Last Modified time: 2018-04-17 15:58:06
  */
 var http = require('http')
 var qs=require('querystring');
@@ -24,6 +24,7 @@ class HttpSource extends Source{
         var duplexer = new HttpDuplexer();
 
         requestParam = requestParam || this.getRequestParam();
+        
         var req = http.request(requestParam, function(res) { 
             log.info('L8', 'STATUS: ' + res.statusCode); 
             log.info('L8', 'HEADERS: ' + JSON.stringify(res.headers)); 

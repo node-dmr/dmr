@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 15:04:36
+ * @Last Modified time: 2018-04-17 15:30:56
  */
 
 var Log = require('../packages/util/log');
@@ -13,6 +13,7 @@ var path = require('path');
 var Range = require('../packages/util/range');
 var TimeFormatter = require('../packages/formatter/time-formatter');
 var TaskFactory = require('../packages/core/task-factory');
+var Action = require('../packages/core/Action');
 
 program
   .version('0.1.0', '-v, --version')
@@ -53,7 +54,7 @@ var endDatetime = program.end || false;
 var rangeString = program.range || false;
 var file = program.file || false;
 var range = new Range();
-var importTask;
+var action = new Action();
 /**
  *  参数选项验证
  */
@@ -61,7 +62,7 @@ if (!taskId){
     log.info('Task ID is required!');
     return;
 } else {
-    importTask = TaskFactory.create('import', taskId);
+    var taskConfig = TaskFactory.getConfig('import', taskId);
 }
 
 if (startDatetime) {
@@ -88,9 +89,9 @@ if (endDatetime) {
 }
 if (rangeString) {
     if (rangeString === "default"){
-        if (importTask.config.interval){
+        if (taskConfig.interval){
             // 如果默认配置有interval
-            rangeString = importTask.config.interval;
+            rangeString = taskConfig.interval;
         } else {
             log.info('No Default Interval Config Of Range!');
         }
@@ -108,12 +109,12 @@ log.info('');
 if (taskId) log.info('Task', taskId);
 log.info('' + range.toString('\r\n'));
 if (file == "default") {
-    importTask.set("file", "default");
+    action.set("file", "default");
     log.info('FilePath ', 'Use TaskConfig');
 } else if (file){
     // 从当前命令执行路径计算目标路径，会覆盖task默认file
     file = path.resolve(process.cwd(), file);
-    importTask.set('file', file);
+    action.set('file', file);
     //log.info('FilePath ', file);
 }
 if (program.project) {
@@ -123,9 +124,12 @@ if (program.project) {
 log.info('------------------------------------------------------------------------');
 log.info('');
 
-importTask.set('range', range);
-importTask.run();
+action.set('range', range.param());
+action.set('task-type', "import");
+action.set('task-id', taskId);
 
+var task = TaskFactory.create(action);
+task.run();
 
 /**
  *  部分批处理函数 

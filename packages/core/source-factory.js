@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 22:43:38
+ * @Last Modified time: 2018-04-18 20:43:04
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -15,11 +15,11 @@ var log = new Log(5);
 class SourceFactory {
     static create(key){
         var config = Config.get('source', key);
-        switch(config.type){
-            case "http":
+        switch(config.module){
+            case "http-source":
                 return new HttpSource(config);
                 break;
-            case "file":
+            case "file-source":
                 return new FileSource(config);
                 break;
             default:

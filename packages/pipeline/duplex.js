@@ -2,16 +2,16 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 22:46:38
+ * @Last Modified time: 2018-04-19 16:07:05
  */
 var Log =require('../util/log');
 var Stream = require('stream');
 
 var log = new Log(5);
 
-class Pipeline extends Stream.Duplex{
+class Duplex extends Stream.Duplex{
     constructor (config) {
-        super();
+        super(config);
         this.config = config;
         
         if (!this.config){
@@ -21,4 +21,4 @@ class Pipeline extends Stream.Duplex{
     }
 }
 
-module.exports = Pipeline;
+module.exports = Duplex;

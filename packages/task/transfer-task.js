@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-18 20:45:00
+ * @Last Modified time: 2018-04-19 16:58:33
  */
 var fs  = require('fs');
 var path = require('path');
@@ -11,7 +11,7 @@ var env = require('../core/env');
 var Task = require('../core/task');
 var File = require('../util/file');
 var SourceFactory = require('../core/source-factory');
-var PipelineFactory = require('../core/pipeline-factory');
+var PipelineFactory = require('../pipeline/factory');
 
 var log = new Log(5);
 
@@ -33,9 +33,10 @@ class TransferTask extends Task{
             log.warn('L1', 'FROM\t' , file);
         });
         var reader = importSource.createReadStream();
-        reader.on('end',function(){
-            rs.write('end');
-        });
+        // reader.on('end',function(){
+        //     rs.write('end');
+        //     console.log('end');
+        // });
         // var lineDuplexer = new LineDuplexer();
         // reader.pipe(lineDuplexer);
         // lineDuplexer.on('data',function(chunk){
@@ -48,15 +49,17 @@ class TransferTask extends Task{
         // 变
         pipelineConfig.forEach(
             (item) => {
-                console.log(item);
                 var pipeline = PipelineFactory.create(item);
                 rs = rs.pipe(pipeline);
             }
         );
-        var i =0;
+        console.time('AA');
         rs.on('data',function(chunk){
-            i++;
-            console.log(i);
+            // console.log(chunk.toString());
+        });
+        rs.on('end',function(chunk){
+            // console.log('end!!!++++');
+            console.timeEnd('AA');
         });
     }
     

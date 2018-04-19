@@ -2,11 +2,11 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 22:25:11
+ * @Last Modified time: 2018-04-19 16:43:28
  */
 var http = require('http')
 var qs=require('querystring');
-var HttpDuplexer = require('../pipeline/http-duplexer');
+var Connector = require('../pipeline/connector');
 var Log =require('../util/log');
 var Source = require('../core/source');
 var file = require('../util/file');
@@ -21,7 +21,7 @@ class HttpSource extends Source{
     createReadStream (requestParam){
         var self = this;
         // writer 为目标可写流
-        var duplexer = new HttpDuplexer();
+        var connector = new Connector();
 
         requestParam = requestParam || this.getRequestParam();
         
@@ -31,7 +31,7 @@ class HttpSource extends Source{
             res.setEncoding('utf8');
             // 定向到控制台
 
-            res.pipe(duplexer);
+            res.pipe(connector);
             res.on('end', function(){
                 self.emit('end', self);
             });
@@ -42,7 +42,7 @@ class HttpSource extends Source{
         });
         log.info('L5', 'FROM\t' , requestParam.hostname + ':' + requestParam.port + requestParam.path);
         req.end();
-        return duplexer;
+        return connector;
     }
     getRequestParam() {
         // 获取http请求的参数

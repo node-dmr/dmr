@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 17:48:04 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-11 16:03:25
+ * @Last Modified time: 2018-04-19 18:12:37
  * 读取配置文件
  * 读取模块安装目录../../config/main.conf
  * 读取主Project目录下/config所有配置
@@ -64,7 +64,7 @@ module.exports = Enviroment;
 
 function TransPathToAttr (configPath, filePath) {
     var path = filePath.substring(configPath.length + 1);
-    path = path.replace(/[\\|\-]/g,'.').replace(/\.conf/g,'');
+    path = path.replace(/[\\|\-|\/]/g,'.').replace(/\.conf/g,'');
     return path;
 }
 

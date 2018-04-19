@@ -2,10 +2,10 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 22:46:46
+ * @Last Modified time: 2018-04-19 17:29:37
  */
 var Log =require('../util/log');
-var Base = require('../core/Base');
+var Base = require('../core/base');
 
 var log = new Log(5);
 

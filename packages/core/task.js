@@ -2,10 +2,10 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 10:57:59 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 19:53:41
+ * @Last Modified time: 2018-04-19 17:26:23
  */
 var Log =require('../util/log');
-var Base = require('../core/Base');
+var Base = require('../core/base');
 var ActionLog = require('../core/action-log');
 var TimeFormatter = require('../formatter/time-formatter');
 var RandomKey = require('../util/random-key');

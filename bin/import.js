@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 20:48:19
+ * @Last Modified time: 2018-04-19 17:30:59
  */
 
 var Log = require('../packages/util/log');
@@ -11,7 +11,7 @@ var log = new Log(2);
 var program = require('commander');
 var path = require('path');
 var TaskFactory = require('../packages/core/task-factory');
-var Action = require('../packages/core/Action');
+var Action = require('../packages/core/action');
 var parseRange = require('./util/parse-range');
 
 program

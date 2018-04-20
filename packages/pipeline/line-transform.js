@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-20 16:13:47
+ * @Last Modified time: 2018-04-20 19:49:04
  */
 
 var Transform = require('../pipeline/transform');
@@ -11,11 +11,14 @@ class LineTransform extends Transform{
     constructor (config) {
         super(config);
         this.prevBuffer = new Buffer(0);
+        this.breaker = this.config && this.config["line-break"] || '\n';
     }
     _transform(buffer, encoding, callback){
+        var breaker = this.breaker;
+
         var from = 0,
             to = 0;
-        while((to = buffer.indexOf('\n', from)) > 0) {
+        while((to = buffer.indexOf(breaker, from)) > 0) {
             var lineBuffer = buffer.slice(from, to);
             if (this.prevBuffer.length) {
                 // 前次chunk，存在剩余buffer进行拼接
@@ -23,7 +26,7 @@ class LineTransform extends Transform{
                 this.prevBuffer = new Buffer(0);
             }
             this.push(lineBuffer);
-            from = to + 1;
+            from = to + breaker.length;
         }
         if (from < buffer.length) {
             // 剩余buffer留用

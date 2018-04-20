@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-19 17:11:10
+ * @Last Modified time: 2018-04-19 18:25:57
  */
 
 var Transform = require('../pipeline/transform');
@@ -30,7 +30,7 @@ class ExtractTransform extends Transform{
                         callback();
                         return;
                     } else {
-                        result.push(value);
+                        result.push(value || '-');
                     }
                 }
             }

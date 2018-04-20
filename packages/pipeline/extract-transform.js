@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-19 18:25:57
+ * @Last Modified time: 2018-04-20 16:14:30
  */
 
 var Transform = require('../pipeline/transform');
@@ -10,9 +10,11 @@ var util = require('util');
 class ExtractTransform extends Transform{
     constructor (config) {
         super(config);
+        this.lines = 0;
     }
     _transform (data, encoding, callback) {
         //  临时写入了业务逻辑，等待抽象
+        this.lines++;
         var partten = /(\w+=.*?)\s/g;// /\s(id=.*)\s(urlpack=\(.*\}\))\s(cmd=.*)/;
         var kvPartten = /(\w+)=(.*?)\s/;
         // 获取cloumes 配置

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-19 18:25:14
+ * @Last Modified time: 2018-04-20 15:33:26
  */
 var fs  = require('fs');
 var path = require('path');
@@ -33,17 +33,6 @@ class TransferTask extends Task{
             log.warn('L1', 'FROM\t' , file);
         });
         var reader = importSource.createReadStream();
-        // reader.on('end',function(){
-        //     rs.write('end');
-        //     console.log('end');
-        // });
-        // var lineDuplexer = new LineDuplexer();
-        // reader.pipe(lineDuplexer);
-        // lineDuplexer.on('data',function(chunk){
-        //     console.log(chunk.toString());
-        // });
-
-        // rs为起始source,遍历pipelineConfig,依次创建pipeline进行pipe操作
         var rs = reader;
         var pipelineConfig = config["pipeline"];
         // 变
@@ -56,6 +45,7 @@ class TransferTask extends Task{
         console.time('AA');
         rs.on('data',function(chunk){
             console.log(chunk.toString());
+            console.log('--------------------');
         });
         rs.on('end',function(chunk){
             // console.log('end!!!++++');

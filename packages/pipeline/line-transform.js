@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-19 17:04:16
+ * @Last Modified time: 2018-04-20 16:13:47
  */
 
 var Transform = require('../pipeline/transform');
@@ -30,7 +30,6 @@ class LineTransform extends Transform{
             this.prevBuffer = Buffer.concat([this.prevBuffer, buffer.slice(from, buffer.length)],
                 buffer.length - from + this.prevBuffer.length);
         }
-        this.push(buffer);
         callback();
     };
     _flush(callback){

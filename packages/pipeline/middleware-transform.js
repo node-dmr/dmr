@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-20 20:27:57
+ * @Last Modified time: 2018-04-23 01:18:55
  */
 
 var util = require('util');
@@ -13,43 +13,46 @@ class ExtractTransform extends Transform{
     constructor (config) {
         super(config);
         this.lines = 0;
+        this.chain = [];
+        this.index = 0;
+
+        var configs = this.config.middleware || [];
+        // 获取middlewares config
+        configs.forEach(config => {
+            // 创建middleware
+            var middleware = MiddleWareFactory.create(config.module, config);
+            this.use(middleware);
+        });
     }
     _transform (buffer, encoding, callback) {
-        var configs = this.config.middleware || [];
-        var rs = buffer;
-        configs.forEach(config => {
-            if (rs !== false){
-                var middleware = MiddleWareFactory.create(config.module, config);
-                if (Array.isArray(rs)) {
-                    if (middleware.config.input === "element"){
-                        var arr = [];
-                        rs.forEach(element => {
-                            var ele = middleware.handle(element);
-                            if (ele !== false) {
-                                arr.push(ele);
-                            }
-                        });
-                        rs = arr;
-                    } else {
-                        rs = middleware.handle(rs);
-                    }
-                } else {
-                    rs = middleware.handle(rs);
-                }
-                
-            
-                // console.log('ERR',rs,buffer.toString());
-                // 
-                // callback();
-            }
+        this.lines ++;
+        this.index = 0;
 
-        });
-        if (rs !== false) {
-            this.push(rs);
-            callback();
-        } else {
-            callback();
-        }
+                // next = middleware.handle(rs, next);
+                // 
+                // if (Array.isArray(rs)) {
+                //     if (middleware.config.input === "element"){
+                //         var arr = [];
+                //         rs.forEach(element => {
+                //             var ele = middleware.handle(element);
+                //             if (ele !== false) {
+                //                 arr.push(ele);
+                //             }
+                //         });
+                //         rs = arr;
+                //     } else {
+                //         rs = middleware.handle(rs);
+                //     }
+                // } else {
+                //     rs = middleware.handle(rs);
+                // }
+
+        console.log('final',this.next(buffer));
+        // if (data) {
+        //     this.push(data);
+        // }
+        console.log('------------');
+        callback();
         //  临时写入了业务逻辑，等待抽象
         // var partten = /(\w+=.*?)\s/g;// /\s(id=.*)\s(urlpack=\(.*\}\))\s(cmd=.*)/;
         // var kvPartten = /(\w+)=(.*?)\s/;
@@ -74,10 +77,20 @@ class ExtractTransform extends Transform{
         //     }
         // }
         // this.push(result.join('\t'));
-
-
-        
-    };
+    }
+    use (middleware) {
+        this.chain.push(middleware);
+    }
+    next (data) { //当调用next时执行index所指向的中间件
+        if (this.index >= this.chain.length){
+            console.log('end');
+            return data;
+        }
+        let middleware = this.chain[this.index];
+        console.log('P',this.index);
+        this.index++;
+        return middleware.handle(data, this.next.bind(this));
+    }
 }
 
 

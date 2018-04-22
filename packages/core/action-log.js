@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 18:18:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-18 00:15:45
+ * @Last Modified time: 2018-04-23 00:43:31
  */
 var path=require('path');
 var fs=require('fs');
@@ -26,7 +26,7 @@ var TimeFormatter = require('../formatter/time-formatter');
     static getLogByKey(key){
         var time = new Date().getTime();
         var rs;
-        for (var day = 0; day < 3; day++){
+        for (var day = 0; day < 5; day++){
             // 倒推三天日志，查找最近的key
             var t = new Date(new Date().getTime() - 1000*3600*24*day);
             var filename = TimeFormatter.format('YYYYMMDD.task.log',t);

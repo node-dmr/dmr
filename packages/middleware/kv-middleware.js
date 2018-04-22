@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-20 20:26:30
+ * @Last Modified time: 2018-04-23 01:08:04
  */
 var Log =require('../util/log');
 
@@ -19,7 +19,9 @@ class Middleware{
             // console.log(this.partten);
         }
     }
-    handle (string) {
+    handle (string, next) {
+        console.log(2222);
+        return next(string);
         var cloume = this.config.cloume || {};
         if (this.partten) {
             var kv = string.match(this.partten);

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-20 20:10:18
+ * @Last Modified time: 2018-04-23 01:15:53
  */
 var Log =require('../util/log');
 
@@ -18,10 +18,12 @@ class Middleware{
             this.partten = new RegExp(partten[1],partten[2]);
         }
     }
-    handle (string) {
+    handle (string, next) {
+        console.log(11111);
         if (Buffer.isBuffer(string)) string = string.toString();
         if (this.partten) {
-            return parttenSlice(this.partten, string);
+            let arr = parttenSlice(this.partten, string);
+            return next(arr);
         } else {
             return false;
             // & split 切割等待实现

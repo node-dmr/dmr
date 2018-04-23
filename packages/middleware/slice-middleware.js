@@ -2,16 +2,17 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 01:15:53
+ * @Last Modified time: 2018-04-23 13:26:18
  */
-var Log =require('../util/log');
+var Middleware = require('../middleware/middleware');
 
-var log = new Log(5);
+// var Log =require('../util/log');
 
-class Middleware{
+// var log = new Log(5);
+
+class SliceMiddleware extends Middleware{
     constructor (config) {
-        // super(config);
-        this.config = config || {};
+        super(config);
         var partten = this.config.partten;
         if (partten) {
             partten = partten.match(/\/(.*)\/(\w)*/);
@@ -19,13 +20,13 @@ class Middleware{
         }
     }
     handle (string, next) {
-        console.log(11111);
+        // console.log('slice-middleware');
         if (Buffer.isBuffer(string)) string = string.toString();
         if (this.partten) {
             let arr = parttenSlice(this.partten, string);
             return next(arr);
         } else {
-            return false;
+            return next(false);
             // & split 切割等待实现
         }
     }
@@ -36,4 +37,4 @@ function parttenSlice (partten, string) {
     return match || false;
 }
 
-module.exports = Middleware;
+module.exports = SliceMiddleware;

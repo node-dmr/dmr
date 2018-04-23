@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-20 20:27:39
+ * @Last Modified time: 2018-04-23 13:28:51
  */
 var fs  = require('fs');
 var path = require('path');
@@ -44,7 +44,7 @@ class TransferTask extends Task{
         );
         console.time('AA');
         rs.on('data',function(chunk){
-            // console.log(chunk);
+            console.log(chunk);
             // console.log('--------------------');
         });
         rs.on('end',function(chunk){

@@ -2,16 +2,13 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 01:08:04
+ * @Last Modified time: 2018-04-23 13:08:09
  */
-var Log =require('../util/log');
+var Middleware = require('../middleware/middleware');
 
-var log = new Log(5);
-
-class Middleware{
+class KvMiddleware extends Middleware{
     constructor (config) {
-        // super(config);
-        this.config = config;
+        super(config);
         var partten = this.config.partten;
         if (partten) {
             partten = partten.match(/\/(.*)\/(\w)*/);
@@ -20,8 +17,6 @@ class Middleware{
         }
     }
     handle (string, next) {
-        console.log(2222);
-        return next(string);
         var cloume = this.config.cloume || {};
         if (this.partten) {
             var kv = string.match(this.partten);
@@ -29,18 +24,18 @@ class Middleware{
             var value = kv[2];
             if (cloume[key]){
                 if(cloume[key].necessary === "true" && !value){
-                    return false;
+                    return next(false);
                 }
-                return [key, value];
+                return next([key, value]);
             } else {
-                return false;
+                return next(false);
             }
             
         } else {
-            return false;
+            return next(false);
         }
     }
 
 }
 
-module.exports = Middleware;
+module.exports = KvMiddleware;

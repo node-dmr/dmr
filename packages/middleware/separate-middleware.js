@@ -2,57 +2,39 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 14:51:23
+ * @Last Modified time: 2018-04-23 18:28:13
  */
 var Middleware = require('../middleware/middleware');
+
+// var Log =require('../util/log');
+
+// var log = new Log(5);
 
 class SeparateMiddleware extends Middleware{
     constructor (config) {
         super(config);
-        this.type = null;
-        this.middlewares = [];
-        // 在初始化时候引入Factory，否则会存在循环依赖
-        var MiddleWareFactory =  require('../middleware/factory');
-
-        var middlewareConfig = this.config.each;
-        if (!middlewareConfig){
-            throw new Error('SeparateMiddleware need middleware configs!');
-        } else if (Array.isArray(middlewareConfig)){
-            this.type = 'middlewares';
-            middlewareConfig.forEach(conf => {
-                // 创建middleware
-                var middleware = MiddleWareFactory.create(conf.module, conf);
-                this.middlewares.push(MiddleWareFactory.create(conf.module, conf));
-            });
-        } else if (middlewareConfig.module) {
-            this.type = 'middleware';
-            this.middlewares.push(MiddleWareFactory.create(middlewareConfig.module, middlewareConfig));
+        var partten = this.config.partten;
+        if (partten) {
+            partten = partten.match(/\/(.*)\/(\w)*/);
+            this.partten = new RegExp(partten[1],partten[2]);
         }
     }
-    handle (data, next) {
-        var result = [];
-        if(!Array.isArray(data)){
-            // throw new Error('input data should be an Array!');
+    handle (string, next) {
+        // console.log('slice-middleware');
+        if (Buffer.isBuffer(string)) string = string.toString();
+        if (this.partten) {
+            let arr = parttenSlice(this.partten, string);
+            return next(arr);
+        } else {
             return next(false);
-        } else if(this.type){
-            data.forEach((element, index) => {
-                let cursor = 0;
-                if (this.type == "middlewares") {
-                    cursor = index;
-                    // console.log(cursor,this.middlewares.length);
-                }
-                let middleware = this.middlewares[cursor];
-                if (middleware) {
-                    middleware.handle(element,function(ele){
-                        if (ele) result.push(ele);
-                    });
-                }
-            });
+            // & split 切割等待实现
         }
-
-        return next(result);
-        
     }
+}
+
+function parttenSlice (partten, string) {
+    var match = string.match(partten);
+    return match || false;
 }
 
 module.exports = SeparateMiddleware;

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-22 23:24:28 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 12:42:11
+ * @Last Modified time: 2018-04-23 16:58:17
  */
 class Middleware {
     constructor (config) {
@@ -14,10 +14,6 @@ class Middleware {
         }
         return next;
     }
-    // _handle (data) {
-    //      return data;
-    // }
-
 }
 
 module.exports = Middleware;

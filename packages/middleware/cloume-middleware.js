@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 16:10:35
+ * @Last Modified time: 2018-04-23 19:06:47
  */
 var Middleware = require('../middleware/middleware');
 
@@ -15,15 +15,15 @@ class CloumeMiddleware extends Middleware{
             this.partten = new RegExp(partten[1],partten[2]);
             // console.log(this.partten);
         }
+        this.prefix = this.config.prefix || '';
     }
     handle (string, next) {
         if (this.partten) {
             var kv = string.match(this.partten);
             if (kv && kv[1]){
-                return next({
-                    name: kv[1],
-                    value: kv[2]
-                });
+                let rs= {};
+                rs[this.prefix + kv[1]] = kv[2];
+                return next(rs);
             } else {
                 return next(false);
             }

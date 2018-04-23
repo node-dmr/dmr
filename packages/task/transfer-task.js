@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 15:09:43
+ * @Last Modified time: 2018-04-23 18:57:18
  */
 var fs  = require('fs');
 var path = require('path');
@@ -35,7 +35,6 @@ class TransferTask extends Task{
         var reader = importSource.createReadStream();
         var rs = reader;
         var pipelineConfig = config["pipeline"];
-    
         // 获得管道配置
         pipelineConfig.forEach(
             (item) => {
@@ -50,6 +49,7 @@ class TransferTask extends Task{
             console.log(new Array(header.join("\t").length).join('-'));
         });
         rs.on('data',function(chunk){
+            //console.log(chunk);
             console.log(chunk.join('\t'));
         });
         rs.on('end',function(chunk){

@@ -2,11 +2,11 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 16:29:34
+ * @Last Modified time: 2018-04-23 19:15:04
  */
 var Middleware = require('../middleware/middleware');
 
-class UniteMiddleware extends Middleware{
+class MapMiddleware extends Middleware{
     constructor (config) {
         super(config);
         this.type = null;
@@ -15,21 +15,18 @@ class UniteMiddleware extends Middleware{
             this.header.push(element.name || element);
         });
     }
-    handle (array, next) {
-        if(!array || array.length === 0){
+    handle (data, next) {
+        if(!data){
             return next(false);
         }
         var result = [];
         var header = this.header;
         var mark = true;
-
-        array.forEach(element => {
-            var index = header.indexOf(element.name);
+        Object.keys(data).forEach(key => {
+            var index = header.indexOf(key);
             if (index > -1) {
                 // 需要覆盖
-                if (!result[index] || this.config.overwriteMode){
-                    result[index] = element.value;
-                }
+                result[index] = data[key];
             }
         });
         header.forEach(name => {
@@ -55,4 +52,4 @@ function validate (value, config) {
     }
     return true;
 }
-module.exports = UniteMiddleware;
+module.exports = MapMiddleware;

@@ -2,11 +2,11 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 13:08:09
+ * @Last Modified time: 2018-04-23 16:10:35
  */
 var Middleware = require('../middleware/middleware');
 
-class KvMiddleware extends Middleware{
+class CloumeMiddleware extends Middleware{
     constructor (config) {
         super(config);
         var partten = this.config.partten;
@@ -17,20 +17,16 @@ class KvMiddleware extends Middleware{
         }
     }
     handle (string, next) {
-        var cloume = this.config.cloume || {};
         if (this.partten) {
             var kv = string.match(this.partten);
-            var key = kv[1];
-            var value = kv[2];
-            if (cloume[key]){
-                if(cloume[key].necessary === "true" && !value){
-                    return next(false);
-                }
-                return next([key, value]);
+            if (kv && kv[1]){
+                return next({
+                    name: kv[1],
+                    value: kv[2]
+                });
             } else {
                 return next(false);
             }
-            
         } else {
             return next(false);
         }
@@ -38,4 +34,4 @@ class KvMiddleware extends Middleware{
 
 }
 
-module.exports = KvMiddleware;
+module.exports = CloumeMiddleware;

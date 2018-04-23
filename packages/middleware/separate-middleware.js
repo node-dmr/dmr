@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 13:31:21
+ * @Last Modified time: 2018-04-23 14:51:23
  */
 var Middleware = require('../middleware/middleware');
 
@@ -39,7 +39,7 @@ class SeparateMiddleware extends Middleware{
                 let cursor = 0;
                 if (this.type == "middlewares") {
                     cursor = index;
-                    console.log(cursor,this.middlewares.length);
+                    // console.log(cursor,this.middlewares.length);
                 }
                 let middleware = this.middlewares[cursor];
                 if (middleware) {

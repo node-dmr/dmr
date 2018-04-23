@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 13:26:55
+ * @Last Modified time: 2018-04-23 15:17:32
  */
 
 var util = require('util');
@@ -18,9 +18,17 @@ class ExtractTransform extends Transform{
         this.middleware = MiddleWareFactory.create(middlewareConfig.module, middlewareConfig);
     }
     _transform (buffer, encoding, callback) {
-        this.middleware.handle(buffer, result => {
-            if (result) {
-                this.push(result);
+        this.middleware.handle(buffer, line => {
+            if (line && line.result) {
+                // console.log(extra);
+                if (this.lines == 0 && line && line.header) {
+                    this.emit('header', line.header);
+                }
+                if (line.header.length > 10){
+                    // console.log(buffer.toString());
+                }
+                this.lines ++;
+                this.push(line.result);
             }
             callback();
         });

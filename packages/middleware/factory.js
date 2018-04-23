@@ -2,16 +2,17 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 13:27:34
+ * @Last Modified time: 2018-04-23 14:28:47
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
 var env = require('../core/env');
 var Config = require('../core/config');
 var SliceMiddleware = require('../middleware/slice-middleware');
-var KvMiddleware = require('../middleware/kv-middleware');
+var CloumeMiddleware = require('../middleware/cloume-middleware');
 var ChainMiddleware = require('../middleware/chain-middleware');
 var SeparateMiddleware = require('../middleware/separate-middleware');
+var UniteMiddleware =  require('../middleware/unite-middleware');
 
 var log = new Log(5);
 class Factory {
@@ -28,9 +29,12 @@ class Factory {
             case "slice-middleware":
                 return new SliceMiddleware(config);
                 break;
-            case "kv-middleware":
+            case "cloume-middleware":
                 //return getCache(KvMiddleware, key, config);
-                return new KvMiddleware(config);
+                return new CloumeMiddleware(config);
+                break;
+            case "unite-middleware":
+                return new UniteMiddleware(config);
                 break;
             default:
                 break;

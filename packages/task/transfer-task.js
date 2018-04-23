@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 13:28:51
+ * @Last Modified time: 2018-04-23 15:09:43
  */
 var fs  = require('fs');
 var path = require('path');
@@ -35,17 +35,22 @@ class TransferTask extends Task{
         var reader = importSource.createReadStream();
         var rs = reader;
         var pipelineConfig = config["pipeline"];
-        // 变
+    
+        // 获得管道配置
         pipelineConfig.forEach(
             (item) => {
                 var pipeline = PipelineFactory.create(item);
+                // 将rs输出定向到pipeline，并将pipeline赋值给rs，成为下个管道的输入
                 rs = rs.pipe(pipeline);
             }
         );
         console.time('AA');
+        rs.on('header',function(header){
+            console.log(header.join('\t'));
+            console.log(new Array(header.join("\t").length).join('-'));
+        });
         rs.on('data',function(chunk){
-            console.log(chunk);
-            // console.log('--------------------');
+            console.log(chunk.join('\t'));
         });
         rs.on('end',function(chunk){
             console.log('end!!!++++');

@@ -2,22 +2,50 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-13 14:18:18
+ * @Last Modified time: 2018-04-24 13:39:41
  */
-var http = require('http')
-var qs=require('querystring');
-var path=require('path');
-var fs=require('fs');
-var env = require('../core/env');
+var ftp = require('ftp')
+var Connector = require('../pipeline/connector');
+var Client = require('ftp');
 var Log =require('../util/log');
 var Source = require('../core/source');
-var File = require('../util/file');
+var file = require('../util/file');
+var RangeFormatter = require('../formatter/range-formatter');
 var log = new Log(5);
 
 class FtpSource extends Source{
     constructor(config){
         super(config);
-        this.formatter;
+    }
+
+    createReadStream (requestParam){
+        var self = this;
+        // writer 为目标可写流
+        var connector = new Connector();
+
+        var rangeFormatter = new RangeFormatter(this.option.range);
+        var path = rangeFormatter.format(this.config.path);
+        
+        log.info('L5', 'FROM\t' , 'ftp://' + this.config.host + ':' + this.config.port + path);
+        var client = new Client();
+        client.on('ready', function() {
+            client.get(path, function(err, stream) {
+            if (err) throw err;
+            stream.once('close', function() {
+                client.end();
+                self.emit('end', self);
+            });
+            stream.pipe(connector);
+          });
+        });
+        
+        // connect to localhost:21 as anonymous
+        client.connect({
+          host: this.config.host,
+          port: this.config.port
+        });
+        
+        return connector;
     }
 }
 

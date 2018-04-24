@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 18:57:18
+ * @Last Modified time: 2018-04-24 10:55:44
  */
 var fs  = require('fs');
 var path = require('path');
@@ -43,18 +43,21 @@ class TransferTask extends Task{
                 rs = rs.pipe(pipeline);
             }
         );
-        console.time('AA');
-        rs.on('header',function(header){
-            console.log(header.join('\t'));
-            console.log(new Array(header.join("\t").length).join('-'));
+
+        var oputSource = SourceFactory.create(config["output-source"]);
+        oputSource.set('range', action.range);
+        oputSource.set('file', action.file);
+        oputSource.on('create', function (file) {
+            log.warn('L1', 'TO\t' , file);
         });
-        rs.on('data',function(chunk){
-            //console.log(chunk);
-            console.log(chunk.join('\t'));
-        });
-        rs.on('end',function(chunk){
-            console.log('end!!!++++');
-            console.timeEnd('AA');
+        var writer = oputSource.createWriteStream();
+
+        rs.pipe(writer);
+
+        log.time('Last for');
+
+        writer.on('finish',function(chunk){
+            log.timeEnd('Last for');
         });
     }
     

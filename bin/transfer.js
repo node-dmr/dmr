@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:20:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-19 17:30:59
+ * @Last Modified time: 2018-04-24 09:54:41
  */
 var path = require('path');
 var program = require('commander');
@@ -28,7 +28,7 @@ program.on('--help', function(){
   log.info('');
   log.info('  Examples:');
   log.info('');
-  log.info('    $ transfer -t search_ac -k Y2BLE');
+  log.info('    $ transfer -t search_ac -k F9ELA/H8LNP');
   log.info('    $ transfer -t search_ac -s 20180401.1200.00 -r 10s');
   log.info('    $ transfer -t search_ac -s 20180401.1200.00 -e 20180401120010 -p speedup-ace');
   log.info('');

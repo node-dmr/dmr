@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 18:30:39
+ * @Last Modified time: 2018-04-24 21:13:14
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -12,7 +12,7 @@ var CloumeMiddleware = require('../middleware/cloume-middleware');
 var ChainMiddleware = require('../middleware/chain-middleware');
 var SeparateMiddleware = require('../middleware/separate-middleware');
 var MultipleMiddleware = require('../middleware/multiple-middleware');
-var JoinMiddleware = require('../middleware/join-middleware');
+var MergeMiddleware = require('../middleware/merge-middleware');
 var MapMiddleware =  require('../middleware/map-middleware');
 var SingleMiddleWare = require('../middleware/single-middleware');
 var RegexpMiddleWare = require('../middleware/regexp-middleware');
@@ -40,8 +40,8 @@ class Factory {
             case "map-middleware":
                 return new MapMiddleware(config);
                 break;
-            case "join-middleware":
-                return new JoinMiddleware(config);
+            case "merge-middleware":
+                return new MergeMiddleware(config);
                 break;
             case "single-middleware":
                 return new SingleMiddleWare(config);

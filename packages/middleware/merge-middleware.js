@@ -2,11 +2,11 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 17:47:18
+ * @Last Modified time: 2018-04-24 21:13:44
  */
 var Middleware = require('../middleware/middleware');
 
-class JoinMiddleware extends Middleware{
+class MergeMiddleware extends Middleware{
     constructor (config) {
         config = config || {
             overwriteMode: false
@@ -32,4 +32,4 @@ class JoinMiddleware extends Middleware{
     }
 }
 
-module.exports = JoinMiddleware;
+module.exports = MergeMiddleware;

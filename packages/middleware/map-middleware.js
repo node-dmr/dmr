@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 19:15:04
+ * @Last Modified time: 2018-04-24 20:39:50
  */
 var Middleware = require('../middleware/middleware');
 
@@ -11,8 +11,12 @@ class MapMiddleware extends Middleware{
         super(config);
         this.type = null;
         this.header = [];
+        this.rules = {};
         this.config.cloume.forEach(element => {
             this.header.push(element.name || element);
+            if (typeof element === "object") {
+                this.rules[element.name] = element;
+            } 
         });
     }
     handle (data, next) {
@@ -29,9 +33,9 @@ class MapMiddleware extends Middleware{
                 result[index] = data[key];
             }
         });
-        header.forEach(name => {
+        header.forEach((name, index) => {
             // 如不存在或者可以覆盖
-            if (!validate(result[name], this.config.cloume[name])){
+            if (!validate(result[index], this.rules[name])){
                 // 不合法，此行数据作废
                 mark = false;
             }

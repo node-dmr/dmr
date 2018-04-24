@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 18:12:08 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-19 13:37:39
+ * @Last Modified time: 2018-04-24 18:14:21
  * 指定filePath，遍历所有文件并提供文件pathlist
  * 存在第二个方法参数时，采用异步方式回调处理，否则同步返回filePathList
  */
@@ -81,6 +81,7 @@ function readJsonSync (filePath) {
         encoding: 'utf-8'
     });
     // 支持 JSON 文件写 // 注释
+    // 这里还有点坑 暂时不支持，后面换用config 组件//
     txt = txt.replace(/\/\/.*[\r\n]/g,'');
     try{
         var data = JSON.parse(txt);

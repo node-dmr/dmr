@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 22:28:07
+ * @Last Modified time: 2018-04-24 18:27:55
  */
 var Middleware = require('../middleware/middleware');
 
@@ -24,7 +24,11 @@ class MultipleMiddleware extends Middleware{
                     // 创建middleware
                     var middleware = MiddleWareFactory.create(conf.module, conf);
                     this.middlewares.push(MiddleWareFactory.create(conf.module, conf));
-                } else {
+                } else if (typeof conf === "string"){
+                    var middleware = MiddleWareFactory.create("single-middleware",
+                            { module: 'single-middleware', name: conf });
+                    this.middlewares.push(middleware);
+                }else{
                     this.middlewares.push(null);
                 }
             });

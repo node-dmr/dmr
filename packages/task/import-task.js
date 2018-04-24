@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 09:49:38
+ * @Last Modified time: 2018-04-24 15:58:43
  */
 var fs  = require('fs');
 var path = require('path');
@@ -58,7 +58,7 @@ class ImportTask extends Task{
         importSource.set('range', action.range);
         importSource.createReadStream().pipe(writer);
         
-        importSource.on('end', function(){
+        writer.on('finish', function(){
             log.warn('L5', '\r\nSucc\tSuccessful end! Remeber The Key : ' + self.key);
             self.emit('end');
         });

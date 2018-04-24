@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 10:35:15
+ * @Last Modified time: 2018-04-24 16:32:07
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -11,6 +11,7 @@ var Config = require('../core/config.js');
 var LineTransform = require('../pipeline/line-transform')
 var MiddlewareTransform = require('../pipeline/middleware-transform');
 var JoinTransform = require('../pipeline/join-transform');
+var zlib = require("zlib");
 
 var log = new Log(5);
 class Factory {
@@ -26,6 +27,13 @@ class Factory {
                 break;
             case "join-transform":
                 return new JoinTransform(config);
+                break;
+            case "zlib":
+                if (config.method == "gunzip") {
+                    return zlib.createGunzip();
+                } else {
+                    throw new Error('Undefined method!');
+                }
                 break;
             default:
                 break;

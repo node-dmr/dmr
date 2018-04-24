@@ -34,18 +34,10 @@ later.date.localTime();
   //   console.log(2, new Date());
   // }, textSched2);
  
-  var Client = require('ftp');
-  var fs = require('fs');
-
-  var c = new Client();
-  c.on('ready', function() {
-    c.get('/home/work/speedup_use/20180424/01.gz', function(err, stream) {
-      if (err) throw err;
-      stream.once('close', function() { c.end(); });
-      stream.pipe(fs.createWriteStream('foo.local-copy.txt'));
-    });
-  });
-  // connect to localhost:21 as anonymous
-  c.connect({
-    host:"hz01-mms-vgbi08.hz01.baidu.com"
-  });
+  var fs = require("fs");  
+  var zlib = require('zlib');  
+    
+  // 解压 input.txt.gz 文件为 input.txt  
+  // fs.createReadStream('d:\\work\\speedup\\speedup-ace\\data\\log\\scraft-cus\\20180423.15-1.gz')  
+  //     .pipe(zlib.createGunzip())  
+  //     .pipe(fs.createWriteStream('input.txt'));

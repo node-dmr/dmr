@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-18 00:47:09
+ * @Last Modified time: 2018-04-24 16:26:37
  */
 var http = require('http')
 var qs=require('querystring');
@@ -40,9 +40,15 @@ class FileSource extends Source{
             File.mkdirsSync(baseUrl);
         }
 
+        var encoding = 'utf-8';
+        if (this.config.encoding !== undefined) {
+            // 要兼容 null encoding
+            encoding = this.config.encoding;
+        }
+        console.log("encoding",encoding,file);
         // 如果文件创建成功则writer定向为文件写流
         var writer = fs.createWriteStream(file, {
-            encoding: 'utf8'
+            encoding: encoding
         });
         this.emit('create', file, writer);
         return writer;
@@ -64,13 +70,18 @@ class FileSource extends Source{
         } else {
             file = this.option.file;
         }
+        var encoding = 'utf-8';
+        if (this.config.encoding !== undefined) {
+            // 要兼容 null encoding
+            encoding = this.config.encoding;
+        }
         var bufferSize = (this.config["read-buffer-size"] || 10) * 1024;
         var reader = fs.createReadStream(file, {
-            encoding: 'utf8',
+            encoding: encoding,
             highWaterMark: bufferSize
         });
         this.emit('create', file, reader);
-        return reader;
+       return reader;
     }
 
 }

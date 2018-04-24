@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 13:39:41
+ * @Last Modified time: 2018-04-24 15:41:22
  */
 var ftp = require('ftp')
 var Connector = require('../pipeline/connector');
@@ -31,11 +31,11 @@ class FtpSource extends Source{
         client.on('ready', function() {
             client.get(path, function(err, stream) {
             if (err) throw err;
-            stream.once('close', function() {
+            stream.pipe(connector);
+            stream.on('close', function() {
                 client.end();
                 self.emit('end', self);
             });
-            stream.pipe(connector);
           });
         });
         

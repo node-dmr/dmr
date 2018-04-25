@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 10:43:08
+ * @Last Modified time: 2018-04-25 15:27:04
  */
 
 var util = require('util');
@@ -19,18 +19,8 @@ class ExtractTransform extends Transform{
     }
     _transform (buffer, encoding, callback) {
         this.middleware.handle(buffer, line => {
-            if (line && line.result) {
-                // console.log(extra);
-                if (this.lines == 0 && line && line.header) {
-                    this.emit('header', {
-                        "header": line.header
-                    });
-                }
-                if (line.header.length > 10){
-                    // console.log(buffer.toString());
-                }
-                this.lines ++;
-                this.push(line.result);
+            if (line) {
+                this.push(line);
             }
             callback();
         });

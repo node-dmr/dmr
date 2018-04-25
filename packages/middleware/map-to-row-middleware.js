@@ -2,17 +2,17 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 11:07:47
+ * @Last Modified time: 2018-04-25 15:23:29
  */
 var Middleware = require('../middleware/middleware');
 
-class MapMiddleware extends Middleware{
+class MapToRowMiddleware extends Middleware{
     constructor (config) {
         super(config);
         this.type = null;
         this.header = [];
         this.rules = {};
-        this.config.cloume.forEach(element => {
+        this.config.cloumes.forEach(element => {
             this.header.push(element.name || element);
             if (typeof element === "object") {
                 this.rules[element.name] = element;
@@ -57,4 +57,4 @@ function validate (value, config) {
     }
     return true;
 }
-module.exports = MapMiddleware;
+module.exports = MapToRowMiddleware;

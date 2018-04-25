@@ -2,12 +2,13 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 13:15:41 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 16:02:09
+ * @Last Modified time: 2018-04-25 13:18:41
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
 var ImportTask = require('../task/import-task.js');
 var TransferTask = require('../task/transfer-task.js');
+var CalculateTask = require('../task/calculate-task.js');
 var Config = require('../core/config.js');
 
 var log = new Log(5);
@@ -30,6 +31,9 @@ class TaskFactory {
                 break;
             case  'transfer':
                 task = new TransferTask(action);
+                break;
+            case 'calculate':
+                task = new CalculateTask(action);
                 break;
             default:
                 break;

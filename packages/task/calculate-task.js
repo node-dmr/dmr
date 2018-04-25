@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 14:21:24
+ * @Last Modified time: 2018-04-25 13:19:10
  */
 var fs  = require('fs');
 var path = require('path');
@@ -15,7 +15,7 @@ var PipelineFactory = require('../pipeline/factory');
 
 var log = new Log(5);
 
-class TransferTask extends Task{
+class CalculateTask extends Task{
     constructor(action){
         super(action);
     }
@@ -34,7 +34,7 @@ class TransferTask extends Task{
         });
         var reader = importSource.createReadStream();
         var rs = reader;
-        var pipelineConfig = config["pipeline"];
+        var pipelineConfig = config["pipeline"] || [];
         // 获得管道配置
         pipelineConfig.forEach(
             (item) => {
@@ -43,28 +43,22 @@ class TransferTask extends Task{
                 rs = rs.pipe(pipeline);
             }
         );
-        if (config["output-source"]) {
-            var oputSource = SourceFactory.create(config["output-source"]);
-            oputSource.set('range', action.range);
-            oputSource.set('file', action.file);
-            oputSource.on('create', function (file) {
-                log.warn('L1', 'TO\t' , file);
-            });
-            writer = oputSource.createWriteStream();   
-        }
 
-        log.time('Transfer last for');
+        var oputSource = SourceFactory.create(config["output-source"]);
+        oputSource.set('range', action.range);
+        oputSource.set('file', action.file);
+        oputSource.on('create', function (file) {
+            log.warn('L1', 'TO\t' , file);
+        });
+        var writer = oputSource.createWriteStream();
+
+        log.time('Calculate last for');
         rs.pipe(writer);
-        // var lines = 0;
-        // rs.on('data',function(chunk){
-        //     console.log(lines, chunk);
-        //     lines ++;
-        // });
         writer.on('finish',function(chunk){
-            log.timeEnd('Transfer last for');
+            log.timeEnd('Calculate last for');
         });
     }
     
 }
 
-module.exports = TransferTask;
+module.exports = CalculateTask;

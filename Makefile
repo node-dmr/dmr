@@ -26,9 +26,14 @@ exp:
 	npm run example
 
 install:
+	npm install forever -g
 	npm install
-#	apm install
 
+start:
+	forever start -o out.log -e err.log -a bin/test.js
+#	apm install
+stop:
+	forever stop bin/test.js
 update-apm:
 #	apm install --save
 

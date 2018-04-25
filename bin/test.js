@@ -4,40 +4,9 @@ Log.setGlobalLev(5);
 
 var stream = require('stream');
 var util = require('util');
-var later = require('later');
-// var action = "{\"file\":\"D:\\\\work\\\\speedup\\\\ace\\\\rs0.log\",\"range\":{\"startTimeStamp\":1523952101118,\"endTimeStamp\":1523952102118},\"task-type\":\"import\",\"task-id\":\"search_ac\"}";
 
-// var TaskFactory = require('../packages/core/task-factory');
-// var Action = require('../packages/core/action');
-
-// var task = TaskFactory.create(Action.parse(action));
-
-// task.run();
-// var b = new Buffer('1234567');
-// var pos = b.indexOf('3');
-// var c =  b.slice(0, pos);
-// var d =  b.slice(pos+1);
-// console.log(c.toString(),d.toString(),b.toString());
-
-later.date.localTime();
-  // will fire every 5 minutes
-  // var textSched1 = later.parse.text('every 5 second');
-  // var textSched2 = later.parse.text('every 3 second');
-  // // execute logTime one time on the next occurrence of the text schedule
-  // //var timer = later.setTimeout(logTime, textSched);
-
-  // var timer1 = later.setInterval(function(){
-  //   console.log(1, new Date());
-  // }, textSched1);
-
-  // var timer2 = later.setInterval(function(){
-  //   console.log(2, new Date());
-  // }, textSched2);
+var schedule = require('node-schedule');
  
-  var fs = require("fs");  
-  var zlib = require('zlib');  
-    
-  // 解压 input.txt.gz 文件为 input.txt  
-  // fs.createReadStream('d:\\work\\speedup\\speedup-ace\\data\\log\\scraft-cus\\20180423.15-1.gz')  
-  //     .pipe(zlib.createGunzip())  
-  //     .pipe(fs.createWriteStream('input.txt'));
+var j = schedule.scheduleJob('45 * * * * *', function(){
+  console.log('The answer to life, the universe, and everything!');
+});

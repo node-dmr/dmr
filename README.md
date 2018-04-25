@@ -26,6 +26,26 @@ ACE 主要处理“原数据”至“报表数据”产出过程，不负责数�
     }
 ```
 
+### 初始化
+
+通过执行以下命令，会完成依赖的npm包安装，该命令会安装一个全局的模块forever以便于启动Service
+
+```bash
+    # 安装依赖
+    make install
+
+    # 如果您需要启动Service
+    make start
+
+    # 查看Service
+    forever list
+
+    # 停止
+    make stop
+```
+
+关于Service的相关配置会在 **Service** 章节介绍
+
 ### 使用Bin
 
 下面以download数据为例，了解bin的常规使用方法

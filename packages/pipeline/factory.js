@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 21:21:17
+ * @Last Modified time: 2018-04-26 00:14:24
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -12,6 +12,7 @@ var LineTransform = require('../pipeline/transform-line')
 var MiddlewareTransform = require('../pipeline/transform-middleware');
 var TableTransform = require('../pipeline/transform-table');
 var JoinTransform = require('../pipeline/transform-join');
+var DimMapperTransform = require('../pipeline/transform-dim-mapper');
 var zlib = require("zlib");
 
 var log = new Log(5);
@@ -38,6 +39,9 @@ class Factory {
                 break;
             case "transform-join":
                 return new JoinTransform(config);
+                break;
+            case "transform-dim-mapper":
+                return new DimMapperTransform(config);
                 break;
             case "zlib":
                 if (config.action == "gunzip") {

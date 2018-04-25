@@ -2,9 +2,9 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 10:57:59 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 21:26:53
+ * @Last Modified time: 2018-04-25 21:37:28
  */
-var Log =require('../util/log');
+var Log = require('../util/log');
 var Base = require('../core/base');
 var ActionLog = require('../core/action-log');
 var TimeFormatter = require('../formatter/formatter-time');

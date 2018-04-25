@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 21:09:46
+ * @Last Modified time: 2018-04-26 01:39:34
  */
 
 var Transform = require('../pipeline/transform');
@@ -18,9 +18,9 @@ class Formater extends Transform{
         config["column-separate"] = config["column-separate"] || "\t";
         config["line-separate"] = config["line-separate"] || "\n";
 
-        this.middleware = new MapToRowMiddleware({
-            "columns": config.columns
-        });
+        if (config.columns !== "all") {
+            this._setMiddleware(config.columns);
+        }
         if (!config.readableObjectMode) {
             this.on('header', line => {
                 this.push(line.header.join(config["column-separate"]) + config["line-separate"]);
@@ -28,7 +28,17 @@ class Formater extends Transform{
         }
         this.lines = 0;
     }
+    _setMiddleware(columns){
+        this.middleware = new MapToRowMiddleware({
+            "columns": columns
+        });
+    }
     _transform(object, encoding, callback){
+        if (this.lines === 0 && this.config.columns === "all"){
+            
+            this._setMiddleware(Object.keys(object));
+        }
+
         this.middleware.handle(object, line => {
             if (line && line.result) {
                 if (this.lines === 0){

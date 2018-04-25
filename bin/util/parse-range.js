@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 20:14:34 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-18 00:12:59
+ * @Last Modified time: 2018-04-25 11:40:25
  */
 var TimeFormatter = require('../../packages/formatter/time-formatter');
 var Log = require('../../packages/util/log');
@@ -25,7 +25,7 @@ module.exports = function(program) {
             var prev = TimeFormatter.parseInterval(startDatetime);
             startDatetime =  new Date(new Date().getTime() + prev * 1);
         } else {
-            startDatetime = TimeFormatter.fillDatetime(startDatetime.replace(/[\-\:\\]/g,''));
+            startDatetime = TimeFormatter.fillDatetime(startDatetime.replace(/[\-\:\\\.]/g,''));
             startDatetime = TimeFormatter.parseDatetime(startDatetime, 'HHHHMMDDhhmmss');
         }
         range.setStartDatetime(startDatetime);

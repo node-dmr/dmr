@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 10:39:49
+ * @Last Modified time: 2018-04-25 21:07:29
  */
 var http = require('http')
 var qs=require('querystring');
@@ -10,9 +10,9 @@ var path=require('path');
 var fs=require('fs');
 var env = require('../core/env');
 var Log =require('../util/log');
-var Source = require('../core/source');
+var Source = require('../source/source');
 var File = require('../util/file');
-var RangeFormatter = require('../formatter/range-formatter');
+var RangeFormatter = require('../formatter/formatter-range');
 var log = new Log(5);
 
 class FileSource extends Source{

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 15:23:29
+ * @Last Modified time: 2018-04-25 20:38:16
  */
 var Middleware = require('../middleware/middleware');
 
@@ -12,7 +12,7 @@ class MapToRowMiddleware extends Middleware{
         this.type = null;
         this.header = [];
         this.rules = {};
-        this.config.cloumes.forEach(element => {
+        this.config.columns.forEach(element => {
             this.header.push(element.name || element);
             if (typeof element === "object") {
                 this.rules[element.name] = element;

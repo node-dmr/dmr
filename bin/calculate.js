@@ -2,12 +2,12 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:20:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 13:05:19
+ * @Last Modified time: 2018-04-25 21:06:14
  */
 var path = require('path');
 var program = require('commander');
 var Log = require('../packages/util/log');
-var TaskFactory = require('../packages/core/task-factory');
+var TaskFactory = require('../packages/task/factory');
 var Action = require('../packages/core/action');
 var parseRange = require('./util/parse-range');
 var parseAction = require('./util/parse-action');

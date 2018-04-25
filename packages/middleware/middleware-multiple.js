@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 18:27:55
+ * @Last Modified time: 2018-04-25 21:19:36
  */
 var Middleware = require('../middleware/middleware');
 
@@ -25,8 +25,8 @@ class MultipleMiddleware extends Middleware{
                     var middleware = MiddleWareFactory.create(conf.module, conf);
                     this.middlewares.push(MiddleWareFactory.create(conf.module, conf));
                 } else if (typeof conf === "string"){
-                    var middleware = MiddleWareFactory.create("single-middleware",
-                            { module: 'single-middleware', name: conf });
+                    var middleware = MiddleWareFactory.create("single",
+                            { module: 'middleware-single', name: conf });
                     this.middlewares.push(middleware);
                 }else{
                     this.middlewares.push(null);

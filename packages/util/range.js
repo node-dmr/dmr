@@ -2,10 +2,10 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-17 19:57:23
+ * @Last Modified time: 2018-04-25 21:08:32
  * 时间范围Range模块
  */
-var TimeFormatter = require('../formatter/time-formatter');
+var TimeFormatter = require('../formatter/formatter-time');
 var Parameters = require('../core/parameters');
 
 class Range extends Parameters{

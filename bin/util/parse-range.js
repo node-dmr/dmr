@@ -2,12 +2,12 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 20:14:34 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 11:40:25
+ * @Last Modified time: 2018-04-25 21:06:09
  */
-var TimeFormatter = require('../../packages/formatter/time-formatter');
+var TimeFormatter = require('../../packages/formatter/formatter-time');
 var Log = require('../../packages/util/log');
 var Range = require('../../packages/util/range');
-var TaskFactory = require('../../packages/core/task-factory');
+var TaskFactory = require('../../packages/task/factory');
 var log = new Log(2);
 
 module.exports = function(program) {

@@ -2,15 +2,15 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 13:26:41
+ * @Last Modified time: 2018-04-25 21:07:14
  */
 var http = require('http')
 var qs=require('querystring');
 var Connector = require('../pipeline/connector');
 var Log =require('../util/log');
-var Source = require('../core/source');
+var Source = require('../source/source');
 var file = require('../util/file');
-var RangeFormatter = require('../formatter/range-formatter');
+var RangeFormatter = require('../formatter/formatter-range');
 var log = new Log(5);
 
 class HttpSource extends Source{

@@ -2,15 +2,15 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 13:19:10
+ * @Last Modified time: 2018-04-25 21:08:21
  */
 var fs  = require('fs');
 var path = require('path');
 var Log =require('../util/log');
 var env = require('../core/env');
-var Task = require('../core/task');
+var Task = require('../task/task');
 var File = require('../util/file');
-var SourceFactory = require('../core/source-factory');
+var SourceFactory = require('../source/factory');
 var PipelineFactory = require('../pipeline/factory');
 
 var log = new Log(5);

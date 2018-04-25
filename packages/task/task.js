@@ -2,12 +2,12 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 10:57:59 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-19 17:26:23
+ * @Last Modified time: 2018-04-25 21:26:53
  */
 var Log =require('../util/log');
 var Base = require('../core/base');
 var ActionLog = require('../core/action-log');
-var TimeFormatter = require('../formatter/time-formatter');
+var TimeFormatter = require('../formatter/formatter-time');
 var RandomKey = require('../util/random-key');
 
 var log = new Log(5);
@@ -19,7 +19,6 @@ class Task extends Base {
         this.id = TimeFormatter.format('YYMMDDhhmmssms');
         // FastKey
         this.key = new RandomKey().get();
-
         if (!action.config){
             throw new Error('Undefined taskConfig');
         }

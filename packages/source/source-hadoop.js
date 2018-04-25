@@ -10,11 +10,11 @@ var path=require('path');
 var fs=require('fs');
 var env = require('../core/env');
 var Log =require('../util/log');
-var Source = require('../core/source');
+var Source = require('../source/source');
 var File = require('../util/file');
 var log = new Log(5);
 
-class HadoopSource extends Source{
+class SourceHadoop extends Source{
     constructor(config){
         super(config);
         this.formatter;

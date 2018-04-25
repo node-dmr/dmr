@@ -2,11 +2,11 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-23 19:06:47
+ * @Last Modified time: 2018-04-25 20:44:53
  */
 var Middleware = require('../middleware/middleware');
 
-class CloumeMiddleware extends Middleware{
+class ColumnMiddleware extends Middleware{
     constructor (config) {
         super(config);
         var partten = this.config.partten;
@@ -34,4 +34,4 @@ class CloumeMiddleware extends Middleware{
 
 }
 
-module.exports = CloumeMiddleware;
+module.exports = ColumnMiddleware;

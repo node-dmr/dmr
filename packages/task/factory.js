@@ -2,13 +2,13 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 13:15:41 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 13:18:41
+ * @Last Modified time: 2018-04-25 21:03:41
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
-var ImportTask = require('../task/import-task.js');
-var TransferTask = require('../task/transfer-task.js');
-var CalculateTask = require('../task/calculate-task.js');
+var ImportTask = require('../task/task-import.js');
+var TransferTask = require('../task/task-transfer.js');
+var CalculateTask = require('../task/task-calculate.js');
 var Config = require('../core/config.js');
 
 var log = new Log(5);

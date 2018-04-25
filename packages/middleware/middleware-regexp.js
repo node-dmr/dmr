@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 17:40:10
+ * @Last Modified time: 2018-04-25 21:19:53
  */
 var Middleware = require('../middleware/middleware');
 
@@ -20,7 +20,6 @@ class RegexpMiddleWare extends Middleware{
         }
     }
     handle (string, next) {
-        // console.log('slice-middleware');
         let arr = [];
         if (Buffer.isBuffer(string)) string = string.toString();
         if (this.partten) {
@@ -30,9 +29,9 @@ class RegexpMiddleWare extends Middleware{
             // & split 切割等待实现
         }
         var result = false;
-        if (arr && arr[this.config.index] !== undefined && this.config.cloume) {
+        if (arr && arr[this.config.index] !== undefined && this.config.column) {
             result = {};
-            result[this.config.cloume] = arr[this.config.index];
+            result[this.config.column] = arr[this.config.index];
         }
         return next(result);
     }

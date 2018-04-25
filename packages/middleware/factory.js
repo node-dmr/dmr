@@ -2,21 +2,21 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 14:41:32
+ * @Last Modified time: 2018-04-25 21:20:51
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
 var env = require('../core/env');
 var Config = require('../core/config');
-var CloumeMiddleware = require('../middleware/cloume-middleware');
-var ChainMiddleware = require('../middleware/chain-middleware');
-var SeparateMiddleware = require('../middleware/separate-middleware');
-var MultipleMiddleware = require('../middleware/multiple-middleware');
-var MergeMiddleware = require('../middleware/merge-middleware');
-var MapToRowMiddleware =  require('../middleware/map-to-row-middleware');
-var SingleMiddleWare = require('../middleware/single-middleware');
-var RegexpMiddleWare = require('../middleware/regexp-middleware');
-var PerformanceMiddleWare = require('../middleware/performance-middleware');
+var ColumnMiddleware = require('../middleware/middleware-column');
+var ChainMiddleware = require('../middleware/middleware-chain');
+var SeparateMiddleware = require('../middleware/middleware-separate');
+var MultipleMiddleware = require('../middleware/middleware-multiple');
+var MergeMiddleware = require('../middleware/middleware-merge');
+var MapToRowMiddleware =  require('../middleware/middleware-map-to-row');
+var SingleMiddleWare = require('../middleware/middleware-single');
+var RegexpMiddleWare = require('../middleware/middleware-regexp');
+var PerformanceMiddleWare = require('../middleware/middleware-performance');
 
 var log = new Log(5);
 class Factory {
@@ -24,32 +24,32 @@ class Factory {
         var config = Config.get('middleware', key);
         config = Object.assign(config || {}, option);
         switch(config.module){
-            case "chain-middleware":
+            case "middleware-chain":
                 return new ChainMiddleware(config);
                 break;
-            case "separate-middleware":
+            case "middleware-separate":
                 return new SeparateMiddleware(config);
                 break;
-            case "multiple-middleware":
+            case "middleware-multiple":
                 return new MultipleMiddleware(config);
                 break;
-            case "cloume-middleware":
+            case "middleware-column":
                 //return getCache(KvMiddleware, key, config);
-                return new CloumeMiddleware(config);
+                return new ColumnMiddleware(config);
                 break;
-            case "map-to-row-middleware":
+            case "middleware--map-to-row":
                 return new MapToRowMiddleware(config);
                 break;
-            case "merge-middleware":
+            case "middleware-merge":
                 return new MergeMiddleware(config);
                 break;
-            case "single-middleware":
+            case "middleware-single":
                 return new SingleMiddleWare(config);
                 break;
-            case "regexp-middleware":
+            case "middleware-regexp":
                 return new RegexpMiddleWare(config);
                 break;
-            case "performance-middleware":
+            case "middleware-performance":
                 return new PerformanceMiddleWare(config);
                 break;
             default:

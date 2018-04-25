@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 11:05:41
+ * @Last Modified time: 2018-04-25 21:19:52
  */
 var Middleware = require('../middleware/middleware');
 
@@ -20,7 +20,6 @@ class SeparateMiddleware extends Middleware{
         }
     }
     handle (string, next) {
-        // console.log('slice-middleware');
         if (Buffer.isBuffer(string)) string = string.toString();
         if (this.partten) {
             let arr = parttenSlice(this.partten, string);

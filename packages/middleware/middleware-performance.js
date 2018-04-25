@@ -2,15 +2,15 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 21:01:44
+ * @Last Modified time: 2018-04-25 20:38:10
  */
 var Middleware = require('../middleware/middleware');
 
 class PerformanceMiddleWare extends Middleware{
     constructor (config) {
         super(config);
-        var cloumes = config.cloumes || [];
-        cloumes.forEach(item => {
+        var columns = config.columns || [];
+        columns.forEach(item => {
             if (Array.isArray(item)) {
                 table.push(item);
             } else if(typeof item == "string") {

@@ -2,14 +2,14 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 11:32:36
+ * @Last Modified time: 2018-04-25 21:06:55
  */
 var fs  = require('fs');
 var path = require('path');
 var Log =require('../util/log');
-var Task = require('../core/task');
-var SourceFactory = require('../core/source-factory');
-var TimeFormatter = require('../formatter/time-formatter');
+var Task = require('../task/task');
+var SourceFactory = require('../source/factory');
+var TimeFormatter = require('../formatter/formatter-time');
 
 var log = new Log(5);
 

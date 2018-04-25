@@ -2,16 +2,16 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 15:22:34
+ * @Last Modified time: 2018-04-25 21:21:17
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
 var env = require('../core/env');
 var Config = require('../core/config.js');
-var LineTransform = require('../pipeline/line-transform')
-var MiddlewareTransform = require('../pipeline/middleware-transform');
-var TableTransform = require('../pipeline/table-transform');
-var JoinTransform = require('../pipeline/join-transform');
+var LineTransform = require('../pipeline/transform-line')
+var MiddlewareTransform = require('../pipeline/transform-middleware');
+var TableTransform = require('../pipeline/transform-table');
+var JoinTransform = require('../pipeline/transform-join');
 var zlib = require("zlib");
 
 var log = new Log(5);
@@ -23,20 +23,24 @@ class Factory {
             throw new Error('Can not find config of pipeline: '+ key);
         }
         switch(config.module){
-            case "line-transform":
+            case "transform-line":
                 return new LineTransform(config);
                 break;
-            case "middleware-transform":
+            case "transform-middleware":
                 return new MiddlewareTransform(config);
                 break;
-            case "table-transform":
-                return new TableTransform(config);
+            case "transform-table":
+                if (config.action == "format") {
+                    return new TableTransform.Formater(config);
+                } else if(config.action == "parser"){
+                    return new TableTransform.Parser(config);
+                }
                 break;
-            case "join-transform":
+            case "transform-join":
                 return new JoinTransform(config);
                 break;
             case "zlib":
-                if (config.method == "gunzip") {
+                if (config.action == "gunzip") {
                     return zlib.createGunzip();
                 } else {
                     throw new Error('Undefined method!');

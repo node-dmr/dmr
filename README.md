@@ -132,3 +132,7 @@ make doc
 - github && publish npm
 - conf脚手架 && 可视化脚手架
 - 打点模块 && 打点脚手架
+
+尚不确定的想法（但在Beta版本后）：
+- 以微服务模式重新设计Service
+- 基于pipeline模式的开发有点像Reactive，是否可以借鉴RxJS

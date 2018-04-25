@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 16:26:37
+ * @Last Modified time: 2018-04-25 10:39:49
  */
 var http = require('http')
 var qs=require('querystring');
@@ -45,7 +45,6 @@ class FileSource extends Source{
             // 要兼容 null encoding
             encoding = this.config.encoding;
         }
-        console.log("encoding",encoding,file);
         // 如果文件创建成功则writer定向为文件写流
         var writer = fs.createWriteStream(file, {
             encoding: encoding

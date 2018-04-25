@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 11:11:29 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 17:50:46
+ * @Last Modified time: 2018-04-25 11:22:44
  */
 var fs  = require('fs');
 var path = require('path');
@@ -52,12 +52,15 @@ class TransferTask extends Task{
         });
         var writer = oputSource.createWriteStream();
 
+        log.time('Transfer last for');
         rs.pipe(writer);
-
-        log.time('Last for');
-
+        // var lines = 0;
+        // rs.on('data',function(chunk){
+        //     console.log(lines, chunk);
+        //     lines ++;
+        // });
         writer.on('finish',function(chunk){
-            log.timeEnd('Last for');
+            log.timeEnd('Transfer last for');
         });
     }
     

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-20 19:08:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 20:39:50
+ * @Last Modified time: 2018-04-25 11:07:47
  */
 var Middleware = require('../middleware/middleware');
 
@@ -20,6 +20,7 @@ class MapMiddleware extends Middleware{
         });
     }
     handle (data, next) {
+        //console.log(data);
         if(!data){
             return next(false);
         }

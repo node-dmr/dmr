@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-24 15:58:43
+ * @Last Modified time: 2018-04-25 11:32:36
  */
 var fs  = require('fs');
 var path = require('path');
@@ -57,9 +57,11 @@ class ImportTask extends Task{
         var importSource = SourceFactory.create(config["input-source"]);
         importSource.set('range', action.range);
         importSource.createReadStream().pipe(writer);
-        
+
+        log.time('Import last for');
         writer.on('finish', function(){
-            log.warn('L5', '\r\nSucc\tSuccessful end! Remeber The Key : ' + self.key);
+            log.timeEnd('Import last for');
+            log.info('L5', '\r\nSucc\tSuccessful end! Remeber The Key : ' + self.key);
             self.emit('end');
         });
         

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-26 00:12:28 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-26 01:39:22
+ * @Last Modified time: 2018-04-26 20:30:22
  */
 var Transform = require('../pipeline/transform');
 var util = require('util');
@@ -31,12 +31,12 @@ class ExportTransform extends Transform{
                     //     "field": f[0],
                     //     "value": data[f[0]]
                     // });
-                    var result = {
-                        "dim": dimName,
-                        "field": f[0],
-                        "value": data[f[0]]
-                    };
-                    this.push(result);
+                    // var result = {
+                    //     "dim": dimName,
+                    //     "field": f[0],
+                    //     "value": data[f[0]]
+                    // };
+                    this.push([dimName + '|' + f[0], data[f[0]]]);
                 }
             });
         });

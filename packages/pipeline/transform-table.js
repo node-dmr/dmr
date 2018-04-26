@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-26 01:39:34
+ * @Last Modified time: 2018-04-26 20:34:54
  */
 
 var Transform = require('../pipeline/transform');
@@ -21,7 +21,7 @@ class Formater extends Transform{
         if (config.columns !== "all") {
             this._setMiddleware(config.columns);
         }
-        if (!config.readableObjectMode) {
+        if (!config.readableObjectMode && config.header === true) {
             this.on('header', line => {
                 this.push(line.header.join(config["column-separate"]) + config["line-separate"]);
             });

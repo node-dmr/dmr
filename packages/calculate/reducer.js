@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-26 09:52:42 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-26 10:10:19
+ * @Last Modified time: 2018-04-26 20:54:39
  */
 class Reducer {
     constructor (option) {
@@ -15,13 +15,13 @@ class Reducer {
         
     }
     avg () {
-        
+        return this.list[0];
     }
     pos () {
         
     }
     count () {
-
+        return this.list.length;
     }
 }
 

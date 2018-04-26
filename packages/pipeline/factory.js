@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-26 00:14:24
+ * @Last Modified time: 2018-04-26 09:31:38
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -51,7 +51,12 @@ class Factory {
                 }
                 break;
             default:
-                throw new Error('Can not create pipeline: ' + key + " / " + config.module);
+                    var Transform = require('../pipeline/' + config.module);
+                    if (Transform) {
+                        return new Transform(config);
+                    } else {
+                        throw new Error('Can not create pipeline: ' + key + " / " + config.module);
+                    }
                 break;
         }
     }

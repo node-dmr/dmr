@@ -136,3 +136,102 @@ make doc
 尚不确定的想法（但在Beta版本后）：
 - 以微服务模式重新设计Service
 - 基于pipeline模式的开发有点像Reactive，是否可以借鉴RxJS
+
+
+### How Pipeline & Middleware Work
+Pipeline（管道）与Middleware（中间件）是框架实现数据流操作的重要结构，这套模式的优点：
+1、高度可配置化：业务逻辑完全剥离框架，以纯conf配置形式驱动管道组合、数据分析、I/O存取
+2、高可伸缩性：通过对管道顺序调整，可以拆除或降低I/O管道的优先级，动态调整性能；也可以通过加入缓存管道协调单进程间的reduce阻塞
+3、可扩展：已经实现的pipeline流程中参照实现了mapper&reducer，这意味着打包两个阶段的模块及配置就可以快速实现hadoop集群计算，满足更大吞吐的计算；同时部分pipeline产出数据的一致性使得未来可能实现小规模分布式的计算
+
+数据在pipeline组合中的处理流程：
+
+![how-pipeline-work](./docs/how-pipeline-work.png)
+
+一份简搜的gz数据解压->切分->存入xls文件的过程
+
+```
+    "scraft_cus": {
+        // 输入源 本地log日志
+        "input-source": "file.scraft_cus_log",
+        // 输出源 本地mid文件
+        "output-source": "file.scraft_cus_mid",
+        // 处理管道: gz解压/line按行读取/mapper切分字段/map格式化为table带表头格式/table rows join间隔输出为行文本
+        "pipeline":[
+            "common.gunzip",
+            "common.line",
+            "scraft_cus.input_split",
+            "scraft_cus.table_format"
+        ]
+    }
+```
+当然也可以选择直接产出report数据，可以如下调整pipeline：
+
+```
+        "pipeline":[
+            "common.gunzip",
+            "common.line",
+            "scraft_cus.input_split",
+            // 因为不再存储数据，摘离表格格式化和反格式化及按line分片管道，直接接入mapper+reducer
+            // "scraft_cus.table_format",
+            // "common.line",
+            // "common.table_parser",
+            "scraft_cus.mapper",
+            "common.reducer_speed",
+            "common.table_format"
+        ]
+```
+
+数据在pipeline中通过使用middleware进行处理的流程：
+
+![how-pipeline-work](./docs/images/how-middleware-work.png)
+
+
+在上述的“input_split” 管道中对行日志进行了复杂的切分，以产出mapper需要的kv键值对，我们通过配置进一步了解middleware模式组件与middleware功能组件的关系：
+
+```
+    "input_split": {
+        "module": "transform-middleware",
+        "middleware": {
+            "module": "middleware-chain",
+            // 指定串行middleware组并依次序运行
+            "chains": [
+                {
+                    "module": "middleware-separate",
+                    // 按\t分隔符切分为array
+                    "separate": "\t"
+                },
+                {
+                    "module": "middleware-multiple",
+                    // 为输入的array分别指定middleware
+                    "each":[
+                        null,null,
+                        "sys",
+                        {
+                            // 按正则分析host字段
+                            "module": "middleware-regexp",
+                            "partten": "/^http(s)?:\\/\\/(.*?)\\/\/",
+                            "column": "host",
+                            "index": 2
+                        },
+                        {
+                            // 解析performance-JSON字段，并计算部分时间段并输出kv键值对
+                            "module": "middleware-performance",
+                            "columns": [
+                                "lookup","waiting","request","receiving","init","parsing","content","load",
+                                "fetch","loadend","appcache","connect","domReady"
+                                // [ 'fetch'         , ['fetchStart', 'navigationStart']                   ]
+                            ]
+                        }
+                    ]
+                },
+                // 对上述多路middleware产生的机组键值对进行merge，产出一个{k:v,k:v,k:v}键值对
+                {"module": "middleware-merge"}
+            ]
+        }
+    }
+```
+更复杂的日志切分可以参考ac日志切分配置：
+http://gitlab.baidu.com/speedup/speedup-ace/blob/master/config/pipeline/search_ac.conf
+
+上述配置较为复杂，但并不推荐业务日志如此复杂（也验证了以上模式带来的高度可配置化）。规范日志会简化数据配置、提升运行时效率，后续也会通过推出打点日志CLI工具来协助产生标准的日志打点js及pipeline配置。

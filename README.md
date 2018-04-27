@@ -120,24 +120,6 @@ make doc
 
 ## 架构
 
-框架在开发之初有比较相对明确的目标和模式要求，不过鉴于模块化和配置化开发经验，Alpha版本开发可能相对不友好或不够抽象，但框架在发布Beta版本前有以下计划来保障最终目标：
-
-- 以两条业务流程为参照来验证主要功能
-- 框架抽象pipeline、middleware为核心模块，重新设计两者及实现类的接口，发布为单独模块
-- 配合抽象后的pipeline、middleware重写配置机制，使得编写conf更友好
-- 弱化Task为pipeline配置组合，采用分流T管道完成中间环节的文件转储，提高报表产出效率
-- 针对pipeline配置组合抽象新的Task机制，实现Task挂起、恢复、重试
-- 整理其他框架代码及单测 或 寻求其他的npm包替代 DRY!!! 
-- 开发文档 && 配置文档
-- github && publish npm
-- conf脚手架 && 可视化脚手架
-- 打点模块 && 打点脚手架
-
-尚不确定的想法（但在Beta版本后）：
-- 以微服务模式重新设计Service
-- 基于pipeline模式的开发有点像Reactive，是否可以借鉴RxJS
-
-
 ### How Pipeline & Middleware Work
 Pipeline（管道）与Middleware（中间件）是框架实现数据流操作的重要结构，这套模式的优点：
 
@@ -237,8 +219,27 @@ http://gitlab.baidu.com/speedup/speedup-ace/blob/master/config/pipeline/search_a
 
 上述配置较为复杂，但并不推荐业务日志如此复杂（也验证了以上模式带来的高度可配置化）。规范日志会简化数据配置、提升运行时效率，后续也会通过推出打点日志CLI工具来协助产生标准的日志打点js及pipeline配置。
 
-###Config
+### Config
 
-###Task
+### Task
 
-###Cron
+### Cron
+
+### Alpha版本的排期 及 Beta版本展望
+
+框架在开发之初有比较相对明确的目标和模式要求，不过鉴于模块化和配置化开发经验，Alpha版本开发可能相对不友好或不够抽象，但框架在发布Beta版本前有以下计划来保障最终目标：
+
+- 以两条业务流程为参照来验证主要功能
+- 框架抽象pipeline、middleware为核心模块，重新设计两者及实现类的接口，发布为单独模块
+- 配合抽象后的pipeline、middleware重写配置机制，使得编写conf更友好
+- 弱化Task为pipeline配置组合，采用分流T管道完成中间环节的文件转储，提高报表产出效率
+- 针对pipeline配置组合抽象新的Task机制，实现Task挂起、恢复、重试
+- 整理其他框架代码及单测 或 寻求其他的npm包替代 DRY!!! 
+- 开发文档 && 配置文档
+- github && publish npm
+- conf脚手架 && 可视化脚手架
+- 打点模块 && 打点脚手架
+
+尚不确定的想法（但在Beta版本后）：
+- 以微服务模式重新设计Service
+- 基于pipeline模式的开发有点像Reactive，是否可以借鉴RxJS

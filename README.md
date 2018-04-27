@@ -236,3 +236,9 @@ Pipeline（管道）与Middleware（中间件）是框架实现数据流操作�
 http://gitlab.baidu.com/speedup/speedup-ace/blob/master/config/pipeline/search_ac.conf
 
 上述配置较为复杂，但并不推荐业务日志如此复杂（也验证了以上模式带来的高度可配置化）。规范日志会简化数据配置、提升运行时效率，后续也会通过推出打点日志CLI工具来协助产生标准的日志打点js及pipeline配置。
+
+###Config
+
+###Task
+
+###Cron

@@ -146,7 +146,7 @@ Pipeline（管道）与Middleware（中间件）是框架实现数据流操作�
 
 数据在pipeline组合中的处理流程：
 
-![how-pipeline-work](./docs/how-pipeline-work.png)
+![how-pipeline-work](./docs/image/how-pipeline-work.png)
 
 一份简搜的gz数据解压->切分->存入xls文件的过程
 
@@ -184,7 +184,7 @@ Pipeline（管道）与Middleware（中间件）是框架实现数据流操作�
 
 数据在pipeline中通过使用middleware进行处理的流程：
 
-![how-pipeline-work](./docs/images/how-middleware-work.png)
+![how-pipeline-work](./docs/image/how-middleware-work.png)
 
 
 在上述的“input_split” 管道中对行日志进行了复杂的切分，以产出mapper需要的kv键值对，我们通过配置进一步了解middleware模式组件与middleware功能组件的关系：

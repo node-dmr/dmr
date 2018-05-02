@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-02 19:54:38
+ * @Last Modified time: 2018-05-02 20:41:57
  */
 var fs  = require('fs');
 var path = require('path');
@@ -58,12 +58,16 @@ class SuperTask extends Task{
         importSource.setActionParam(actionParam);
         let reader = importSource.createReadStream();
 
+        if (config["pipelines"] && config["pipelines"].length) {
+            let pipelines = new Pipelines(config["pipelines"]);
+            pipelines.setActionParam(actionParam);
+            pipelines.create();
+            reader.pipe(pipelines.writeable);
+            pipelines.readable.pipe(writer);
+        } else {
+            reader.pipe(writer);
+        }
 
-        let pipelines = new Pipelines(config["pipelines"]);
-        pipelines.setActionParam(actionParam);
-        pipelines.create();
-        reader.pipe(pipelines.writeable);
-        pipelines.readable.pipe(writer);
 
 
         log.time('Import last for');

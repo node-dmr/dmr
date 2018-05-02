@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-02 14:22:29
+ * @Last Modified time: 2018-05-02 20:47:13
  */
 
 var Log = require('../packages/util/log');
@@ -103,6 +103,7 @@ if (key){
     // action.set('file', file);
     // log.info('[file] ', file);
     action = parseAction(key);
+    action.set('config', Config.find('task',taskId));
 } else if (range) {
     action.set('range', range.param());
     action.set('config', Config.find('task',taskId));

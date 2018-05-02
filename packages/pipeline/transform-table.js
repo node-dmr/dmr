@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-13 16:36:33 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-02 20:14:20
+ * @Last Modified time: 2018-05-02 23:59:43
  */
 
 var Transform = require('../pipeline/transform');
@@ -17,6 +17,7 @@ class Formater extends Transform{
         super(config);
         config["column-separate"] = config["column-separate"] || "\t";
         config["line-separate"] = config["line-separate"] || "\n";
+        config["header"] = config["header"] === false ? false : true;
 
         if (config.columns !== "all") {
             this._setMiddleware(config.columns);

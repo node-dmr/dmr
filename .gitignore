@@ -10,4 +10,4 @@ amd_modules/
 *.log
 .*.un~
 .vimrc
-enviroment.conf
+enviroment.json

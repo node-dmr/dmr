@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 21:19:19
+ * @Last Modified time: 2018-05-02 09:43:40
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -14,8 +14,8 @@ var FtpSource = require('../source/source-ftp');
 
 var log = new Log(5);
 class SourceFactory {
-    static create(key){
-        var config = Config.get('source', key);
+    static create(config){
+        // var config = Config.get('source', key);
         switch(config.module){
             case "source-http":
                 return new HttpSource(config);

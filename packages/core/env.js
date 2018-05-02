@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 17:48:04 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-19 18:12:37
+ * @Last Modified time: 2018-05-01 22:13:29
  * 读取配置文件
  * 读取模块安装目录../../config/main.conf
  * 读取主Project目录下/config所有配置
@@ -25,10 +25,11 @@ if(process && process.argv){
     );
 }
 
-
-const mainConfigPath = path.resolve(__dirname , '../../config/enviroment.conf');
+// 读取主项目的conf
+const mainConfigPath = path.resolve(__dirname , '../../config/enviroment.json');
 var mainConfig = File.readJsonSync(mainConfigPath);
 var projectConfig = getProjectConfig(projectId || mainConfig["base-project"]);
+
 
 
 var env = projectConfig;
@@ -56,6 +57,57 @@ fileList.forEach(
     }
 });
 
+env = redirectPathConfig(env, "config");
+
+// 实现软连接 "./"
+function redirectPathConfig(config, deep) {
+    deep = deep || 0;
+    deep ++;
+    if (deep > 10) {
+        return "two deep for redirect";
+    }
+    Object.keys(config).forEach(key => {
+        var target = config[key];
+        if (Array.isArray(target)){
+            // 目标是数组对象的处理
+            target.forEach((item, index) => {
+                if (typeof item === "string") {
+                    config[key][index] = dealString(item);
+                }
+            });
+        }else if (target && typeof target === "object") {
+            config[key] = redirectPathConfig(target, deep);
+        } else if (typeof target === "string") {
+            config[key] = dealString(target);
+        }
+    });
+
+    function dealString(target){
+            if (target.indexOf('config/') === 0 ){
+                let arr = target.split(/[\/|\.]/);
+                arr.shift(0);
+                target = getConfigByAttrs.apply(this,arr);
+                if (target && typeof target === "object") {
+                    target = redirectPathConfig(target, deep);
+                }
+            }
+        return target;
+    }
+
+    function getConfigByAttrs(){
+        var arr = [].slice.call(arguments);
+        arr = arr.join('.').split('.');
+        var con = env;
+        for(var i = 0;i < arr.length; i++ ){
+            con = con && con[arr[i]] || false;
+        }
+        return con || false;
+    }
+    return config;
+}
+
+
+
 log.info('L9','Enviroment', JSON.stringify(env));
 
 // 避免config被篡改
@@ -64,15 +116,9 @@ module.exports = Enviroment;
 
 function TransPathToAttr (configPath, filePath) {
     var path = filePath.substring(configPath.length + 1);
-    path = path.replace(/[\\|\-|\/]/g,'.').replace(/\.conf/g,'');
+    path = path.replace(/[\\|\/]/g,'.').replace(/\.(conf|json)/g,'');
     return path;
 }
-
-function contactAttr (obj , attr , target) {
-    obj[attr] = target;
-    return obj;
-}
-
 
 
 function getProjectConfig(projectId){

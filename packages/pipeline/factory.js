@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 17:02:27 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-26 09:31:38
+ * @Last Modified time: 2018-05-02 19:59:22
  */
 var EventEmitter = require('events');
 var Log = require('../util/log');
@@ -17,11 +17,11 @@ var zlib = require("zlib");
 
 var log = new Log(5);
 class Factory {
-    static create(key, option){
-        var config = Config.get('pipeline', key);
-        config = Object.assign(config , option);
+    static create(config){
+        // var config = Config.get('pipeline', key);
+        // config = Object.assign(config , option);
         if (!config) {
-            throw new Error('Can not find config of pipeline: '+ key);
+            throw new Error('Can not find config of pipeline!');
         }
         switch(config.module){
             case "transform-line":

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 21:07:29
+ * @Last Modified time: 2018-05-02 09:51:44
  */
 var http = require('http')
 var qs=require('querystring');
@@ -21,7 +21,8 @@ class FileSource extends Source{
         this.parser;
     }
     createWriteStream (){
-        var file = this.option.file;
+        var ap = this.actionParam;
+        var file = ap.file;
         if (file == 'default'){
             if (this.config.path) {
                 file = path.resolve(env.root ,this.config.path);
@@ -29,8 +30,8 @@ class FileSource extends Source{
                 throw new Error('No Default FilePath Config!');
             }
         }
-        if (this.option.range) {
-            var formatter = new RangeFormatter(this.option.range);
+        if (ap.range) {
+            var formatter = new RangeFormatter(ap.range);
             file = formatter.format(file);
         }
         
@@ -53,21 +54,22 @@ class FileSource extends Source{
         return writer;
     }
     createReadStream (){
+        var ap = this.actionParam;
         var file;
-        if (this.option.file === undefined || this.option.file === "default") {
+        if (ap.file === undefined || ap.file === "default") {
             // 文件名不存在则生成
             if(!this.config.path){
                 throw new Error('No Default FilePath Config!');
             }
-            if(!this.option.range){
+            if(!ap.range){
                 throw new Error('No Default FilePath Config!');
             }
             // 有config.path 及 option.range 生成file
             file = path.resolve(env.root ,this.config.path);
-            var formatter = new RangeFormatter(this.option.range);
+            var formatter = new RangeFormatter(ap.range);
             file = formatter.format(file);
         } else {
-            file = this.option.file;
+            file = ap.file;
         }
         var encoding = 'utf-8';
         if (this.config.encoding !== undefined) {

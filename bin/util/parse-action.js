@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-17 20:51:54 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-19 17:31:09
+ * @Last Modified time: 2018-05-02 20:00:58
  */
  var Log = require('../../packages/util/log');
  var ActionLog = require('../../packages/core/action-log');
@@ -12,7 +12,7 @@
  module.exports = function(key){
      var rs = ActionLog.getLogByKey(key);
      if(rs && rs.action){
-        log.info('ID-Key '+rs.id+'-'+ key +'');
+        log.info('Use Key\t'+rs.id+'-'+ key +'');
         return new Action(rs.action);
      }
      return false;

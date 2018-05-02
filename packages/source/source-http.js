@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-10 16:23:15 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 21:07:14
+ * @Last Modified time: 2018-05-02 09:52:17
  */
 var http = require('http')
 var qs=require('querystring');
@@ -46,11 +46,12 @@ class HttpSource extends Source{
     }
     getRequestParam() {
         // 获取http请求的参数
+        var ap = this.actionParam;
         var config = this.config || {};
         var param = {};
-        if(this.option.range) {
-            var requestParamFormatter = new RangeFormatter(this.option.range);
-            param = requestParamFormatter.format(config.param || {}, this.option);
+        if(ap.range) {
+            var requestParamFormatter = new RangeFormatter(ap.range);
+            param = requestParamFormatter.format(config.param || {}, ap);
         }
         
         return  {

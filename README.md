@@ -72,9 +72,13 @@ bin/start -t aci -s -5m -r 10s -p speedup-ace
 bin/start -t act -k S5QIK
 
 # 鉴于aci/act都是配置管道组合而形成的任务，可以组合两个任务，形成诸如acit的任务，同时完成import+transfer
-bin/start -t act -k S5QIK
+bin/start -t acit -k S5QIK
 
 ```
+
+以上aci/act/acit任务对应的配置可以移步以下位置了解
+
+http://gitlab.baidu.com/speedup/speedup-ace/blob/master/config/task/search-ac.json
 
 更多的bin命令，请移步docs/bin了解（建设中）
 

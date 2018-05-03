@@ -76,6 +76,7 @@ bin/start -t aci -s 20180401120000 -r 10s -f ./rs.log
 你也可以使用-f default来配合[配置](http://gitlab.baidu.com/speedup/speedup-ace/blob/master/config/source/file.json)自动存储到指定位置(data/middle/search-ac/20180401/120000-10)
 
 使用-l参数可以指定不同日志等级调节控制台的信息呈现
+
 使用-p参数可以指定其他的项目配置（默认是base-project）
 
 ```bash
@@ -106,16 +107,16 @@ bin/start -t acc -k L2BZP
 接下来我们通过已经配置好的acc任务可以将act的产出文档转换为初步报表。
 
 
-** 初步报表=>showX展现，待补充**
+** 初步报表=>showX展现，待补充 **
 
-#最佳实践
+# 最佳实践
 
 在本章节我们会详细讲解任务配置中源（Source）、管道（Pipeline）如何配置，以及如何配置日程（schedule）实现任务的例行执行。
 
 **待补充**
 
 
-#开发者文档
+# 开发者文档
 以下章节内容待调整
 
 **您可以通过以下安装步骤，开始框架的开发与调试**

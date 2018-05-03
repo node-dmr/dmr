@@ -9,44 +9,42 @@ ACE 主要处理“原数据”至“报表数据”产出过程，不负责数�
 
 
 
-## Start Your ACE Project Instance
+# 快速上手
 
-### Project配置
+在本章节我们的目标是搭建框架和项目，了解主要配置，并使用命令行完成数据入库（import）/转储（transfer）/计算处理（caculate）
+
+## 初始化
+
+进入ace框架根目录，通过执行以下命令，会完成依赖的npm包安装
+
+```bash
+
+    # 安装依赖
+    make install
+
+```
+
+## Project配置
 **目前该项目为调试维护状态，生成Project Config的 CLI后续推出**
 
-您可以从 http://gitlab.baidu.com/speedup/speedup-ace 获取已运用ace的speedup project，并通过修改框架\config\main.conf的speedup-ace 的root指向您的speedup project的目录。
-```bash
-    # 支持多个Project，缺省载入base-project
-    # 如果您在执行任何bin时不希望使用使用缺省base-project的配置，可以附加-p project-name 指定已配置的project
+ace是一个工具框架，要与配置结合才能正常运行起来。一般会将一个目录作为项目目录，项目目录包含了所需的各种配置
+
+[speedup-ace](http://gitlab.baidu.com/speedup/speedup-ace)就是一个项目工程，你可以git clone到本地目录，并修改ace框架环境配置conf/enviroment.json.default如下，，并重命名为enviroment.json启用
+
+```JSON
+    // 支持多个Project，缺省载入base-project指定的项目
+    // 其他Project可以在使用命令时通过-p 参数指定
     {
         "base-project": "speedup-ace",
         "speedup-ace": {
+            // 以下是speedup-ace项目的具体配置
+            // root指向speedup-ace的目录
             "root" : "d:\\work\\speedup\\speedup-ace"
         }
     }
 ```
 
-### 初始化
-
-通过执行以下命令，会完成依赖的npm包安装，该命令会安装一个全局的模块forever以便于启动Service
-
-```bash
-    # 安装依赖
-    make install
-
-    # 如果您需要启动Service
-    make start
-
-    # 查看Service
-    forever list
-
-    # 停止
-    make stop
-```
-
-关于Service的相关配置会在 **Service** 章节介绍
-
-### 使用Bin
+## 使用Bin
 
 下面以import数据为例，了解bin的常规使用方法
 
@@ -54,39 +52,72 @@ ACE 主要处理“原数据”至“报表数据”产出过程，不负责数�
 # 查看import支持的命令及完整DEMO
 bin/start --help
 
-# 下载search_ac日志，时间范围从-s 到 -e的时间，时间支持非空格的字符切分，支持精确到天/分钟/秒三种选择
+# -t aci是指定启动aci任务（一个下载search_ac日志的任务配置）
+# 时间范围从-s 到 -e的时间，时间支持非空格的字符切分，支持精确到天/分钟/秒三种选择
 bin/start -t aci -s 20180401.1200.00 -e 20180401120010
+
+```
+
+关于时间还有其他简便高效的使用方式：
+
+```bash
 # 不指定结束时间，采用-r参数指定一段时间，支持单位d/m/s/ms(day/minute/seconde/ms)
 bin/start -t aci -s 20180401.1200.00 -r 10s
 # -s/e 时间参数支持倒推一段时间，请采用-开头，支持d/m/s/ms(day/minute/seconde/ms)
 bin/start -t aci -s -5m -r 10s
+```
 
+刚才的命令执行后，数据被打印到控制台，如果希望存入文件可以使用-f 命令指定文件
+
+```bash
 #-f 自定义基于当前命令行的存储路径./rs.log 或 使用project配置生成 -f default 不指定-f会直接打印
 bin/start -t aci -s 20180401120000 -r 10s -f ./rs.log
+```
+
+你也可以使用-f default来配合[配置](http://gitlab.baidu.com/speedup/speedup-ace/blob/master/config/source/file.json)自动存储到指定位置(data/middle/search-ac/20180401/120000-10)
+
+使用-l参数可以指定不同日志等级调节控制台的信息呈现
+使用-p参数可以指定其他的项目配置（默认是base-project）
+
+```bash
 # 默认会打印L5级别的日志，如果不希望打印任何日志可以设置0级别，如果希望打印所有细节调试可以设置9级别
 bin/start -t aci -s -5m -r 10s -l 0
 # 同上章节介绍，通过使用-p命令临时切换指定project的配置，而非使用缺省配置
 bin/start -t aci -s -5m -r 10s -p speedup-ace
 
-# 在完成import后会得到一个key，后续进行transfer数据时可以采用改key省略时间等参数的输入
-bin/start -t act -k S5QIK
-
-# 鉴于aci/act都是配置管道组合而形成的任务，可以组合两个任务，形成诸如acit的任务，同时完成import+transfer
-bin/start -t acit -k S5QIK
-
 ```
 
-以上aci/act/acit任务对应的配置可以移步以下位置了解
+在完成import后会得到一个key，后续进行转储（transfer）数据时可以采用-k key复用import时候指定的一些参数，提高生产效率。
 
-http://gitlab.baidu.com/speedup/speedup-ace/blob/master/config/task/search-ac.json
+![how-pipeline-work](./docs/image/start-task.png)
 
-更多的bin命令，请移步docs/bin了解（建设中）
+``` bash
+# 转储的task id是act，配合key继续转储如下：
+bin/start -t act -k L2BZP
+```
+
+aci和act任务都是通过[配置](http://gitlab.baidu.com/speedup/speedup-ace/blob/master/config/task/search-ac.json)实现的，任务配置其实是主要指定了输入、输出源（Source）和处理过程（pipelines），配置中还有一个acit任务，通过调整pipelines组合同时完成了import和tansfer操作，关于如何进行配置会在**最佳实践**章节中进行阐述。
+
+act的产物按照目前的配置是个格式化文档，可以通过xls直接打开，第一行是字段表头，第二行开始是数据。
+
+``` bash
+bin/start -t acc -k L2BZP
+```
+
+接下来我们通过已经配置好的acc任务可以将act的产出文档转换为初步报表。
 
 
+** 初步报表=>showX展现，待补充**
+
+#最佳实践
+
+在本章节我们会详细讲解任务配置中源（Source）、管道（Pipeline）如何配置，以及如何配置日程（schedule）实现任务的例行执行。
+
+**待补充**
 
 
-
-## Develop ACE Frame
+#开发者文档
+以下章节内容待调整
 
 **您可以通过以下安装步骤，开始框架的开发与调试**
 

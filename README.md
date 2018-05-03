@@ -111,10 +111,19 @@ bin/start -t acc -k L2BZP
 
 # 最佳实践
 
-在本章节我们会详细讲解任务配置中源（Source）、管道（Pipeline）如何配置，以及如何配置日程（schedule）实现任务的例行执行。
+在本章节我们会详细讲解源（Source）、管道（Pipeline）如何配置以实现任务，如何配置日程（Schedule）以实现任务例行。
 
 **待补充**
 
+## Source
+
+## Pipeline
+
+## Middleware
+
+## Schedule
+
+## 守护进程
 
 # 开发者文档
 以下章节内容待调整

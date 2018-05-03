@@ -2,7 +2,7 @@
 ACE is a framework of processing log data  , including , but not limited to , Analysis , Calculate and Evaluate.
 
 ## 简介
-ACE Frame 是一个开放过程的数据处理框架，除了提高业务数据报表产出的效率外，更注重让更多业务角色快速、独立参与数据分析。框架主要聚焦数据处理过程（入库、转储、Map、Reduce、任务调度、日程管理等）。
+ACE Frame 是一个开放过程的数据处理框架，除了提高业务数据报表产出的效率外，更注重让更多业务角色快速、独立参与数据分析。框架主要聚焦数据处理过程（入库、转储、Map、Reduce、数据分析、数据评价、报表整合、任务调度、日程管理等）。
 
 ACE 主要处理“原数据”至“报表数据”产出过程，不负责数据存储及数据通路，不负责数据展现。但是框架会兼容绝大多数的数据接入方式（如Ftp、Hadoop、北斗），及数据报表格式（ShowX、Spy、Speedup等），无缝关联指标及各展现平台结果。
 

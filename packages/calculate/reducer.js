@@ -2,23 +2,40 @@
  * @Author: qiansc 
  * @Date: 2018-04-26 09:52:42 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-26 20:54:39
+ * @Last Modified time: 2018-05-03 20:09:12
  */
 class Reducer {
     constructor (option) {
         this.list = [];
     }
     add (value) {
-        this.list.push(value);
+        value = parseFloat(value);
+        if (!isNaN(value)) {
+            this.list.push(value);
+        }
     }
+    /**
+     * 
+     * @param {*} value
+     */
     reduce () {
-        
+        this.list.sort();
     }
     avg () {
-        return this.list[0];
+        let result = 0;
+        this.list.forEach(item => {
+            result += item;
+        });
+        if (this.list.length == 0){
+            return "";
+        }
+        let r = Math.round(result * 100 / this.list.length)/100;
+        return r;
     }
-    pos () {
-        
+    pos (p) {
+        p = p || 80;
+        let cur = Math.round(this.list.length * 100 / p);
+        return this.list[cur];
     }
     count () {
         return this.list.length;

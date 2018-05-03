@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-02 20:47:13
+ * @Last Modified time: 2018-05-03 15:00:26
  */
 
 var Log = require('../packages/util/log');
@@ -79,8 +79,6 @@ if (taskId){
 }else {
     log.info('Task ID is required!');
 }
-log.info('' + range.toString('\r\n'));
-
 if (file == "default") {
     action.set("file", "default");
     log.info('FilePath ', 'Use TaskConfig');
@@ -105,6 +103,7 @@ if (key){
     action = parseAction(key);
     action.set('config', Config.find('task',taskId));
 } else if (range) {
+    log.info('' + range.toString('\r\n'));
     action.set('range', range.param());
     action.set('config', Config.find('task',taskId));
 } else {

@@ -18,7 +18,6 @@ ACE 主要处理“原数据”至“报表数据”产出过程，不负责数�
 进入ace框架根目录，通过执行以下命令，会完成依赖的npm包安装
 
 ```bash
-
     # 安装依赖
     make install
 
@@ -27,9 +26,9 @@ ACE 主要处理“原数据”至“报表数据”产出过程，不负责数�
 ## Project配置
 **目前该项目为调试维护状态，生成Project Config的 CLI后续推出**
 
-ace是一个工具框架，要与配置结合才能正常运行起来。一般会将一个目录作为项目目录，项目目录包含了所需的各种配置
+ACE是一个工具框架，要与配置结合才能正常运行起来。配置在项目（Project）工程下的\config目录下，包含了所需的各种配置
 
-[speedup-ace](http://gitlab.baidu.com/speedup/speedup-ace)就是一个项目工程，你可以git clone到本地目录，并修改ace框架环境配置conf/enviroment.json.default如下，，并重命名为enviroment.json启用
+[speedup-ace](http://gitlab.baidu.com/speedup/speedup-ace)就是一个项目工程，包含了一些任务实例的配置，你可以git clone到本地目录，并修改框架环境配置（conf/enviroment.json.default）如下，并重命名为enviroment.json启用
 
 ```JSON
     // 支持多个Project，缺省载入base-project指定的项目

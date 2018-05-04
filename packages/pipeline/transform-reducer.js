@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-26 09:31:45 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-26 20:57:30
+ * @Last Modified time: 2018-05-04 16:32:27
  */
 var Transform = require('../pipeline/transform');
 var util = require('util');
@@ -47,6 +47,15 @@ class ExportTransform extends Transform{
                     "key": key,
                     "calculate":"avg",
                     "value": reducer.avg()
+                });
+            }
+            if (caculateConf.pos) {
+                caculateConf.pos.forEach(item => {
+                    this.push({
+                        "key": key,
+                        "calculate":"pos" + item,
+                        "value": reducer.pos(item)
+                    });
                 });
             }
         });

@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-26 09:52:42 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-03 20:09:12
+ * @Last Modified time: 2018-05-04 16:33:54
  */
 class Reducer {
     constructor (option) {
@@ -34,7 +34,7 @@ class Reducer {
     }
     pos (p) {
         p = p || 80;
-        let cur = Math.round(this.list.length * 100 / p);
+        let cur = Math.round(this.list.length * p / 100);
         return this.list[cur];
     }
     count () {

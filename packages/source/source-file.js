@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-11 19:57:16 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-02 09:51:44
+ * @Last Modified time: 2018-05-04 18:25:34
  */
 var http = require('http')
 var qs=require('querystring');
@@ -54,6 +54,30 @@ class FileSource extends Source{
         return writer;
     }
     createReadStream (){
+        let file = this.getFile();
+        var encoding = 'utf-8';
+        if (this.config.encoding !== undefined) {
+            // 要兼容 null encoding
+            encoding = this.config.encoding;
+        }
+        var bufferSize = (this.config["read-buffer-size"] || 10) * 1024;
+        var reader = fs.createReadStream(file, {
+            encoding: encoding,
+            highWaterMark: bufferSize
+        });
+        this.emit('create', file, reader);
+       return reader;
+    }
+    readSync(){
+        let file = this.getFile();
+        var txt = fs.readFileSync(file, {
+            encoding: 'utf-8'
+        });
+        return txt;
+    }
+
+
+    getFile () {
         var ap = this.actionParam;
         var file;
         if (ap.file === undefined || ap.file === "default") {
@@ -71,18 +95,7 @@ class FileSource extends Source{
         } else {
             file = ap.file;
         }
-        var encoding = 'utf-8';
-        if (this.config.encoding !== undefined) {
-            // 要兼容 null encoding
-            encoding = this.config.encoding;
-        }
-        var bufferSize = (this.config["read-buffer-size"] || 10) * 1024;
-        var reader = fs.createReadStream(file, {
-            encoding: encoding,
-            highWaterMark: bufferSize
-        });
-        this.emit('create', file, reader);
-       return reader;
+        return file;
     }
 
 }

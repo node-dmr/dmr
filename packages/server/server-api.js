@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-27 16:58:06 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-04 18:50:34
+ * @Last Modified time: 2018-05-04 18:51:26
  */
 
 var http = require('http');
@@ -20,7 +20,7 @@ class Server {
                 var qs = querystring.parse(queryUrl.query);
                 var conditions = JSON.parse(qs.conditions);
                 conditions = conditionsToParam(conditions);
-                console.log(conditions);
+                //console.log(conditions);
                 response.write(table(conditions));
             }
             response.end();

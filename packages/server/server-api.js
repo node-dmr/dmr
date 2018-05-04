@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-27 16:58:06 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-04 18:59:18
+ * @Last Modified time: 2018-05-04 19:05:02
  */
 
 var http = require('http');
@@ -14,26 +14,37 @@ class Server {
 
     start () {
         http.createServer(function(request, response){
-            response.writeHead(200, { 'Content-Type': 'application/json' });
-            var queryUrl =  url.parse(request.url);
-            if (queryUrl.pathname == '/api/sc/chartData') {
-                var qs = querystring.parse(queryUrl.query);
-                var conditions = JSON.parse(qs.conditions);
-                conditions = conditionsToParam(conditions);
-                //console.log(conditions);
-                try{
-                    var result = table(conditions);
-                }catch(e){
-                    console.log(e);
-                }
-                response.write(table(conditions));
-            }
+
+            try {
+                handler(request, response);
+              } catch(e) {
+                console.log('\r\n', e, '\r\n', e.stack);
+                try {
+                    response.end('{"status":"505","msg":"数据暂缺失"}');
+                } catch(e) { }
+              }
             response.end();
         }).listen(8083);
         
     }
  }
 
+ function handler(request, response){
+    response.writeHead(200, { 'Content-Type': 'application/json' });
+    var queryUrl =  url.parse(request.url);
+    if (queryUrl.pathname == '/api/sc/chartData') {
+        var qs = querystring.parse(queryUrl.query);
+        var conditions = JSON.parse(qs.conditions);
+        conditions = conditionsToParam(conditions);
+        //console.log(conditions);
+        try{
+            var result = table(conditions);
+        }catch(e){
+            console.log(e);
+        }
+        response.write(table(conditions));
+    }
+ }
 
  module.exports = Server;
 
@@ -148,11 +159,3 @@ function conditionsToParam(conditions){
     });
     return param;
 }
-
-process.on('uncaughtException', function (err) {
-    // 临时守护
-    //打印出错误
-    console.log(err);
-    //打印出错误的调用栈方便调试
-    console.log(err.stack);
-  });

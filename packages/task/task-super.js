@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-03 11:13:25 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-03 20:30:06
+ * @Last Modified time: 2018-05-04 15:25:17
  */
 var fs  = require('fs');
 var path = require('path');
@@ -20,17 +20,17 @@ class SuperTask extends Task{
     }
 
     // 根据参数检测区间范围避免过大
-    checkRange (){
-        var limitConfig = this.config["max-range"] || '1d';
-        var limit = TimeFormatter.parseInterval(limitConfig, 'ms');
-        var interval = this.actionParam.range.endTimeStamp - this.actionParam.range.startTimeStamp;
-        if (interval > limit * 1 ) {
-            throw new Error('Please Reduce Range Param, max-range is ' + limitConfig);
-            return false;
-        }
-        return true;
+    // checkRange (){
+    //     var limitConfig = this.config["max-range"] || '1d';
+    //     var limit = TimeFormatter.parseInterval(limitConfig, 'ms');
+    //     var interval = this.actionParam.range.endTimeStamp - this.actionParam.range.startTimeStamp;
+    //     if (interval > limit * 1 ) {
+    //         throw new Error('Please Reduce Range Param, max-range is ' + limitConfig);
+    //         return false;
+    //     }
+    //     return true;
 
-    }
+    // }
     
     run () {
         let self = this,
@@ -38,32 +38,33 @@ class SuperTask extends Task{
             config = this.config;
         // 默认输出writer为控制台
         let writer = process.stdout;
+        // var range = actionParam.range;
             
-        this.checkRange();
+        // this.checkRange();
         log.warn('L1', 'ID\t' , this.id);
-        // 如果file存在则创建fileSource，传入配置，获取file-writer
+        // 如果file存在则创建outputSource，传入配置，获取file-writer
         if (actionParam.file){
-            let fileSource = SourceFactory.create(config["output-source"]);
-            fileSource.setActionParam(actionParam);
-            fileSource.on('create', function (file) {
+            let outputSource = SourceFactory.create(config["output-source"]);
+            outputSource.setActionParam(actionParam);
+            outputSource.on('create', function (file) {
                 log.warn('L1', 'FILE\t' , file);
             });
 
-            writer = fileSource.createWriteStream();
+            writer = outputSource.createWriteStream();
             log.warn('L9',actionParam);
             // writer.write(action.stringify()+'\n');
         }
         
-        let importSource = SourceFactory.create(config["input-source"]);
-        importSource.setActionParam(actionParam);
-        let reader = importSource.createReadStream();
+        let inputSource = SourceFactory.create(config["input-source"]);
+        inputSource.setActionParam(actionParam);
+        let reader = inputSource.createReadStream();
 
-        if (config["pipelines"] && config["pipelines"].length) {
-            let pipelines = new Pipelines(config["pipelines"]);
-            pipelines.setActionParam(actionParam);
-            pipelines.create();
-            reader.pipe(pipelines.writeable);
-            pipelines.readable.pipe(writer);
+        if (config["input-process"] && config["input-process"].length) {
+            let inputProcess = new Pipelines(config["input-process"]);
+            inputProcess.setActionParam(actionParam);
+            inputProcess.create();
+            reader.pipe(inputProcess.writeable);
+            inputProcess.readable.pipe(writer);
         } else {
             reader.pipe(writer);
         }
@@ -78,6 +79,10 @@ class SuperTask extends Task{
         });
         
         return self;
+    }
+
+    process(input) {
+
     }
 }
 

@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-25 21:08:32
+ * @Last Modified time: 2018-05-04 15:22:58
  * 时间范围Range模块
  */
 var TimeFormatter = require('../formatter/formatter-time');
@@ -81,6 +81,15 @@ class Range extends Parameters{
             return arr.join(split || '');
         } else {
             return 'Invalid Range!';
+        }
+    }
+    split (interval){
+        if (typeof interval === 'string'){
+            interval = TimeFormatter.parseInterval(interval);
+        }
+        interval = parseInt(interval);
+        if (isNaN(interval)) {
+            throw new Error('Interval format exception!');
         }
     }
 }

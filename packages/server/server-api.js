@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-27 16:58:06 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-04 18:52:38
+ * @Last Modified time: 2018-05-04 18:59:18
  */
 
 var http = require('http');
@@ -148,3 +148,11 @@ function conditionsToParam(conditions){
     });
     return param;
 }
+
+process.on('uncaughtException', function (err) {
+    // 临时守护
+    //打印出错误
+    console.log(err);
+    //打印出错误的调用栈方便调试
+    console.log(err.stack);
+  });

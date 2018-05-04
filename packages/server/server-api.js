@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-27 16:58:06 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-04 18:51:26
+ * @Last Modified time: 2018-05-04 18:52:38
  */
 
 var http = require('http');
@@ -21,6 +21,11 @@ class Server {
                 var conditions = JSON.parse(qs.conditions);
                 conditions = conditionsToParam(conditions);
                 //console.log(conditions);
+                try{
+                    var result = table(conditions);
+                }catch(e){
+                    console.log(e);
+                }
                 response.write(table(conditions));
             }
             response.end();

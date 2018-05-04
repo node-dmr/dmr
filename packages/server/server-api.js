@@ -2,7 +2,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-27 16:58:06 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-04 18:42:43
+ * @Last Modified time: 2018-05-04 18:50:34
  */
 
 var http = require('http');
@@ -56,7 +56,7 @@ class Server {
         let arr = line.split('\t');
         if(arr.length != 3) return;
         let dims = arr[0].split('|');
-        if(conditions.system == dims[0] || dims == "sys=" + conditions.system){
+        if(conditions.system == dims[0] || dims[0] == "sys=" + conditions.system){
             rowsdata[dims[1]] = rowsdata[dims[1]] || {};
             rowsdata[dims[1]][arr[1]] = arr[2];
         }

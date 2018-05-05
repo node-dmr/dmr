@@ -1,8 +1,8 @@
 {
-  "name": "@baidu/speedup-analysis",
+  "name": "dmr",
   "version": "0.0.3",
-  "discription": "Speedup Analysis",
-  "main": "src/instantSearch.js",
+  "discription": "Data Mining Routine",
+  "main": "bin/start.js",
   "scripts": {
     "doc": "make doc",
     "clean": "make clean"

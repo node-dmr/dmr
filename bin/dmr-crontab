@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var Log = require('../packages/util/log');
 var log = new Log(2);
 

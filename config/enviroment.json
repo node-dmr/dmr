@@ -1,0 +1,4 @@
+{
+    // you can create enviroment.dev.json and then develop with it
+    "base-project": null
+}

@@ -10,4 +10,6 @@ amd_modules/
 *.log
 .*.un~
 .vimrc
-enviroment.json
+*.dev.json
+*.tgz
+dmr.json

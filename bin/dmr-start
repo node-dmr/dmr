@@ -1,13 +1,15 @@
+#!/usr/bin/env node
+
 /*
  * @Author: qiansc 
  * @Date: 2018-04-27 17:00:04 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-04-27 17:07:07
+ * @Last Modified time: 2018-05-06 18:51:45
  */
 var path = require('path');
 var program = require('commander');
-var Log = require('../packages/util/log');
-var Server = require('../packages/server/server-api');
+var Log = require('../lib/util/log');
+var Server = require('../lib/server/server-api');
 
 var log = new Log(2);
 

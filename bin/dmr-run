@@ -1,24 +1,27 @@
+#!/usr/bin/env node
+
 /*
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-05 19:53:26
+ * @Last Modified time: 2018-05-06 19:14:08
  */
 
-var Log = require('../packages/util/log');
-var log = new Log(2);
+let Log = require('../lib/util/log');
+let program = require('commander');
+let path = require('path');
+let log = new Log(2);
 
-var program = require('commander');
-var path = require('path');
-var SuperTask = require('../packages/task/task-super');
-var Config = require('../packages/core/config.js');
-var Action = require('../packages/core/action');
-var parseAction = require('./util/parse-action');
-var parseRange = require('./util/parse-range');
+let SuperTask = require('../lib/task/task-super');
+let Config = require('../lib/core/config.js');
+let Action = require('../lib/core/action');
+let parseAction = require('../lib/util/parse-action');
+let parseRange = require('../lib/util/parse-range');
+
+let taskId, file, action, key, range;
 
 program
   .version('0.1.0', '-v, --version')
-  .option('-t, --task <value>', 'Task ID')
   .option('-s, --start <items>', 'Start Date / Datetime')
   .option('-e, --end <items>', 'End Date / Datetime')
   .option('-r, --range <value>', 'Ranges(d,h,m,s) [option]')
@@ -31,12 +34,12 @@ program.on('--help', function(){
     log.info('');
     log.info('  Examples:');
     log.info('');
-    log.info('    $ start -t acit -s 20180401.1200.00 -e 20180401120010');
-    log.info('    $ start -t acit -s 20180401.1200.00 -r 10s');
-    log.info('    $ start -t acit -s 20180401120000 -r 10s -f ./rs.log');
-    log.info('    $ start -t acit -s -5m -r 10s');
-    log.info('    $ start -t acit -s -5m -r 10s -l 0');
-    log.info('    $ start -t acit -s -5m -r 10s -p speedup-ace ');
+    log.info('    $ dmr run acit -s 20180401.1200.00 -e 20180401120010');
+    log.info('    $ dmr run acit -s 20180401.1200.00 -r 10s');
+    log.info('    $ dmr run acit -s 20180401120000 -r 10s -f ./rs.log');
+    log.info('    $ dmr run acit -s -5m -r 10s');
+    log.info('    $ dmr run acit -s -5m -r 10s -l 0');
+    log.info('    $ dmr run acit -s -5m -r 10s -p speedup-ace ');
     log.info('');
     log.info('  Supported Task:');
     log.info('');
@@ -44,41 +47,43 @@ program.on('--help', function(){
     log.info(' ');
 });
 
+program.command('*').description('Task Id')
+.action(function(arg){
+    taskId = arg;
+});
+
 program.parse(process.argv);
+
+file = program.file || false;
+key = program.key || false;
+action = new Action();
+
 
 if (program.log !== undefined){
     Log.setGlobalLev(program.log);
 }
 
-var taskId = program.task || false;
-var file = program.file || false;
-var action = new Action();
-var key = program.key || false;
 /**
- *  参数选项验证
- */
-if (!taskId){
-    log.info('Task ID is required!');
-    return;
-}
-
-var range = parseRange(program);
-/**
- *  校验成功后的命令提示
+ *  命令提示
  */
 log.info('------------------------------------------------------------------------');
 // log.group('    ');
 log.info('You will start a task with following config:');
 log.info('\r\n');
+
+// Deal Task Id
 if (taskId){
     log.info('Task Name\t\t', taskId);
-    var config = Config.find('task',taskId);
+    let config = Config.find('task',taskId);
     if (config.description) {
         log.info('Task Description\t ' + config.description);
     }
 }else {
     log.info('Task ID is required!');
+    return;
 }
+
+// Deal File
 if (file == "default") {
     action.set("file", "default");
     log.info('FilePath ', 'Use TaskConfig');
@@ -88,6 +93,8 @@ if (file == "default") {
     action.set('file', file);
 }
 
+// Deal Project
+
 if (program.project) {
     log.info('Specify Project >>> ' + program.project);
 }
@@ -95,6 +102,8 @@ if (program.project) {
 // log.groupEnd();
 log.info('------------------------------------------------------------------------\r\n');
 
+// Deal Key && Range
+range = parseRange(program);
 if (key){
     // 从当前命令执行路径计算目标路径，会覆盖task默认file
     // file = path.resolve(process.cwd(), file);
@@ -112,16 +121,6 @@ if (key){
 }
 
 
-var task = new SuperTask(action);
+let task = new SuperTask(action);
 
 task.run();
-
-/**
- *  部分批处理函数 
- */
-function range(val) {
-    return val.split('..').map(Number);
-}
-function list(val) {
-    return val.split(',');
-}

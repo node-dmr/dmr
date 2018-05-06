@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var cli = require('../lib/dmr').cli;
+
+program
+  .version('0.1.0', '-v, --version')
+  .command('run [value]', 'Run Task');
+
+program
+.command('init [path]')
+.option('--base', 'Set Base-Project Here')
+.option('--force', 'Upgrade Project Info in Enviroment Config')
+.description('Init Project')
+.action(function(path, cmd){
+    cli.init.exec(path, cmd);
+});
+
+
+program.on('--help', function(){
+    // log.info('');
+    // log.info('  Examples:');
+    // log.info('');
+    // log.info('    $ crontab --start');
+    // log.info('    $ crontab --stop');
+    // log.info('    $ crontab --restart');
+    // log.info('');
+});
+
+program.parse(process.argv);
+
+//console.log(program.start);
+
+
+// dmr run aic -s
+// dmr init
+// dmr config --project
+// dmr 

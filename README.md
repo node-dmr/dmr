@@ -1,7 +1,15 @@
 # What`s DMR
 DMR is a framework of processing log data.
 
-Alpha(0.1.x) version will be released  on NPM before May 18th.It may not work before Alpha version.
+**Please read the following information before you install dmr**
+
+Alpha(0.1.x) version will be released  on NPM before **May 18th**.
+
+It`s not ready for public before Alpha version.
+
+I'm trying to write Cli and Add Docs / Language support / Unit Test.
+
+Thank you for your attention!
 
 ## 简介
 DMR 是一个开放过程的数据处理框架，除了提高业务数据报表产出的效率外，更注重让更多业务角色快速、独立参与数据分析。框架主要聚焦数据处理过程（入库、转储、Map、Reduce、数据分析、数据评价、报表整合、任务调度、日程管理等）。

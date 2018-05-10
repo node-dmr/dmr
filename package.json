@@ -1,12 +1,12 @@
 {
   "name": "dmr",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "discription": "Data Mining Routine",
   "preferGlobal": true,
   "scripts": {
     "doc": "make doc",
     "clean": "make clean",
-    "reload": "npm pack && npm install dmr-0.0.6.tgz -g"
+    "reload": "npm pack && npm install dmr-0.0.7.tgz -g"
   },
   "devDependencies": {},
   "amdDependencies": {},

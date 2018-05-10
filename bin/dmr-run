@@ -4,28 +4,28 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-06 19:14:08
+ * @Last Modified time: 2018-05-11 00:42:44
  */
 
-let Log = require('../lib/util/log');
-let program = require('commander');
-let path = require('path');
-let log = new Log(2);
+const Log = require('../lib/util/log');
+const program = require('commander');
+const path = require('path');
+const log = new Log(2);
 
-let SuperTask = require('../lib/task/task-super');
-let Config = require('../lib/core/config.js');
-let Action = require('../lib/core/action');
-let parseAction = require('../lib/util/parse-action');
-let parseRange = require('../lib/util/parse-range');
+const SuperTask = require('../lib/task/task-super');
+const Config = require('../lib/core/config.js');
+const History = require('../lib/core/history.js');
+const parseRange = require('../lib/util/parse-range');
 
-let taskId, file, action, key, range;
+let action, config, taskId, rang;
 
 program
   .version('0.1.0', '-v, --version')
   .option('-s, --start <items>', 'Start Date / Datetime')
   .option('-e, --end <items>', 'End Date / Datetime')
   .option('-r, --range <value>', 'Ranges(d,h,m,s) [option]')
-  .option('-f, --file <file>', 'Output File [option]')
+  .option('-o, --output <file>', 'Output File [option]')
+  .option('-i, --input <file>', 'Output File [option]', 'default')
   .option('-k, --key <value>', 'Prev Action Key [option]')
   .option('-l, --log <value>', 'Log Output Level Since Less to All( 0 ~ 9 )')
   .option('-p, --project <value>', 'Specify Project');
@@ -36,7 +36,7 @@ program.on('--help', function(){
     log.info('');
     log.info('    $ dmr run acit -s 20180401.1200.00 -e 20180401120010');
     log.info('    $ dmr run acit -s 20180401.1200.00 -r 10s');
-    log.info('    $ dmr run acit -s 20180401120000 -r 10s -f ./rs.log');
+    log.info('    $ dmr run acit -s 20180401120000 -r 10s -o ./rs.log');
     log.info('    $ dmr run acit -s -5m -r 10s');
     log.info('    $ dmr run acit -s -5m -r 10s -l 0');
     log.info('    $ dmr run acit -s -5m -r 10s -p speedup-ace ');
@@ -54,9 +54,13 @@ program.command('*').description('Task Id')
 
 program.parse(process.argv);
 
-file = program.file || false;
-key = program.key || false;
-action = new Action();
+action = {
+    input: program.input || false,
+    output:  program.output || false,
+    key: program.key || false,
+    taskid: taskId
+};
+
 
 
 if (program.log !== undefined){
@@ -84,13 +88,15 @@ if (taskId){
 }
 
 // Deal File
-if (file == "default") {
-    action.set("file", "default");
-    log.info('FilePath ', 'Use TaskConfig');
-} else if (file){
-    // 从当前命令执行路径计算目标路径，会覆盖task默认file
-    file = path.resolve(process.cwd(), file);
-    action.set('file', file);
+if (action.output == "default") {
+    log.info('Output ', 'Use TaskConfig');
+} else if (action.output){
+    action.output = path.resolve(process.cwd(), action.output);
+}
+if (action.input == "default") {
+    log.info('Input ', 'Use TaskConfig');
+} else if (action.input){
+    action.input = path.resolve(process.cwd(), action.input);
 }
 
 // Deal Project
@@ -104,23 +110,47 @@ log.info('----------------------------------------------------------------------
 
 // Deal Key && Range
 range = parseRange(program);
-if (key){
-    // 从当前命令执行路径计算目标路径，会覆盖task默认file
-    // file = path.resolve(process.cwd(), file);
-    // action.set('file', file);
-    // log.info('[file] ', file);
-    action = parseAction(key);
-    action.set('config', Config.find('task',taskId));
-} else if (range) {
+if (range) {
     log.info('' + range.toString('\r\n'));
-    action.set('range', range.param());
-    action.set('config', Config.find('task',taskId));
+    action.range = range.param();
+    
 } else {
     log.info('Key or RangeInfo is required!');
     return;
 }
 
+if (action.key){
+    let history = History.get(action.key);
+    // 原输出
+    let output = action.output;
+    action = history.info.action;
+    if (action.taskid !== taskId){
+        // 如果任务不同，则视为任务延续
+        config = Config.find('task',taskId);
+        action.input = action.output;
+        action.output = output;
+        action.taskid = taskId;
+    } else {
+        // 如参数相同视为重跑，恢复原任务的config并重跑
+        config = history.info.config;
+    }
+} else {
+    config = Config.find('task',taskId);
+}
 
-let task = new SuperTask(action);
 
-task.run();
+
+let task = new SuperTask(config);
+
+const RandomKey = require('../lib/util/random-key');
+let key = new RandomKey().get();
+
+task.on('end',() =>{
+    History.add(key, task.id, {
+        action: action,
+        config: config
+    });
+    log.info('L5', 'You can [restart this job / start next job] by using Action Key : -k ' + key);
+});
+
+task.run(action);

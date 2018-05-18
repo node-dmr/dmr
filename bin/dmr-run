@@ -4,7 +4,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-11 00:42:44
+ * @Last Modified time: 2018-05-12 15:49:41
  */
 
 const Log = require('../lib/util/log');
@@ -15,9 +15,10 @@ const log = new Log(2);
 const SuperTask = require('../lib/task/task-super');
 const Config = require('../lib/core/config.js');
 const History = require('../lib/core/history.js');
+const Range = require('../lib/util/range');
 const parseRange = require('../lib/util/parse-range');
 
-let action, config, taskId, rang;
+let action, config, taskId, range;
 
 program
   .version('0.1.0', '-v, --version')
@@ -111,9 +112,7 @@ log.info('----------------------------------------------------------------------
 // Deal Key && Range
 range = parseRange(program);
 if (range) {
-    log.info('' + range.toString('\r\n'));
     action.range = range.param();
-    
 } else {
     log.info('Key or RangeInfo is required!');
     return;
@@ -137,6 +136,8 @@ if (action.key){
 } else {
     config = Config.find('task',taskId);
 }
+
+log.info('' + new Range(action.range).toString('\r\n'));
 
 
 

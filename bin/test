@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 
-var Log = require('../packages/util/log');
-var log = new Log(2);
-Log.setGlobalLev(5);
+// var Log = require('../lib/util/log');
+// var log = new Log(2);
+// Log.setGlobalLev(5);
 
-var stream = require('stream');
-var util = require('util');
+// var stream = require('stream');
+// var util = require('util');
 
-var env = require('../packages/core/env');
-// console.log(env.task["search-ac"]);
-// console.log(env);
-// var schedule = require('node-schedule');
- 
-// var j = schedule.scheduleJob('*/2 * * * *', function(){
-//   console.log('The answer to life, the universe, and everything!');
-// });
+// var env = require('../lib/core/env');
+let Stream = require('ssh2-streams').SFTPStream
+let stream = new Stream();
+let writer = process.stdout;
+stream.createReadStream('gzhl-ps-201706-m22-www1659.gzhl.baidu.com/home/work/webb/analysis/data/beidou/webb-rawdata/pf_server/20180530/00/00.log');
+stream.pipe(writer);

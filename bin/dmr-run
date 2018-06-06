@@ -4,7 +4,7 @@
  * @Author: qiansc 
  * @Date: 2018-04-02 11:18:49 
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-05-12 15:49:41
+ * @Last Modified time: 2018-06-01 11:14:37
  */
 
 const Log = require('../lib/util/log');
@@ -89,7 +89,9 @@ if (taskId){
 }
 
 // Deal File
-if (action.output == "default") {
+if (action.output == "console") {
+    log.info('Output ', 'Console');
+} else if (action.output == "default") {
     log.info('Output ', 'Use TaskConfig');
 } else if (action.output){
     action.output = path.resolve(process.cwd(), action.output);

@@ -3,7 +3,7 @@ DMR is a framework of processing log data.
 
 **Please read the following information before you install dmr**
 
-Alpha(0.1.x) version will be released  on NPM before **May 18th**.
+Alpha(0.1.x) version will be released  on NPM before **june 18th**.
 
 It`s not ready for public before Alpha version.
 
@@ -48,6 +48,20 @@ DMR 主要处理“原数据”至“报表数据”产出过程，不负责数�
     dmr init ./ --base
 ```
 注意，如果你移动项目目录需要重新init --force更新注册信息
+
+如果你使用dmr子命令时，遇到spawn EACCES错误，请设置全局安装dmr模块的bin目录的权限为可执行（777）
+```
+    dmr run --help
+
+    # internal/child_process.js:325
+    #    throw errnoException(err, 'spawn');
+    #   ^
+    #
+    #Error: spawn EACCES
+
+    chmod -R 777 /home/work/opt/node8.4.0/lib/node_modules/dmr/bin
+
+```
 
 ## Project配置
 

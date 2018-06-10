@@ -8,8 +8,14 @@
 // var util = require('util');
 
 // var env = require('../lib/core/env');
-let Stream = require('ssh2-streams').SFTPStream
-let stream = new Stream();
-let writer = process.stdout;
-stream.createReadStream('gzhl-ps-201706-m22-www1659.gzhl.baidu.com/home/work/webb/analysis/data/beidou/webb-rawdata/pf_server/20180530/00/00.log');
-stream.pipe(writer);
+var Deformat = require('deformat');
+var combined = '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $http_user_cookie';
+var log = '10.128.135.26 - - [08/Jun/2018:12:14:16 +0800] "GET /static/tj.gif?pagetype=card_height_report&doodle_banner=150&mkt_billboard=425&yl_vd_video=285&search_news=260&mkt_today_digest=202&recommend_pict=210&wise_sp_discuss=339&h5_mobile=161&www_normal=157 HTTP/1.1" 200 43 "https://m.baidu.com/s?word=%E4%BB%8A%E6%97%A5%E6%96%B0%E9%B2%9C%E4%BA%8B&from=1020853b&sa=ire_dl_gh_logo" "Mozilla/5.0 (Linux; Android 5.1; vivo X6Plus D Build/LMY47I; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/48.0.2564.116 Mobile Safari/537.36 T7/10.7 baiduboxapp/10.7.5.10 (Baidu; P1 5.1)" BAIDUCUID=la2Vf0ieHi0_u2aMg8-Lu0PqB8leP28aYPSNil8RH88Rav8f_uvAf_ujvi_Aa2fDA; BAIDUID=636D30CD0F47A728845C87E4D3A8928C:FG=1; BIDUPSID=636D30CD0F47A728845C87E4D3A8928C; BAIDU_WISE_UID=wapp_1523608624092_472; COOKIE_SESSION=q:[{k:"%E7%8C%8E%E6%89%8B%E5%AF%BC%E8%88%AA",i:"5fe2fc0bb50e6026",t:38736},{k:"%E7%A5%9E%E7%BB%8F%E8%8A%82%E8%8B%B7%E8%84%82",i:"65d2e5fd014340d4",t:26118}],t:"w6",b:0; BDORZ=AE84CDB3A529C0F8A2B9DCDD1D18B695; H_WISE_SIDS=114550_116780_115652_122157_120172_107312_118884_118870_118843_118826_118803_117332_124068_122788_123842_123573_123814_120549_123808_123782_123852_123980_124030_123604_110086_123290; PSINO=1; wise_tj_cl=i@0|v@1|sInfo@360_640_360_640_360_529|fInfo@0_0_0_0|dpr@3; BAIDULOC=12126542_4040608_42_233_1528431250860; lsv=zbiosTjs_27d811a-zbiosTcss_cf1d882-zbiosBcss_3f7ec25-footjs_d0825bf-android_invokeAppjs_f6e0de7-zbiosjs_bb92668-framejs_6a628d7-globalBjs_5ce5f21; wpr=0; __bsi=10757050777119438222_00_74_R_R_1_0303_cc13_Y; BDSVRBFE=Go; WISE_HIS_PM=1; MSA_WH=360_529; MSA_PBT=36; MSA_ZOOM=1000 "-" 100pct "m.baidu.com"';
+let rs = Deformat(combined).exec(log);
+//console.log('?kk=%2283%22'.match(/[?&]\w+=[^&$]+/g));
+var re = /[?&](\w+)=([^&$]+)/g;
+var x = rs.request;
+while( tempR = re.exec(x))
+{
+ console.log(tempR[1]);
+}

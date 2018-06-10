@@ -8,6 +8,9 @@ program
   .command('run [value]', 'Run Task');
 
 program
+  .command('crontab [value]', 'Schedules Control');
+
+program
 .command('init [path]')
 .option('--base', 'Set Base-Project Here')
 .option('--force', 'Upgrade Project Info in Enviroment Config')
@@ -15,6 +18,8 @@ program
 .action(function(path, cmd){
     cli.init.exec(path, cmd);
 });
+
+
 
 
 program.on('--help', function(){

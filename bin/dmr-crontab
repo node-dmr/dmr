@@ -22,6 +22,7 @@ program.command('start [value]')
 .action(function(path, cmd){
   if (cmd.parent.args[0]) {
     let schedule = new Schedule(cmd.parent.args[0]);
+    schedule.start();
   }
 });
 // .option('-l, --list', 'List Schedules')

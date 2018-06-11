@@ -5,7 +5,6 @@ var log = new Log(2);
 var Schedule = require('../lib/dmr').schedule;
 
 var program = require('commander');
-var Config = require('../lib/core/config.js');
 
 program
   .version('0.1.0', '-v, --version')

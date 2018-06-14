@@ -19,6 +19,18 @@
 //  console.log(tempR[1]);
 // }
 
-var a = new Buffer('123');
-a.write('4',a.length);
-console.log(a);
+// var a = new Buffer('123');
+// a.write('4',a.length);
+// console.log(a);
+let fs = require('fs');
+let path = require('path');
+let os = require("os");
+
+let epath ='../../config/enviroment.json';
+let edevpath ='../../config/enviroment.dev.json';
+
+if (os.type().toLowerCase().indexOf('windows') > -1) {
+    let configPath = path.resolve(os.tmpdir() , '../dmr/');
+    console.log(configPath);
+    //let path = 
+}

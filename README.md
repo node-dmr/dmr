@@ -58,8 +58,14 @@ DMR 主要处理“原数据”至“报表数据”产出过程，不负责数�
     #   ^
     #
     #Error: spawn EACCES
+    #    at exports._errnoException (util.js:1022:11)
+    #    at ChildProcess.spawn (internal/child_process.js:313:11)
+    #    at exports.spawn (child_process.js:385:9)
+    #    at Command.executeSubCommand 
+    #       ……
+    #    at Object.<anonymous> (/home/cubede/.jumbo/lib/node_modules/dmr/bin/dmr:35:9)
 
-    chmod -R 777 /home/work/opt/node8.4.0/lib/node_modules/dmr/bin
+    chmod -R 777 /home/cubede/.jumbo/lib/node_modules/dmr/bin/dmr
 
 ```
 

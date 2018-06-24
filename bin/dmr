@@ -19,7 +19,8 @@ program
     cli.init.exec(path, cmd);
 });
 
-
+program
+  .command('start [value]', 'Start DMR Webapp');
 
 
 program.on('--help', function(){

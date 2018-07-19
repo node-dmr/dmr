@@ -13,3 +13,4 @@ amd_modules/
 *.dev.json
 *.tgz
 dmr.json
+bin/test

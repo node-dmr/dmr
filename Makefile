@@ -1,4 +1,3 @@
-# @author: qiansicheng(qiansicheng@baidu.com)
 # Use npm scripts instead
 
 # Variables
@@ -28,20 +27,3 @@ exp:
 install:
 	npm install forever -g
 	npm install
-
-start:
-	forever start -o out.log -e err.log -a bin/test.js
-#	apm install
-stop:
-	forever stop bin/test.js
-update-apm:
-#	apm install --save
-
-apm-instal:
-	npm instal apmjs -g
-
-apm-login:
-	npm login --registry=http://apmjs.baidu.com --scope=@baidu
-
-apm-publish:
-	npm publish

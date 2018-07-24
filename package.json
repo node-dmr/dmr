@@ -10,14 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qiansc/dmr"
+    "url": "git+https://github.com/node-dmr/dmr"
   },
   "bugs": {
-    "url": "https://github.com/qiansc/dmr/issues"
+    "url": "https://github.com/node-dmr/dmr/issues"
   },
-  "homepage": "https://github.com/qiansc/dmr/blob/master/README.md",
+  "homepage": "https://github.com/node-dmr/dmr/blob/master/README.md",
   "devDependencies": {},
-  "amdDependencies": {},
   "dependencies": {
     "commander": "^2.15.1",
     "cookie-parser": "~1.4.3",

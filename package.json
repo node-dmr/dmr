@@ -15,10 +15,16 @@
   "bugs": {
     "url": "https://github.com/node-dmr/dmr/issues"
   },
-  "homepage": "https://github.com/node-dmr/dmr/blob/master/README.md",
-  "devDependencies": {},
+  "homepage": "https://github.com/node-dmr/dmr",
+  "devDependencies": {
+    "jsdoc-to-markdown": "^4.0.1"
+  },
   "dependencies": {
     "commander": "^2.15.1",
+    "node-json-minify": "^1.0.0",
+    "underscore": "^1.9.1"
+  },
+  "dependencies.bak": {
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "decimal": "0.0.2",
@@ -41,7 +47,7 @@
   "bin": {
     "dmr": "./bin/dmr"
   },
-  "main": "./lib/dmr.js",
+  "main": "./lib/index.js",
   "license": "MIT",
   "author": "qiansc"
 }

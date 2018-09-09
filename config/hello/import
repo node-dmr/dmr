@@ -1,0 +1,12 @@
+{
+  "input": "source:http",
+  "output":"source:local",
+  "description": "demo import task",
+  "process" : [
+    //"pipe:/common/line",
+    "pipe:import.segment",
+    "pipe:./pipe.import.segment",
+    "pipe:/hello/pipe.import.segment"
+  ],
+  "numberTest": 555
+}

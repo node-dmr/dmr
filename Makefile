@@ -18,6 +18,7 @@ export DOC=./node_modules/.bin/jsdoc2md
 doc:
 	rm -rf ./docs/api && mkdir ./docs/api
 	$(DOC) src/util/config.js > docs/api/util-config.md
+	$(DOC) src/util/range.js > docs/api/util-range.md
 
 exp:
 	npm run example

@@ -5,7 +5,7 @@
 
 * [Config](#Config)
     * [new Config(path)](#new_Config_new)
-    * [.load(path)](#Config.load) ⇒ [<code>Config</code>](#Config) \| <code>null</code>
+    * [.json()](#Config+json) ⇒ <code>JSON</code>
 
 <a name="new_Config_new"></a>
 
@@ -17,16 +17,19 @@
 
 **Example**  
 ```js
-let conf = new Config('config/hello/import.task');
+let conf;
+conf = new Config('config/hello/import');
+conf = new Config('hello/import');
+console.log(conf.json());
+
+let sourceConf = conf.load('source:http');
+let pipeConf = conf.load('pipe:import');
 ```
-<a name="Config.load"></a>
+<a name="Config+json"></a>
 
-### Config.load(path) ⇒ [<code>Config</code>](#Config) \| <code>null</code>
-Config Factory
+### config.json() ⇒ <code>JSON</code>
+get config json
+config will be load when called
 
-**Kind**: static method of [<code>Config</code>](#Config)  
-
-| Param | Type |
-| --- | --- |
-| path | <code>pathLike</code> | 
-
+**Kind**: instance method of [<code>Config</code>](#Config)  
+**Returns**: <code>JSON</code> - config json  

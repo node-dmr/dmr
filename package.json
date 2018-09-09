@@ -6,7 +6,10 @@
   "scripts": {
     "doc": "make doc",
     "clean": "make clean",
-    "reload": "npm pack && npm install dmr-0.2.10.tgz -g"
+    "reload": "npm pack && npm install dmr-0.2.10.tgz -g",
+    "cover": "istanbul cover _mocha",
+    "test": "mocha -t 3000",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -17,10 +20,15 @@
   },
   "homepage": "https://github.com/node-dmr/dmr",
   "devDependencies": {
-    "jsdoc-to-markdown": "^4.0.1"
+    "chai": "^4.1.2",
+    "istanbul": "^0.4.5",
+    "jsdoc-to-markdown": "^4.0.1",
+    "mocha": "^5.2.0"
   },
   "dependencies": {
     "commander": "^2.15.1",
+    "json-stringify-safe": "^5.0.1",
+    "moment": "^2.22.2",
     "node-json-minify": "^1.0.0",
     "underscore": "^1.9.1"
   },

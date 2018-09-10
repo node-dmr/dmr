@@ -2,10 +2,10 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-09 19:14:39
+ * @Last Modified time: 2018-09-10 01:00:21
  */
-var Moment = require('moment');
-var Duration = Moment.duration;
+const Moment = require('moment');
+const Duration = Moment.duration;
 
 class Range {
   /**
@@ -65,7 +65,8 @@ class Range {
     if (end !== undefined) {
       this._duration = Moment.duration(this.normalizeMoment(end).diff(this._moment));
     }
-    return this._moment.clone().add(this._duration || 0);
+    return this._moment.clone().add(this._duration);
+
   }
 
   /**
@@ -93,7 +94,7 @@ class Range {
    */
   toString(Mformat, separater, Dformat) {
     separater = separater || /* istanbul ignore next */ ' , ';
-    if (this._moment && this._duration) {
+    if (this.isValid()) {
       return [
         this._moment.format(Mformat),
         Dformat ? this._duration.as(Dformat) + Dformat : this._duration.humanize(),
@@ -102,7 +103,13 @@ class Range {
     } else {
       return 'Invalid Range';
     }
-
+  }
+  /**
+   * isValid
+   * @returns {Boolean}
+   */
+  isValid() {
+    return this._moment && this._moment.isValid() && this._duration && this._duration.as('ms') && true || false;
   }
 
   /**

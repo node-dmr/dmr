@@ -10,6 +10,7 @@
     * [.end([end])](#Range+end) ⇒ <code>Moment</code>
     * [.duration([duration], [start])](#Range+duration) ⇒ <code>Duration</code>
     * [.toString([Mformat], [separater], [Dformat])](#Range+toString)
+    * [.isValid()](#Range+isValid) ⇒ <code>Boolean</code>
 
 <a name="new_Range_new"></a>
 
@@ -33,7 +34,7 @@ new Range('2018-09-01 12:00:00', '01:00:00');
 new Range('20180901T12', 'P1H');
 new Range('20180901', null, Moment('20180902'));
 new Range('now--60000', null, 'now');
-new Range(new Date().getTime() - 60000, null, new Date().getTime());
+new Range(new Date().getTime() - 60000, null, new Date());
 ```
 <a name="Range+set"></a>
 
@@ -99,3 +100,9 @@ console.log(new Range().duration(1000, new Date()).as('s')); // 1
 | [separater] | <code>string</code> | separater bwtween moment and durations |
 | [Dformat] | <code>string</code> | format of duration |
 
+<a name="Range+isValid"></a>
+
+### range.isValid() ⇒ <code>Boolean</code>
+isValid
+
+**Kind**: instance method of [<code>Range</code>](#Range)  

@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-09-02 01:09:50
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-09 18:48:03
+ * @Last Modified time: 2018-09-10 00:54:29
  */
 const Range = require('../src/util/range');
 const expect = require('chai').expect;
@@ -43,6 +43,18 @@ describe("Util Range", () =>{
     let range = new Range('now');
     console.log(range.toString());
     expect(range.end().diff(range.start())).to.be.equal(0);
+  });
+
+  it("isValid Function Test", () => {
+    let range = new Range();
+    console.log('Should be InValid :', range.toString());
+    expect(range.isValid()).to.be.eq(false);
+    range.start('NOW');
+    console.log('Should be InValid :', range.toString());
+    expect(range.isValid()).to.be.eq(false);
+    range.duration('P1D');
+    console.log('Should be Valid :', range.toString());
+    expect(range.isValid()).to.be.eq(true);
   });
 
 });

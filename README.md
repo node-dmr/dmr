@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/node-dmr/dmr.svg?branch=master)](https://travis-ci.org/node-dmr/dmr)
+[![Coveralls](https://img.shields.io/coveralls/node-dmr/dmr.svg)](https://coveralls.io/github/node-dmr/dmr)
+[![npm package](https://img.shields.io/npm/v/dmr.svg)](https://www.npmjs.org/package/dmr)
+[![npm downloads](http://img.shields.io/npm/dm/dmr.svg)](https://www.npmjs.org/package/dmr)
+
 # What`s DMR
 DMR is a framework of processing log data.
 
@@ -60,7 +65,7 @@ DMR 工作需要大量的配置来运作，这些配置通常会在一个配置�
     #    at exports._errnoException (util.js:1022:11)
     #    at ChildProcess.spawn (internal/child_process.js:313:11)
     #    at exports.spawn (child_process.js:385:9)
-    #    at Command.executeSubCommand 
+    #    at Command.executeSubCommand
     #       ……
     #    at Object.<anonymous> (/home/cubede/.jumbo/lib/node_modules/dmr/bin/dmr:35:9)
 

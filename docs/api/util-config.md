@@ -4,26 +4,24 @@
 **Kind**: global class  
 
 * [Config](#Config)
-    * [new Config(path)](#new_Config_new)
+    * [new Config(path, scope)](#new_Config_new)
     * [.json()](#Config+json) ⇒ <code>JSON</code>
+    * [.stringify(indent)](#Config+stringify) ⇒ <code>String</code>
 
 <a name="new_Config_new"></a>
 
-### new Config(path)
+### new Config(path, scope)
 
-| Param | Type |
-| --- | --- |
-| path | <code>pathLike</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>Path</code> |  |
+| scope | <code>Object</code> | for config cache |
 
 **Example**  
 ```js
 let conf;
-conf = new Config('config/hello/import');
 conf = new Config('hello/import');
 console.log(conf.json());
-
-let sourceConf = conf.load('source:http');
-let pipeConf = conf.load('pipe:import');
 ```
 <a name="Config+json"></a>
 
@@ -33,3 +31,14 @@ config will be load when called
 
 **Kind**: instance method of [<code>Config</code>](#Config)  
 **Returns**: <code>JSON</code> - config json  
+<a name="Config+stringify"></a>
+
+### config.stringify(indent) ⇒ <code>String</code>
+stringify config
+
+**Kind**: instance method of [<code>Config</code>](#Config)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| indent | <code>indent</code> | format string |
+

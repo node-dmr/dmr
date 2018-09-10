@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-08-06 17:58:45
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-09 21:34:15
+ * @Last Modified time: 2018-09-11 00:12:33
  */
 const Path = require('path');
 const fs = require('fs');
@@ -72,7 +72,6 @@ class Config {
     let result = this.json();
     attr = attr.split(".");
     attr.forEach(a => {
-      /* istanbul ignore if */
       if (!result) return;
       // if (result && result.isConfig) {
       //   result = result.get(a);

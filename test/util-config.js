@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-08-15 18:51:32
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-09 21:30:55
+ * @Last Modified time: 2018-09-11 00:13:01
  */
 const Config = require('../src/util/config');
 const Path = require('path');
@@ -31,6 +31,7 @@ describe("Util Config", () =>{
     console.log(host);
     expect(host.length).to.be.gt(0);
     expect(conf.get('input.host0')).to.be.eq(false);
+    expect(conf.get('input.host0.xxx')).to.be.eq(false);
   });
 
 });

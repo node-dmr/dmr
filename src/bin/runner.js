@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-06-11 00:17:47
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-10 10:36:13
+ * @Last Modified time: 2018-09-10 23:06:58
  */
 // const Log = require('../util/log');
 const Moment = require('moment');
@@ -33,8 +33,7 @@ class Runner extends EventEmitter{
     }
 
     exe () {
-
-        let action, config, taskId;
+        let config, taskId;
         program
           .usage('run task [options]')
           .version(pkg.version, '-v, --version')
@@ -78,11 +77,6 @@ class Runner extends EventEmitter{
           return Promise.reject();
         }
 
-
-        let scope = {
-          cwd: this.cwd,
-        };
-
         // dmr run ./config/hello/import
         let confPath = path.resolve(this.cwd, taskId);
         if (!fs.existsSync(confPath)) {
@@ -93,15 +87,28 @@ class Runner extends EventEmitter{
           log.warn('[Error] Task config %s does not exist!', taskId);
           return Promise.reject();
         }
-        config = new Config(confPath);
+        config = new Config(confPath).json();
 
-        // let task = new SuperTask(config);
+
+        // log.group('    ');
+        log.info('You will start tasks with following config and option:');
+        // Deal Task Id
+        if (config.description) {
+          log.info('Task Description\t ', config.description);
+        }
+
+        log.line();
+
+        let tasks = new Tasks(config);
         let range = new Range(program.start , program.duration, program.end);
+
         if (!range.isValid()) {
           log.warn(range.toString(), ', please check following:');
           log.warn('-s start\t%s\n-d duration\t%s\n-e end\t\t%s', program.start , program.duration, program.end);
           return Promise.reject();
         }
+
+        log.warn('Range\t', range.toString('YY-MM-DD hh:mm:ss', ' - '));
 
         if (program.ii) {
           tasks.setInputInterval(Duration(program.ii));
@@ -111,92 +118,30 @@ class Runner extends EventEmitter{
           tasks.setOutputInterval(Duration(program.oi));
         }
 
-        if (program.input) {
-
+        if (program.input == "default") {
+          log.info('Input\t', 'Use TaskConfig');
+        } else if (program.input){
+            let file = path.resolve(this.cwd, program.input);
+            log.info('Input\t', file);
+            tasks.setInput(file);
         }
 
-        return Promise.resolve();
-
-        /**
-         * taskid
-         * dmr run project/aci
-         * dmr run ./config/project/aci.task
-         */
-
-        action = {
-            input: program.input || false,
-            output:  program.output || false,
-            ii: program.ii || false,
-            oi: program.oi || false
-        };
-
-
-
-        // if (program.log !== undefined){
-        //     Log.setGlobalLev(program.log);
-        // }
-
-        /**
-         *  命令提示
-         */
-        log.line();
-        // log.group('    ');
-        log.info('You will start a task with following config:');
-        log.info('');
-        // Deal Task Id
-        if (config.description) {
-          log.info('Task Description\t ' + config.description);
-        }
-
-        // Deal File
-        if (action.output == "console") {
-            log.info('Output ', 'Console');
-        } else if (action.output == "default") {
-            log.info('Output ', 'Use TaskConfig');
-        } else if (action.output){
-            action.output = path.resolve(this.dir, action.output);
-        }
-        if (action.input == "default") {
-            log.info('Input ', 'Use TaskConfig');
-        } else if (action.input){
-            action.input = path.resolve(this.dir, action.input);
-        }
-
-
-
-        return;
-
-        // log.groupEnd();
-        log.info('------------------------------------------------------------------------\r\n');
-
-        // Deal Key && Range
-        range = parseRange(program);
-        if (range) {
-            action.range = range.param();
+        if (program.output == "console") {
+          log.info('Output\t', 'Console');
+          tasks.setOutput(program.output);
+        } else if (program.output == "default") {
+          log.info('Output\t', 'Use TaskConfig');
+        } else if (program.output){
+          let file = path.resolve(this.cwd, program.output);
+          log.info('Output\t', file);
+          tasks.setOutput(file);
         } else {
-            log.info('Key or RangeInfo is required!');
-            return;
+          console.log('-o\tNll output option');
+          return Promise.reject();
         }
 
 
-        log.info('' + new Range(action.range).toString('\r\n'));
-
-
-
-
-        // const RandomKey = require('../util/random-key');
-        // let key = new RandomKey().get();
-
-        // task.on('end',() =>{
-        //     History.add(key, task.id, {
-        //         action: action,
-        //         config: config
-        //     });
-        //     log.info('L5', 'You can [restart this job / start next job] by using Action Key : -k ' + key);
-        // });
-
-        task.run(action);
-
+         return tasks.run(range);
 
     }
 }

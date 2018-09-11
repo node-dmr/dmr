@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-08-15 18:51:32
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-11 00:13:01
+ * @Last Modified time: 2018-09-12 01:19:20
  */
 const Config = require('../src/util/config');
 const Path = require('path');
@@ -12,7 +12,7 @@ describe("Util Config", () =>{
   let conf, json;
   it("new Config('../config/hello/import')", () => {
     conf =  new Config(Path.resolve(__dirname, '../config/hello/import'));
-});
+  });
 
   it("to JSON", () => {
       json = conf.json();

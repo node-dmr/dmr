@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-09-11 11:02:22
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-11 15:19:32
+ * @Last Modified time: 2018-09-12 00:21:54
  */
 const Transform = require('stream').Transform;
 

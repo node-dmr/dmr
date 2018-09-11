@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-09-11 12:31:55
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-12 00:17:40
+ * @Last Modified time: 2018-09-12 00:20:18
  */
 const con = require('../src/util/console');
 const expect = require('chai').expect;
@@ -49,9 +49,7 @@ describe("Util Console", () =>{
     stream.write('A');
     stream.write('B');
     stream.write(['C']);
-
     expect(stream.readSync().length).to.be.equal(3);
-
     expect(stream.readSync().length).to.be.equal(0);
 
   });

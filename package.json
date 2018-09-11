@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "commander": "^2.15.1",
+    "dmr-source": "^0.2.2",
     "json-stringify-safe": "^5.0.1",
     "moment": "^2.22.2",
     "node-json-minify": "^1.0.0",

@@ -2,10 +2,11 @@
  * @Author: qiansc
  * @Date: 2018-09-10 00:02:05
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-11 11:01:17
+ * @Last Modified time: 2018-09-12 00:26:19
  */
 const Moment = require('moment');
 const Duration = Moment.duration;
+const Console = require('./util/console');
 
 class Tasks {
 
@@ -37,11 +38,17 @@ class Tasks {
    * @returns {ReadableStream}
    */
   getInput() {
-    // if (this.input)
+
   }
 
   setOutput(output) {
     this.output = output;
+  }
+
+  _getOutput() {
+    if (this.input === 'console') {
+      return Console.stream;
+    }
   }
 
   run (range) {

@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-04-02 10:35:47
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-11 00:14:32
+ * @Last Modified time: 2018-09-11 01:36:37
  */
 const Moment = require('moment');
 const Duration = Moment.duration;
@@ -109,20 +109,23 @@ class Range {
    * @returns {Boolean}
    */
   isValid() {
-    return this._moment && this._moment.isValid() && this._duration && this._duration.as('ms') && true || false;
+    return this._moment && this._moment.isValid() && this._duration && this._duration.valueOf() && true || false;
   }
   /**
    * split current range by duration
    * @param {Duration} duration
+   * @param {Boolean} remainder - keep the last range when range will be divided with remainder;
    * @return  {Array} Array of ranges
    */
-  split(duration) {
+  split(duration, remainder) {
     let ranges = [];
-    if (!duration || duration.as('ms') === 0) {
+    if (!duration || duration.valueOf() === 0) {
       return ranges;
     }
-    for(let start = Duration(); start.as('ms') < this._duration.as('ms'); start.add(duration)) {
-      ranges.push(new Range(this._moment.clone().add(start), duration));
+    for(let start = Duration(); start.valueOf() < this._duration.valueOf(); start.add(duration)) {
+      if (remainder || start.valueOf() +  duration.valueOf() <= this._duration.valueOf()){
+        ranges.push(new Range(this._moment.clone().add(start), duration));
+      }
     }
     return ranges;
   }

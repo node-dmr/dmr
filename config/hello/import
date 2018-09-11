@@ -8,5 +8,6 @@
     "pipe:./pipe.import.segment",
     "pipe:/hello/pipe.import.segment"
   ],
+  "interval": "PT1H",
   "numberTest": 555
 }

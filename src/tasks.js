@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-09-10 00:02:05
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-10 23:09:03
+ * @Last Modified time: 2018-09-11 11:01:17
  */
 const Moment = require('moment');
 const Duration = Moment.duration;
@@ -33,6 +33,12 @@ class Tasks {
   setInput(input) {
     this.input = input;
   }
+  /**
+   * @returns {ReadableStream}
+   */
+  getInput() {
+    // if (this.input)
+  }
 
   setOutput(output) {
     this.output = output;
@@ -42,10 +48,25 @@ class Tasks {
     if (!range || !range.isValid()) {
       return Promise.reject('range is isValid');
     }
+    let duration = range.duration().valueOf();
+    let inputRanges = range.split(Duration(this.ii.valueOf() || duration));
+    let outputRanges = range.split(Duration(this.oi.valueOf() || duration));
 
-    let duration = range.duration().as('ms');
-    let ii = this.ii.as('ms') || duration;
-    let oi = this.oi.as('ms') || duration;
+    if (inputRanges.length % outputRanges.length !== 0) {
+      return Promise.reject(`Input has ${inputRanges.length} parts, can not be divided Output parts ${outputRanges.length}`)
+    }
+    // console.log(inputRanges.length, outputRanges.length);
+
+    outputRanges.forEach(or => {
+
+    });
+
+    /**
+     * let InputSource = new Multi();
+     *
+     *
+     *
+     */
 
     return Promise.resolve();
   }

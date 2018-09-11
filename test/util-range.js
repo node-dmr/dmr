@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-09-02 01:09:50
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-11 00:18:27
+ * @Last Modified time: 2018-09-11 01:38:43
  */
 const Range = require('../src/util/range');
 const expect = require('chai').expect;
@@ -64,12 +64,19 @@ describe("Util Range", () =>{
     let ranges = range.split(duration());
     console.log('PT24H / Null => %s', ranges.length);
     expect(ranges.length).to.be.eq(0);
+
     ranges = range.split(duration('04:00:00'));
     console.log('PT24H / 04:00:00  => %s', ranges.length);
     ranges.forEach((r, i) => {console.log('No.%s\t%s', i, r.toString());});
     expect(ranges.length).to.be.eq(6);
+
     ranges = range.split(duration('PT5H'));
-    console.log('PT24H / PT5H  => %s', ranges.length);
+    console.log('PT24H / PT5H  => %s (drop remainder)', ranges.length);
+    ranges.forEach((r, i) => {console.log('No.%s\t%s', i, r.toString());});
+    expect(ranges.length).to.be.eq(4);
+
+    ranges = range.split(duration('PT5H'), true);
+    console.log('PT24H / PT5H  => %s (keep remainder)', ranges.length);
     ranges.forEach((r, i) => {console.log('No.%s\t%s', i, r.toString());});
     expect(ranges.length).to.be.eq(5);
   });

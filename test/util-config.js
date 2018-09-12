@@ -2,11 +2,12 @@
  * @Author: qiansc
  * @Date: 2018-08-15 18:51:32
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-12 01:19:20
+ * @Last Modified time: 2018-09-12 19:52:55
  */
 const Config = require('../src/util/config');
 const Path = require('path');
 const expect = require('chai').expect;
+const fs = require('fs');
 
 describe("Util Config", () =>{
   let conf, json;
@@ -34,4 +35,12 @@ describe("Util Config", () =>{
     expect(conf.get('input.host0.xxx')).to.be.eq(false);
   });
 
+  it("path fill", () => {
+    conf =  new Config(Path.resolve(__dirname, './source/config.json'));
+    let path = conf.json().path;
+    let str = eval.call(null, path);
+    str = Path.resolve(str)
+    console.log('path => ', str);
+    expect(fs.existsSync(str)).to.be.eq(true);
+  });
 });

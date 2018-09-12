@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-09-12 01:18:23
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-12 01:33:21
+ * @Last Modified time: 2018-09-12 10:26:15
  */
 const SourceFactory = require('../src/factory/source');
 const Source = require('dmr-source');
@@ -34,5 +34,11 @@ describe("SourceFactory", () =>{
   it("Null Source", () => {
     source = SourceFactory.create({source: 'None'});
     expect(source).to.be.eq(undefined);
+  });
+
+  it("isSource", () => {
+    source = SourceFactory.create({source: 'FtpSource'});
+    expect(SourceFactory.isSource(source)).to.be.eq(true);
+    expect(SourceFactory.isSource({})).to.be.eq(false);
   });
 });

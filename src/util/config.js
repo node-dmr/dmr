@@ -2,12 +2,13 @@
  * @Author: qiansc
  * @Date: 2018-08-06 17:58:45
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-11 00:12:33
+ * @Last Modified time: 2018-09-12 19:52:18
  */
 const Path = require('path');
 const fs = require('fs');
 const minify = require("node-json-minify");
 const stringify = require('json-stringify-safe');
+const _ = require('underscore');
 
 class Config {
   /**
@@ -124,6 +125,8 @@ class Config {
             path = Path.resolve(Path.dirname(this.path), './' + matches[1] + '.' + matches[2]);
           }
           conf[key] = this._getSubConf(path);
+        } else if (_.indexOf(['path', 'file'], key) > -1 && conf[key] && conf[key].indexOf('`.') > -1){
+          conf[key] = '`'+ Path.dirname(this.path) + '/' + conf[key].substring(1);
         }
       /* istanbul ignore else */
       }

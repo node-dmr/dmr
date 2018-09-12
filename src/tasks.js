@@ -2,11 +2,14 @@
  * @Author: qiansc
  * @Date: 2018-09-10 00:02:05
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-12 00:26:19
+ * @Last Modified time: 2018-09-12 19:31:24
  */
 const Moment = require('moment');
 const Duration = Moment.duration;
 const Console = require('./util/console');
+const SourceFactory = require('./factory/source');
+const Source = require('dmr-source');
+const fs = require('fs');
 
 class Tasks {
 
@@ -26,7 +29,6 @@ class Tasks {
 
   /**
    * set Input
-   * - console Use cmd console
    * - default Use config
    * - path File
    * @param  {string|path} input - publish
@@ -35,36 +37,75 @@ class Tasks {
     this.input = input;
   }
   /**
+   * @private
    * @returns {ReadableStream}
    */
-  getInput() {
+  getInputSource() {
 
   }
 
+  /**
+   * set Output
+   * - console Use cmd console
+   * - default Use config
+   * - path File
+   * @param  {string|path} input - publish
+   */
   setOutput(output) {
     this.output = output;
   }
 
+  /**
+   * @private
+   * @returns {WritableStream}
+   */
   _getOutput() {
-    if (this.input === 'console') {
+    if (this.output === 'console') {
       return Console.stream;
+    } else if (this.output === 'default') {
+      if (this.config.output) {
+        return SourceFactory.create(this.config.output);
+      }
+    } else if (typeof this.output === "string"){
+      return SourceFactory.create({
+        source: 'file',
+        path: this.output
+      });
     }
+    return false;
   }
 
   run (range) {
     if (!range || !range.isValid()) {
-      return Promise.reject('range is isValid');
+      return Promise.reject('ERR501 - range is isValid');
     }
     let duration = range.duration().valueOf();
     let inputRanges = range.split(Duration(this.ii.valueOf() || duration));
     let outputRanges = range.split(Duration(this.oi.valueOf() || duration));
 
     if (inputRanges.length % outputRanges.length !== 0) {
-      return Promise.reject(`Input has ${inputRanges.length} parts, can not be divided Output parts ${outputRanges.length}`)
+      return Promise.reject(`ERR502 - Input has ${inputRanges.length} parts, can not be divided Output parts ${outputRanges.length}`)
     }
     // console.log(inputRanges.length, outputRanges.length);
+    let outputSource = this._getOutput();
 
+    console.log(this.config.output);
+    return Promise.resolve();
+    // cut into task according to length of outputRanges
+    // each one outputRange match a task promise
     outputRanges.forEach(or => {
+      let out =
+        SourceFactory.isSource(outputSource) ?
+        outputSource.createWritableStream({scope: {moment: or.start(), end: or.end(), duration: or.duration()}}) :
+        outputSource;
+
+      let inputSource = SourceFactory.create(this.input);
+      let multi = new Source.MultiSource();
+      let ranges = or.split(Duration(this.ii.valueOf() || duration));
+      let promises = [];
+      ranges.forEach(ir => {
+        multi.addSource(inputSource, {scope:ir});
+      });
 
     });
 

@@ -2,7 +2,7 @@
  * @Author: qiansc
  * @Date: 2018-06-11 00:17:47
  * @Last Modified by: qiansc
- * @Last Modified time: 2018-09-11 10:12:18
+ * @Last Modified time: 2018-09-13 10:10:08
  */
 // const Log = require('../util/log');
 const Moment = require('moment');
@@ -14,7 +14,8 @@ const EventEmitter = require('events');
 const log = require('./log');
 const Config = require('../util/config');
 const Range = require('../util/range');
-const Tasks = require('../tasks');
+const TaskSequence = require('../task-sequence');
+const IOTask = require('../task-io');
 const fs = require('fs');
 // const log = new Log(2);
 
@@ -91,7 +92,7 @@ class Runner extends EventEmitter{
 
 
         // log.group('    ');
-        log.info('You will start tasks with following config and option:');
+        log.info('You will start TaskSequence with following config and option:');
         // Deal Task Id
         if (config.description) {
           log.info('Task Description\t ', config.description);
@@ -99,7 +100,7 @@ class Runner extends EventEmitter{
 
         log.line();
 
-        let tasks = new Tasks(config);
+        let taskSeq = new TaskSequence(config);
         let range = new Range(program.start , program.duration, program.end);
 
         if (!range.isValid()) {
@@ -111,11 +112,11 @@ class Runner extends EventEmitter{
         log.warn('Range\t', range.toString('YY-MM-DD hh:mm:ss', ' - '));
 
         if (program.ii) {
-          tasks.setInputInterval(Duration(program.ii));
+          taskSeq.setInputInterval(Duration(program.ii));
         }
 
         if (program.oi) {
-          tasks.setOutputInterval(Duration(program.oi));
+          taskSeq.setOutputInterval(Duration(program.oi));
         }
 
         if (program.input == "default") {
@@ -123,25 +124,24 @@ class Runner extends EventEmitter{
         } else if (program.input){
             let file = path.resolve(this.cwd, program.input);
             log.info('Input\t', file);
-            tasks.setInput(file);
+            taskSeq.setOption('input', file);
         }
 
         if (program.output == "console") {
           log.info('Output\t', 'Console');
-          tasks.setOutput(program.output);
+          taskSeq.setOption('output', program.output);
         } else if (program.output == "default") {
           log.info('Output\t', 'Use TaskConfig');
         } else if (program.output){
           let file = path.resolve(this.cwd, program.output);
           log.info('Output\t', file);
-          tasks.setOutput(file);
+          taskSeq.setOption('output', file);
         } else {
           console.log('-o\tNll output option');
           return Promise.reject();
         }
 
-
-         return tasks.run(range);
+        return taskSeq.run(range, IOTask);
 
     }
 }

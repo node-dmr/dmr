@@ -11,6 +11,7 @@
     * [.duration([duration], [start])](#Range+duration) ⇒ <code>Duration</code>
     * [.toString([Mformat], [separater], [Dformat])](#Range+toString)
     * [.isValid()](#Range+isValid) ⇒ <code>Boolean</code>
+    * [.split(duration, remainder)](#Range+split) ⇒ <code>Array</code>
 
 <a name="new_Range_new"></a>
 
@@ -30,8 +31,9 @@ Duration Create API http://momentjs.com/docs/#/durations/
 
 **Example**  
 ```js
-new Range('2018-09-01 12:00:00', '01:00:00');
-new Range('20180901T12', 'P1H');
+new Range('2018-09-01 12:00:00', '25:00:00');
+new Range('20180901T12', 'PT25H');
+new Range('20180901', 'P1DT1H');
 new Range('20180901', null, Moment('20180902'));
 new Range('now--60000', null, 'now');
 new Range(new Date().getTime() - 60000, null, new Date());
@@ -106,3 +108,16 @@ console.log(new Range().duration(1000, new Date()).as('s')); // 1
 isValid
 
 **Kind**: instance method of [<code>Range</code>](#Range)  
+<a name="Range+split"></a>
+
+### range.split(duration, remainder) ⇒ <code>Array</code>
+split current range by duration
+
+**Kind**: instance method of [<code>Range</code>](#Range)  
+**Returns**: <code>Array</code> - Array of ranges  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| duration | <code>Duration</code> |  |
+| remainder | <code>Boolean</code> | keep the last range when range will be divided with remainder; |
+

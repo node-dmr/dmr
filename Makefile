@@ -17,12 +17,15 @@ export DOC=./node_modules/.bin/jsdoc2md
 # rm -rf ./docs
 doc:
 	rm -rf ./docs/api && mkdir ./docs/api
-	$(DOC) src/util/config.js > docs/api/util-config.md
 	$(DOC) src/util/range.js > docs/api/util-range.md
+	$(DOC) src/util/task.js > docs/api/util-task.md
+	$(DOC) src/util/config.js > docs/api/util-config.md
+	$(DOC) src/task-sequence.js > docs/api/tasks-sequence.md
+	$(DOC) src/task-io.js > docs/api/task-io.md
 
 exp:
 	npm run example
 
 install:
-	npm install forever -g
+#	npm install forever -g
 	npm install

@@ -8,11 +8,9 @@ DMR is a framework of processing log data.
 
 **Please read the following information before you install dmr**
 
-Alpha(0.5.x) version will be released  on NPM before **August 10th**.
+Beta(1.0.x) version will be released on NPM before **2018.10.1**.
 
-It`s not ready for public before Alpha version.
-
-Config-Ui-Cli and Docs / Language support / Unit Test is comming
+It`s not ready for public before Beta version.
 
 Thank you for your attention!
 

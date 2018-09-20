@@ -1,0 +1,10 @@
+// visit for more config options of http
+// https://github.com/node-dmr/dmr-source#HttpSource
+{
+  "source": "http",
+  "protocol": "https",
+  "host": "github.com",
+  "port": "80",
+  "path": "`/node-dmr/dmr-demo/raw/master/log/hello/${YYYY}${MM}${DD}.${hh}`"
+  // YYYYMMDD.hh exp => 20180717.18
+}

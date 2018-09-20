@@ -1,16 +1,26 @@
+# platform related
 .DS_Store
 ._.DS_Store
+*.log
+
+# editor related
 .idea
 *.swp
 *.~
+.*.un~
+.vimrc
+
+# build related
 build/
 dist/
 node_modules/
-amd_modules/
-*.log
-.*.un~
-.vimrc
-*.dev.json
+test-reports/
+coverage/
+
+# develop
+mydev*
 *.tgz
 dmr.json
 bin/test
+*.bak/
+data/

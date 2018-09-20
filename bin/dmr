@@ -1,44 +1,25 @@
 #!/usr/bin/env node
+const _ = require('underscore');
+const package = require('../package.json');
+// const program = require('commander');
 
-var program = require('commander');
-var cli = require('../lib/dmr').cli;
+let argv = process.argv;
 
-program
-  .version('0.1.0', '-v, --version')
-  .command('run [value]', 'Run Task');
-
-program
-  .command('crontab [value]', 'Schedules Control');
-  
-program
-.command('init [path]')
-.option('--base', 'Set Base-Project Here')
-.option('--force', 'Upgrade Project Info in Enviroment Config')
-.description('Init Project')
-.action(function(path, cmd){
-    cli.init.exec(path, cmd);
-});
-
-program
-  .command('start [value]', 'Start DMR Webapp');
-
-
-program.on('--help', function(){
-    // log.info('');
-    // log.info('  Examples:');
-    // log.info('');
-    // log.info('    $ crontab --start');
-    // log.info('    $ crontab --stop');
-    // log.info('    $ crontab --restart');
-    // log.info('');
-});
-
-program.parse(process.argv);
-
-//console.log(program.start);
-
-
-// dmr run aic -s
-// dmr init
-// dmr config --project
-// dmr 
+/**
+ * program.command not used cause it may cause permission error in unix
+ */
+if (_.indexOf(['init', 'run'], argv[2]) > -1) {
+  require('../src/bin/')(argv, process.cwd());
+} else {
+  let info = [
+    '',
+    'ver        ' + package.version ,
+    'git        ' + package.homepage ,
+    '',
+    '--help     helps',
+    '',
+    'init       initialize a dmr project',
+    'run        run task'
+  ]
+  console.log(info.join('\n  '));
+}

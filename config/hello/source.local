@@ -1,0 +1,4 @@
+{
+  "source": "file",
+  "path":"`../../data/hello/log/{$moment.format('YYYY-MM-DD/HH')}-{$duration.format('HH')}H`"
+}
